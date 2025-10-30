@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { StepOne } from "@/components/creator/step-one"
 import { StepTwo } from "@/components/creator/step-two"
 import { StepThree } from "@/components/creator/step-three"
-import { generateCourseFromTemplate } from "@/lib/template-generator"
+// import { generateCourseFromTemplate } from "@/lib/template-generator"
 import type { CourseData } from "@/lib/scorm-generator"
 import { CustomModal } from "@/components/ui/custom-modal"
 
