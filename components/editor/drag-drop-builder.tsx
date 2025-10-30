@@ -2080,7 +2080,7 @@ export function DragDropBuilder({
           let selectIndex = 0
           
           // Dividir en párrafos primero
-          const paragraphs = text.split('\n').filter(p => p.trim()).map(paragraph => {
+          const paragraphs = text.split('\n').filter((p: string) => p.trim()).map((paragraph: string) => {
             // Reemplazar {{}} con los selects en cada párrafo
             const processedParagraph = paragraph.replace(/\{\{\}\}/g, () => {
               const select = selects[selectIndex]

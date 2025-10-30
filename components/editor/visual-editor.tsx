@@ -251,7 +251,7 @@ export function VisualEditor({ project, momentId, onHtmlChange, showComponentsPa
   
   useEffect(() => {
     if (onHtmlChange && state.htmlContent) {
-      onHtmlChange(state.htmlContent, state.videos, state.images, state.audios, state.cssContent, state.jsContent)
+      onHtmlChange(state.htmlContent, state.videos, state.images, (state as any).audios, (state as any).cssContent, (state as any).jsContent)
     }
   }, [state.htmlContent])
 
