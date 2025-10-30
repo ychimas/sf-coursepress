@@ -10,6 +10,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    console.log('Processing GitHub callback with code:', code)
+    
     const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
       headers: {
@@ -24,6 +26,7 @@ export async function GET(request: NextRequest) {
     })
 
     const tokenData = await tokenResponse.json()
+    console.log('Token response:', tokenData)
     
     if (tokenData.access_token) {
       const userResponse = await fetch('https://api.github.com/user', {
@@ -32,6 +35,7 @@ export async function GET(request: NextRequest) {
         },
       })
       const userData = await userResponse.json()
+      console.log('User data:', userData.login)
 
       const reposResponse = await fetch('https://api.github.com/user/repos?sort=updated&per_page=1', {
         headers: {
@@ -40,11 +44,24 @@ export async function GET(request: NextRequest) {
       })
       const reposData = await reposResponse.json()
       const latestRepo = reposData[0]?.full_name || ''
+      console.log('Latest repo:', latestRepo)
 
       const cookieStore = await cookies()
-      cookieStore.set('github_token', tokenData.access_token, { httpOnly: true, secure: true })
-      cookieStore.set('github_user', userData.login, { httpOnly: true, secure: true })
-      cookieStore.set('github_repo', latestRepo, { httpOnly: true, secure: true })
+      const isProduction = process.env.NODE_ENV === 'production'
+      const cookieOptions = { 
+        httpOnly: true, 
+        secure: isProduction,
+        sameSite: 'lax' as const,
+        maxAge: 60 * 60 * 24 * 7 // 7 days
+      }
+      
+      cookieStore.set('github_token', tokenData.access_token, cookieOptions)
+      cookieStore.set('github_user', userData.login, cookieOptions)
+      cookieStore.set('github_repo', latestRepo, cookieOptions)
+      
+      console.log('Cookies set successfully')
+    } else {
+      console.error('No access token received:', tokenData)
     }
   } catch (error) {
     console.error('GitHub OAuth error:', error)

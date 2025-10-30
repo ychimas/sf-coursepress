@@ -23,6 +23,14 @@ export function GitHubModal({ isOpen, onClose, courseId, courseName }: GitHubMod
     if (isOpen) {
       checkGitHubConnection()
     }
+    
+    // Check if returning from GitHub auth
+    if (sessionStorage.getItem('github_auth_return')) {
+      sessionStorage.removeItem('github_auth_return')
+      setTimeout(() => {
+        checkGitHubConnection()
+      }, 1000)
+    }
   }, [isOpen])
 
   const checkGitHubConnection = async () => {
@@ -42,6 +50,8 @@ export function GitHubModal({ isOpen, onClose, courseId, courseName }: GitHubMod
 
   const handleConnectGitHub = async () => {
     setIsConnecting(true)
+    // Store current state to return after auth
+    sessionStorage.setItem('github_auth_return', 'true')
     window.location.href = '/api/github/auth'
   }
 
