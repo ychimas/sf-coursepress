@@ -103,7 +103,7 @@ export function CourseStructure({ project, selectedMoment, onSelectMoment, isEdi
               
               {expandedLessons.has(lesson.id) && (
                 <div className="ml-6 mt-1 space-y-1 group-hover:block hidden">
-                  {lesson.moments.map((moment) => (
+                  {lesson.moments.map((moment: any) => (
                     <Button
                       key={moment.id}
                       variant="ghost"
