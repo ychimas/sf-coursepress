@@ -67,7 +67,14 @@ export function GitHubModal({ isOpen, onClose, courseId, courseName }: GitHubMod
       })
       const data = await response.json()
       if (data.success) {
-        alert("Push exitoso!")
+        // Actualizar el repositorio mostrado
+        if (data.repository) {
+          setRepository(data.repository)
+        }
+        alert(`¡Push exitoso! Repositorio: ${data.repository || repository}`)
+        if (data.url) {
+          window.open(data.url, '_blank')
+        }
       } else {
         alert("Error: " + data.error)
       }
@@ -131,11 +138,10 @@ export function GitHubModal({ isOpen, onClose, courseId, courseName }: GitHubMod
                 </label>
                 <input
                   type="text"
-                  placeholder="ychimas/IDE-SOFACTIA"
+                  placeholder="nombre-del-curso"
                   value={repository}
                   onChange={(e) => setRepository(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-slate-50"
-                  readOnly
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
