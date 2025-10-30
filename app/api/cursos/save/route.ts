@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server"
 import { writeFile, mkdir } from "fs/promises"
 import { join, dirname } from "path"
-import { generateCourse } from "@/lib/scorm-generator.tsx"
-import type { CourseData } from "@/lib/scorm-generator.tsx"
+import { generateCourse, type CourseData } from "@/lib/scorm-generator"
 import { Buffer } from "buffer"
 
 export async function POST(request: Request) {
