@@ -40,7 +40,15 @@ export function GitHubModal({ isOpen, onClose, courseId, courseName }: GitHubMod
       if (data.connected) {
         setIsConnected(true)
         setGithubUser(data.username)
-        setRepository(data.repository || "")
+        
+        // Generar nombre del repositorio basado en el nombre del curso
+        const repoName = courseName.toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '') // Remover caracteres especiales
+          .replace(/\s+/g, '-') // Reemplazar espacios con guiones
+          .replace(/-+/g, '-') // Remover guiones múltiples
+          .trim()
+        
+        setRepository(`${data.username}/${repoName}`)
         setBranch(data.branch || "main")
       }
     } catch (error) {
@@ -138,10 +146,10 @@ export function GitHubModal({ isOpen, onClose, courseId, courseName }: GitHubMod
                 </label>
                 <input
                   type="text"
-                  placeholder="nombre-del-curso"
+                  placeholder="Se genera automáticamente"
                   value={repository}
-                  onChange={(e) => setRepository(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 text-slate-600"
+                  readOnly
                 />
               </div>
 
