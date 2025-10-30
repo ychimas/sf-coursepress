@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
 import { writeFile, mkdir } from "fs/promises"
-import { join } from "path"
-import { generateCourse } from "@/lib/scorm-generator"
-import type { CourseData } from "@/lib/scorm-generator"
+import { join, dirname } from "path"
+import { generateCourse } from "@/lib/scorm-generator.tsx"
+import type { CourseData } from "@/lib/scorm-generator.tsx"
 import { Buffer } from "buffer"
 
 export async function POST(request: Request) {
@@ -13,15 +13,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Datos del curso incompletos" }, { status: 400 })
     }
 
-    const coursePath = join(process.cwd(), "cursos", courseData.folderName)
+    // Ensure cursos directory exists
+    const cursosDir = join(process.cwd(), "cursos")
+    await mkdir(cursosDir, { recursive: true })
     
+    const coursePath = join(cursosDir, courseData.folderName)
     await mkdir(coursePath, { recursive: true })
 
     const files = generateCourse(courseData)
 
     for (const file of files) {
       const fullPath = join(coursePath, file.path)
-      const dir = fullPath.substring(0, fullPath.lastIndexOf("\\") || fullPath.lastIndexOf("/"))
+      const dir = dirname(fullPath)
       await mkdir(dir, { recursive: true })
       await writeFile(fullPath, file.content, "utf-8")
     }
@@ -101,6 +104,11 @@ export async function POST(request: Request) {
     })
   } catch (error) {
     console.error("Error guardando curso:", error)
-    return NextResponse.json({ error: "Error al guardar el curso" }, { status: 500 })
+    const errorMessage = error instanceof Error ? error.message : "Error desconocido"
+    return NextResponse.json({ 
+      error: "Error al guardar el curso", 
+      details: errorMessage,
+      stack: process.env.NODE_ENV === 'development' ? (error as Error).stack : undefined
+    }, { status: 500 })
   }
 }

@@ -55,7 +55,8 @@ export default function CreatorPage() {
       })
 
       if (!response.ok) {
-        throw new Error('Error al guardar el curso')
+        const errorData = await response.json().catch(() => ({ error: 'Error desconocido' }))
+        throw new Error(errorData.details || errorData.error || 'Error al guardar el curso')
       }
 
       const result = await response.json()
@@ -63,7 +64,8 @@ export default function CreatorPage() {
       setTimeout(() => window.location.href = '/dashboard', 1500)
     } catch (error) {
       console.error("Error generando curso:", error)
-      setModal({ isOpen: true, title: 'Error', message: 'Hubo un error al generar el curso. Por favor intenta nuevamente.', type: 'alert' })
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      setModal({ isOpen: true, title: 'Error', message: `Error al generar el curso: ${errorMessage}`, type: 'alert' })
     } finally {
       setIsGenerating(false)
     }
