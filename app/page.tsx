@@ -138,9 +138,11 @@ export default function Index() {
             <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-700 p-8">
               {/* Aquí va tu imagen */}
               <div className="bg-gray-800 rounded-xl border-2 border-gray-700 overflow-hidden">
-                <img
-                  src="/img-code.png"
-                  alt="Código SCORM generado"
+                <video
+                  src="/video_code2.mp4"
+                  autoPlay
+                  loop
+                  muted
                   className="w-full h-auto"
                 />
               </div>
