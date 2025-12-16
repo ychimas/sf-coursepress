@@ -65,7 +65,7 @@ export default function EditorPage() {
     const loadProject = async () => {
       setIsLoadingProject(true)
       let foundProject = ProjectManager.getProjectById(projectId)
-      
+
       // Si es un curso guardado localmente
       if (!foundProject && projectId.startsWith('curso-')) {
         const courseId = projectId.replace('curso-', '')
@@ -75,7 +75,7 @@ export default function EditorPage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ courseId })
           })
-          
+
           if (response.ok) {
             const courseData = await response.json()
             foundProject = await ProjectManager.addCourseAsProject(
@@ -88,24 +88,24 @@ export default function EditorPage() {
           console.error('Error cargando curso:', error)
         }
       }
-      
+
       setProject(foundProject || null)
       setSelectedMoment(null)
       setCurrentHtml("")
       setHasUnsavedChanges(false)
       setIsEditing(false)
-      
+
       // Cargar todos los momentos y detectar cuáles tienen contenido
       if (foundProject) {
         await loadAllMoments(foundProject.id)
         await detectSavedMoments(foundProject.id)
       }
-      
+
       setIsLoadingProject(false)
     }
-    
+
     loadProject()
-    
+
     // Cleanup: limpiar estado al desmontar o cambiar proyecto
     return () => {
       if (typeof window !== 'undefined') {
@@ -121,7 +121,7 @@ export default function EditorPage() {
       if (response.ok) {
         const data = await response.json()
         const momentsWithContent: string[] = []
-        
+
         for (const lesson of data.structure || []) {
           for (const moment of lesson.moments || []) {
             const htmlResponse = await fetch(`/api/load-moment?projectId=${projectId}&momentId=${moment.id}`)
@@ -133,7 +133,7 @@ export default function EditorPage() {
             }
           }
         }
-        
+
         setSavedMoments(new Set(momentsWithContent))
       }
     } catch (error) {
@@ -147,7 +147,7 @@ export default function EditorPage() {
       if (response.ok) {
         const data = await response.json()
         const moments: any[] = []
-        
+
         for (const lesson of data.structure || []) {
           for (const moment of lesson.moments || []) {
             const htmlResponse = await fetch(`/api/load-moment?projectId=${projectId}&momentId=${moment.id}`)
@@ -187,12 +187,12 @@ export default function EditorPage() {
 
   const handleSave = async () => {
     if (!currentHtml || !selectedMoment || !project) return
-    
+
     const loadingToast = document.createElement('div')
     loadingToast.className = 'fixed top-20 right-4 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-3'
     loadingToast.innerHTML = '<div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div><span>Guardando...</span>'
     document.body.appendChild(loadingToast)
-    
+
     try {
       // Subir imágenes
       for (const img of currentImages) {
@@ -201,14 +201,14 @@ export default function EditorPage() {
           uploadFormData.append('file', img.imageFile)
           uploadFormData.append('projectId', project.id)
           uploadFormData.append('momentId', selectedMoment)
-          
+
           await fetch('/api/upload-image', {
             method: 'POST',
             body: uploadFormData
           })
         }
       }
-      
+
       // Subir audios
       for (const audio of currentAudios) {
         if (audio.audioFile) {
@@ -216,14 +216,14 @@ export default function EditorPage() {
           uploadFormData.append('file', audio.audioFile)
           uploadFormData.append('projectId', project.id)
           uploadFormData.append('momentId', selectedMoment)
-          
+
           await fetch('/api/upload-audio', {
             method: 'POST',
             body: uploadFormData
           })
         }
       }
-      
+
       const response = await fetch('/api/save-moment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -237,7 +237,7 @@ export default function EditorPage() {
           jsContent: currentJs
         })
       })
-      
+
       if (response.ok) {
         loadingToast.innerHTML = '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span>Guardado exitosamente</span>'
         setHasUnsavedChanges(false)
@@ -245,7 +245,7 @@ export default function EditorPage() {
         const newSavedMoments = new Set([...savedMoments, selectedMoment])
         setSavedMoments(newSavedMoments)
         localStorage.setItem(`savedMoments-${project.id}`, JSON.stringify(Array.from(newSavedMoments)))
-        
+
         // Volver a la pantalla de selección
         setTimeout(() => {
           setSelectedMoment(null)
@@ -265,7 +265,7 @@ export default function EditorPage() {
   const handleMomentSelect = async (momentId: string) => {
     setSelectedMoment(momentId)
     setHasUnsavedChanges(false)
-    
+
     // Cargar el HTML inicial del momento
     if (project) {
       const html = await loadMomentHtml(momentId)
@@ -320,8 +320,8 @@ export default function EditorPage() {
               </Button>
             </Link>
             {selectedMoment && currentHtml && (
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
                 onClick={() => setShowPreview(true)}
                 className="border-slate-300 text-slate-600 hover:bg-slate-50"
@@ -331,7 +331,7 @@ export default function EditorPage() {
               </Button>
             )}
             {selectedMoment && savedMoments.has(selectedMoment) && (
-              <Button 
+              <Button
                 variant="outline"
                 size="sm"
                 onClick={() => {
@@ -345,7 +345,7 @@ export default function EditorPage() {
                 Volver
               </Button>
             )}
-            <Button 
+            <Button
               size="sm"
               onClick={handleSave}
               disabled={!hasUnsavedChanges || !currentHtml || !selectedMoment}
@@ -361,7 +361,7 @@ export default function EditorPage() {
       <div className="flex min-h-[calc(100vh-73px)]">
         {/* Sidebar - Course Structure */}
         <div className="w-14 hover:w-80 border-r border-slate-700 bg-slate-900 transition-all duration-300 group overflow-y-auto flex-shrink-0 min-h-[calc(100vh-73px)] sticky top-[73px] self-start">
-          <CourseStructure 
+          <CourseStructure
             project={project}
             selectedMoment={selectedMoment}
             onSelectMoment={handleMomentSelect}
@@ -390,8 +390,8 @@ export default function EditorPage() {
                   </TabsTrigger>
                 </TabsList>
                 {activeTab === 'visual' && currentHtml && (
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={() => setShowComponents(!showComponents)}
                     className={`border-slate-300 transition-colors ${showComponents ? 'bg-blue-600 text-white hover:bg-blue-700' : 'text-slate-600 hover:bg-slate-50'}`}
@@ -405,7 +405,7 @@ export default function EditorPage() {
               <div className="flex-1 overflow-hidden">
                 <TabsContent value="visual" className="h-full m-0 flex">
                   <div className="flex-1">
-                    <VisualEditor 
+                    <VisualEditor
                       project={project}
                       momentId={selectedMoment}
                       onHtmlChange={(html, videos, images, audios, cssContent, jsContent) => {
@@ -423,8 +423,8 @@ export default function EditorPage() {
                     <div className="p-4">
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="font-semibold text-slate-900">Componentes</h3>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           size="sm"
                           onClick={() => setShowComponents(false)}
                           className="h-6 w-6 p-0 text-slate-600 hover:text-slate-900"
@@ -437,15 +437,15 @@ export default function EditorPage() {
                     </div>
                   </div>
                 </TabsContent>
-                
+
                 <TabsContent value="code" className="h-full m-0">
-                  <CodeEditor 
+                  <CodeEditor
                     project={project}
                     momentId={selectedMoment}
                     initialHtml={currentHtml}
                   />
                 </TabsContent>
-                
+
                 <TabsContent value="settings" className="h-full m-0 p-6">
                   <Card>
                     <CardHeader>
@@ -460,17 +460,16 @@ export default function EditorPage() {
             </Tabs>
           ) : (
             <div className="flex-1 flex items-center justify-center bg-white">
-              <div className="text-center">
-                <h2 className="text-2xl font-bold mb-4 text-slate-900">Selecciona un momento para editar</h2>
-                <p className="text-slate-600">
-                  Elige una lección y momento del panel izquierdo para comenzar a editar
-                </p>
+              <div className="w-full max-w-2xl mx-auto border-2 border-dashed border-slate-300 rounded-3xl p-14 bg-white/80 shadow-md text-center">
+                <h2 className="text-3xl font-bold mb-4 text-slate-900">Selecciona un momento para editar</h2>
+                <p className="text-slate-700 mb-3">Elige una lección y momento del panel izquierdo para comenzar a editar</p>
+                <p className="text-sm text-slate-500">Consejo: los momentos con contenido se marcan en el panel de la izquierda</p>
               </div>
             </div>
           )}
         </div>
       </div>
-      
+
       {/* Modal de Vista Previa */}
       {showPreview && selectedMoment && currentHtml && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { BookOpen, Plus, Search, FileText, CheckCircle, Clock, FolderOpen, Trash2, ArrowLeft, Download, Edit, Settings, LayoutGrid, List, MoreVertical, FolderGit2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -20,6 +21,7 @@ interface SavedCourse {
 }
 
 export default function DashboardPage() {
+  const router = useRouter()
   const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [filteredCourses, setFilteredCourses] = useState<SavedCourse[]>([])
@@ -68,10 +70,9 @@ export default function DashboardPage() {
       setFilteredCourses(savedCourses)
     } else {
       const query = searchQuery.toLowerCase()
-      const filtered = savedCourses.filter(course => 
+      const filtered = savedCourses.filter(course =>
         course.name.toLowerCase().includes(query) ||
-        course.description?.toLowerCase().includes(query) ||
-        course.category.toLowerCase().includes(query)
+        course.description?.toLowerCase().includes(query)
       )
       setFilteredCourses(filtered)
     }
@@ -138,10 +139,10 @@ export default function DashboardPage() {
       </div>
     `
     document.body.appendChild(progressModal)
-    
+
     const progressBar = progressModal.querySelector('#progress-bar') as HTMLElement
     const progressText = progressModal.querySelector('#progress-text') as HTMLElement
-    
+
     let progress = 0
     const interval = setInterval(() => {
       if (progress < 90) {
@@ -151,7 +152,7 @@ export default function DashboardPage() {
         progressText.textContent = `${Math.round(progress)}%`
       }
     }, 200)
-    
+
     try {
       const response = await fetch('/api/cursos/download', {
         method: 'POST',
@@ -160,14 +161,14 @@ export default function DashboardPage() {
       })
 
       const blob = await response.blob()
-      
+
       clearInterval(interval)
       progress = 100
       progressBar.style.width = '100%'
       progressText.textContent = '100%'
-      
+
       await new Promise(resolve => setTimeout(resolve, 300))
-      
+
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
@@ -176,7 +177,7 @@ export default function DashboardPage() {
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
-      
+
       document.body.removeChild(progressModal)
     } catch (error) {
       clearInterval(interval)
@@ -269,9 +270,9 @@ export default function DashboardPage() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               {mounted && (
-                <Input 
-                  placeholder="Buscar cursos por nombre, descripción o categoría..." 
-                  className="pl-10 border-slate-300 focus:border-blue-600 focus:ring-blue-600" 
+                <Input
+                  placeholder="Buscar cursos por nombre o descripción..."
+                  className="pl-10 border-slate-300 focus:border-blue-600 focus:ring-blue-600"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -317,11 +318,13 @@ export default function DashboardPage() {
               {filteredCourses.map((course) => (
                 <Card key={course.id} className="card-modern border-slate-200">
                   <CardHeader className="pb-4">
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
-                        <CardTitle className="text-lg sm:text-xl mb-2 flex items-center gap-2 text-slate-900">
-                          <FolderOpen className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                          <span className="truncate">{course.name}</span>
+                        <CardTitle className="text-lg sm:text-xl mb-2 text-slate-900">
+                          <div className="flex items-start gap-2">
+                            <FolderOpen className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                            <span className="break-words">{course.name}</span>
+                          </div>
                         </CardTitle>
                         <CardDescription className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-slate-600">
                           <span className="flex items-center gap-1">
@@ -332,9 +335,6 @@ export default function DashboardPage() {
                             <Clock className="w-4 h-4" />
                             {new Date(course.createdAt).toLocaleDateString("es-ES")}
                           </span>
-                          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
-                            {course.category}
-                          </span>
                         </CardDescription>
                         {course.description && (
                           <p className="text-sm text-slate-600 mt-2">{course.description}</p>
@@ -342,9 +342,9 @@ export default function DashboardPage() {
                       </div>
                       {viewMode === 'grid' && (
                         <div className="relative">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             className="h-8 w-8 p-0"
                             onClick={(e) => {
                               e.stopPropagation()
@@ -482,10 +482,9 @@ export default function DashboardPage() {
               </div>
               <div className="max-h-80 overflow-y-auto border-t border-slate-200">
                 {savedCourses
-                  .filter(course => 
+                  .filter(course =>
                     course.name.toLowerCase().includes(modalSearchQuery.toLowerCase()) ||
-                    course.description?.toLowerCase().includes(modalSearchQuery.toLowerCase()) ||
-                    course.category.toLowerCase().includes(modalSearchQuery.toLowerCase())
+                    course.description?.toLowerCase().includes(modalSearchQuery.toLowerCase())
                   )
                   .map((course) => (
                     <div
@@ -501,20 +500,19 @@ export default function DashboardPage() {
                         <FolderOpen className="w-4 h-4 text-blue-600 flex-shrink-0" />
                         <div className="flex-1 min-w-0">
                           <h4 className="text-sm font-medium text-slate-900 truncate">{course.name}</h4>
-                          <p className="text-xs text-slate-500 truncate">{course.category} • {course.lessons} lecciones</p>
+                          <p className="text-xs text-slate-500 truncate">{course.lessons} lecciones</p>
                         </div>
                       </div>
                     </div>
                   ))}
-                {savedCourses.filter(course => 
+                {savedCourses.filter(course =>
                   course.name.toLowerCase().includes(modalSearchQuery.toLowerCase()) ||
-                  course.description?.toLowerCase().includes(modalSearchQuery.toLowerCase()) ||
-                  course.category.toLowerCase().includes(modalSearchQuery.toLowerCase())
+                  course.description?.toLowerCase().includes(modalSearchQuery.toLowerCase())
                 ).length === 0 && (
-                  <div className="p-6 text-center text-sm text-slate-500">
-                    No se encontraron cursos
-                  </div>
-                )}
+                    <div className="p-6 text-center text-sm text-slate-500">
+                      No se encontraron cursos
+                    </div>
+                  )}
               </div>
 
             </div>
@@ -536,9 +534,17 @@ export default function DashboardPage() {
           <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-2xl font-bold text-slate-900 mb-2">¿Qué deseas editar?</h3>
             <p className="text-slate-600 mb-6">Selecciona el tipo de edición que necesitas</p>
-            
+
             <div className="grid md:grid-cols-2 gap-4">
-              <Link href={`/edit/${editModal.courseId}`} className="block h-full">
+              <button
+                type="button"
+                className="block h-full text-left"
+                onClick={() => {
+                  const id = editModal.courseId
+                  setEditModal({ isOpen: false, courseId: '' })
+                  setTimeout(() => router.push(`/edit/${id}`), 0)
+                }}
+              >
                 <div className="border-2 border-slate-200 rounded-xl p-6 hover:border-blue-500 hover:bg-blue-50 transition-all cursor-pointer group h-full">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-500 transition-colors">
                     <Settings className="w-6 h-6 text-blue-600 group-hover:text-white" />
@@ -546,9 +552,17 @@ export default function DashboardPage() {
                   <h4 className="text-lg font-bold text-slate-900 mb-2">Información y Estructura</h4>
                   <p className="text-sm text-slate-600">Edita el nombre, descripción y agrega o elimina lecciones del curso</p>
                 </div>
-              </Link>
-              
-              <Link href={`/editor/curso-${editModal.courseId}`} className="block h-full">
+              </button>
+
+              <button
+                type="button"
+                className="block h-full text-left"
+                onClick={() => {
+                  const id = editModal.courseId
+                  setEditModal({ isOpen: false, courseId: '' })
+                  setTimeout(() => router.push(`/editor/curso-${id}`), 0)
+                }}
+              >
                 <div className="border-2 border-slate-200 rounded-xl p-6 hover:border-green-500 hover:bg-green-50 transition-all cursor-pointer group h-full">
                   <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-green-500 transition-colors">
                     <Edit className="w-6 h-6 text-green-600 group-hover:text-white" />
@@ -556,9 +570,9 @@ export default function DashboardPage() {
                   <h4 className="text-lg font-bold text-slate-900 mb-2">Editar Momentos</h4>
                   <p className="text-sm text-slate-600">Modifica el contenido de cada momento: textos, imágenes, videos y actividades</p>
                 </div>
-              </Link>
+              </button>
             </div>
-            
+
             <div className="mt-6 flex justify-end">
               <Button variant="outline" onClick={() => setEditModal({ isOpen: false, courseId: '' })}>
                 Cancelar

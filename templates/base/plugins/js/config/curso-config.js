@@ -3,13 +3,14 @@ const CURSO_CONFIG = {
   // Configuración de lecciones del curso
   lecciones: {
     leccion1: {
-      nombre: '1° Teoría del Manejo Defensivo',
+      nombre: '1°  Introducción a la ley Karin y su contexto normativo',
       sliders: [
         { router: 'momento1_1', momento: 1 },
         { router: 'momento1_2', momento: 1 },
         { router: 'momento1_3', momento: 1 },
         { router: 'momento1_4', momento: 1 },
         { router: 'momento1_5', momento: 1 },
+        { router: 'momento1_6', momento: 1 },
       ],
       navegacion: {
         paginaAnterior: '../inicio/inicio.html',
@@ -18,16 +19,17 @@ const CURSO_CONFIG = {
       }
     },
     leccion2: {
-      nombre: '2° Buenos hábitos de Manejo Defensivo',
+      nombre: '2° Prevención efectiva del acoso y la violencia laboral',
       sliders: [
         { router: 'momento2_1', momento: 2 },
         { router: 'momento2_2', momento: 2 },
-        { router: 'momento2_3a', momento: 2 },
         { router: 'momento2_3', momento: 2 },
         { router: 'momento2_4', momento: 2 },
-        { router: 'momento2_5a', momento: 2 },
         { router: 'momento2_5', momento: 2 },
         { router: 'momento2_6', momento: 2 },
+        { router: 'momento2_7', momento: 2 },
+        { router: 'momento2_8', momento: 2 },
+        { router: 'momento2_9', momento: 2 },
       ],
       navegacion: {
         paginaAnterior: '../leccion1/evaluacion_leccion.html',
@@ -36,7 +38,7 @@ const CURSO_CONFIG = {
       }
     },
     leccion3: {
-      nombre: '3° Factores para evitar Accidentes de Tránsito',
+      nombre: '3° Tratamiento adecuado de casos según la ley Karin y el protocolo interno',
       sliders: [
         { router: 'momento3_1', momento: 3 },
         { router: 'momento3_2', momento: 3 },
@@ -45,6 +47,12 @@ const CURSO_CONFIG = {
         { router: 'momento3_5', momento: 3 },
         { router: 'momento3_6', momento: 3 },
         { router: 'momento3_7', momento: 3 },
+        { router: 'momento3_8', momento: 3 },
+        { router: 'momento3_9', momento: 3 },
+        { router: 'momento3_10', momento: 3 },
+        { router: 'momento3_11', momento: 3 },
+        { router: 'momento3_12', momento: 3 },
+        { router: 'momento3_13', momento: 3 },
       ],
       navegacion: {
         paginaAnterior: '../leccion2/evaluacion_leccion.html',

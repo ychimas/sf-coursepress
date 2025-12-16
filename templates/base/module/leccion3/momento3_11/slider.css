@@ -1,0 +1,75 @@
+/*SLIDER 15 imagenes y audios*/
+.container_sld15_equipo {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 30px;
+    max-width: 650px;
+}
+
+.tarjeta_sld15 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.055), 0 10px 20px -10px rgba(0, 0, 0, 0.466);
+    padding: 10px 5px;
+    text-align: center;
+}
+
+.tarjeta_sld15 audio {
+    height: 40px;
+    width: 250px;
+}
+
+.circle-frame {
+    margin: 2px;
+    width: 120px;
+    height: 120px;
+    border-radius: 0%;
+    overflow: hidden;
+    border: 4px solid #c0185d;
+    margin: 10px auto;
+    position: relative;
+}
+
+.circle-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.speech-bubble {
+    background-color: #c0185d;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 20px;
+    display: inline-block;
+    position: relative;
+    font-size: 16px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+}
+
+.speech-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 10px solid transparent;
+    border-bottom-color: #c0185d;
+}
+
+.audio-left {
+    margin-left: 0.1rem;
+}
+
+@media (max-width: 480px) {
+    .container_sld15_equipo {
+        grid-template-columns: 1fr;
+        /* 1 columna */
+        grid-template-rows: auto;
+    }
+}

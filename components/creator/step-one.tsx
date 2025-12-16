@@ -3,16 +3,16 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Upload, X } from "lucide-react"
 import { useRef, useState } from "react"
 
 interface StepOneProps {
   courseData: any
   setCourseData: (data: any) => void
+  setCustomVideoFile?: (file: File | null) => void
 }
 
-export function StepOne({ courseData, setCourseData }: StepOneProps) {
+export function StepOne({ courseData, setCourseData, setCustomVideoFile }: StepOneProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [videoFileName, setVideoFileName] = useState<string>(courseData.customVideo?.name || "")
 
@@ -29,37 +29,25 @@ export function StepOne({ courseData, setCourseData }: StepOneProps) {
     const file = e.target.files?.[0]
     if (file && file.type.startsWith("video/")) {
       setVideoFileName(file.name)
-      
-      const arrayBuffer = await file.arrayBuffer()
-      const base64 = Buffer.from(arrayBuffer).toString('base64')
-      
       setCourseData({ 
         ...courseData, 
         customVideo: {
           name: file.name,
-          data: base64,
           mimeType: file.type
         }
       })
+      setCustomVideoFile?.(file)
     }
   }
 
   const removeVideo = () => {
     setVideoFileName("")
     setCourseData({ ...courseData, customVideo: null })
+    setCustomVideoFile?.(null)
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
     }
   }
-
-  const categories = [
-    "General",
-    "Derecho Laboral",
-    "Seguridad Industrial",
-    "Recursos Humanos",
-    "Tecnología",
-    "Salud y Bienestar",
-  ]
 
   return (
     <div className="space-y-6">
@@ -95,25 +83,6 @@ export function StepOne({ courseData, setCourseData }: StepOneProps) {
             onChange={(e) => setCourseData({ ...courseData, description: e.target.value })}
             className="mt-1.5 min-h-[120px]"
           />
-        </div>
-
-        <div>
-          <Label htmlFor="category">Categoría</Label>
-          <Select
-            value={courseData.category}
-            onValueChange={(value) => setCourseData({ ...courseData, category: value })}
-          >
-            <SelectTrigger className="mt-1.5">
-              <SelectValue placeholder="Selecciona una categoría" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map((category) => (
-                <SelectItem key={category} value={category}>
-                  {category}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
 
         <div>

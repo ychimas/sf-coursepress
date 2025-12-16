@@ -1,88 +1,216 @@
 <section class="row h-100">
-    <div class="animate__animated animate__fadeInLeftBig col-12 sf-bg-dark sf-ct-col">
-        <img src="../../assets/img/avatars/avatar_mujer_stop_circulo.webp" alt="avatar"
-            class="sf-img-xl-10 mx-auto d-none d-xl-block">
-        <div class="ms-xl-4 mx-xl-0">
-            <h1 class="sf-text-white text-center">Prelación de las SEÑALES DE TRANSITO
-            </h1>
-            <img src="../../assets/img/avatars/avatar_mujer_stop_circulo.webp" alt="avatar"
-                class="sf-img-80 sf-img-sm-60 sf-img-md-40 sf-img-lg-30 mx-auto d-xl-none mb-2">
-            <p class="sf-text-white text-justify">
-                El <span class="sf-txt-800">Artículo 111 del CNT (Código Nacional de Tránsito)</span> establece en qué
-                orden de importancia los conductores debemos
-                atender las señales de tránsito:
-            </p>
-        </div>
+    <!-- Columna izquierda -->
+    <div class="animate__animated animate__fadeInLeftBig col-12 col-lg-6 sf-bg-dark sf-cl-row text-white">
+        <h1 class="sf-text-white text-center">Principios de un tratamiento <br>
+            <span class="sf-text-purple">adecuado según la ley Karin
+            </span>
+        </h1>
+        <img src="../../assets/img/avatars/avatar_femenina_con_megafono.webp" alt="avatar"
+            class="sf-img-80 sf-img-sm-60 sf-img-md-50 sf-img-lg-80 sf-img-xl-50 mx-auto mb-2">
+        <p class="sf-text-white text-justify">
+            <span class="sf-txt-800"></span> Cómo Identificar y Actuar ante Situaciones de Acoso o Violencia
+        </p>
     </div>
 
-    <div
-        class="animate__animated animate__fadeInRightBig col-md-12 px-5 pt-4 px-0 pb-1 pb-mt-0 d-flex justify-content-center align-items-center">
-        <div class="my-4 my-lg-0 text-center">
-            <i class="hipt hipt-light mb-3">
-                Arrastra los elementos para ordenarlos de acuerdo con la prelación de las señales de tránsito:
-                <i class="icon-inline icon-inline--start fa-solid fa-arrow-turn-down"></i>
-            </i>
-            <div class="row animate__animated animate__backInUp">
-                <!-- aqui va la actividad -->
-                <div class="container-dadarrast">
-                    <div class="sortable-container-dadarrast">
-                        <div class="sortable-item-dadarrast" data-id="agente_transito_sld18">
-                            <div class="image-container-dadarrast">
-                                <img src="./momento3_5/img/agente_transito_sld18.webp" alt="Agente de tránsito"
-                                    class="sortable-image-dadarrast">
-                                <div class="image-text-overlay-dadarrast">1. Señales y órdenes emitidas por los agentes
-                                    de
-                                    tránsito</div>
-                            </div>
-                        </div>
-                        <div class="sortable-item-dadarrast" data-id="señales_transitorias_sld18">
-                            <div class="image-container-dadarrast">
-                                <img src="./momento3_5/img/señales_transitorias_sld18.webp" alt="Señales transitorias"
-                                    class="sortable-image-dadarrast">
-                                <div class="image-text-overlay-dadarrast">2. Señales transitorias</div>
-                            </div>
-                        </div>
-                        <div class="sortable-item-dadarrast" data-id="semaforos_sld18">
-                            <div class="image-container-dadarrast">
-                                <img src="./momento3_5/img/semaforos_sld18.webp" alt="Semáforos"
-                                    class="sortable-image-dadarrast">
-                                <div class="image-text-overlay-dadarrast">3. Semáforos</div>
-                            </div>
-                        </div>
-                        <div class="sortable-item-dadarrast" data-id="verticales_sld18">
-                            <div class="image-container-dadarrast">
-                                <img src="./momento3_5/img/verticales_sld18.webp" alt="Señales verticales"
-                                    class="sortable-image-dadarrast">
-                                <div class="image-text-overlay-dadarrast">4. Señales verticales</div>
-                            </div>
-                        </div>
-                        <div class="sortable-item-dadarrast" data-id="horizontales_sld18">
-                            <div class="image-container-dadarrast">
-                                <img src="./momento3_5/img/horizontales_sld18.webp" alt="Señales horizontales"
-                                    class="sortable-image-dadarrast">
-                                <div class="image-text-overlay-dadarrast">5. Señales horizontales o marcas sobre la vía
-                                </div>
-                            </div>
-                        </div>
+    <!-- Columna derecha con actividad -->
+    <div class="animate__animated animate__fadeInRightBig col-12 col-lg-6 sf-cr-row">
+        <i class="hipt hipt-light mb-3">
+            Responde a las siguientes preguntas, si contestas SI a alguna, es posible que estés frente a una situación
+            de acoso o violencia laboral:
+            <i class="icon-inline icon-inline--start fa-solid fa-arrow-turn-down"></i>
+        </i>
+        <div class="mx-lg-0" id="preguntas-container">
+            <div>
+                <div id="contador-preguntas" class="text-center">
+                    <p id="progress-text">0 de 6 preguntas validadas</p>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progress-bar-fill"></div>
+                </div>
+            </div>
+
+            <div class="preguntas_01 " data-pregunta="1">
+                <div class="ctItem fixed-size-question-box">
+                    <p class="text-paragraph-light-color text-p-size text-left"
+                        style="font-family: Montserrat, sans-serif;">
+                        <strong>Pregunta 1: </strong>¿Alguna persona de mi equipo, jefe o empleador me ha asignado
+                        tareas degradantes o me ha sobrecargado injustificadamente con el fin de humillarme?
+                    </p>
+                    <div class="opciones-pregunta">
+                        <p class="opcion-respuesta" data-valor="true">A. Sí</p>
+                        <p class="opcion-respuesta" data-valor="false">B. No</p>
                     </div>
-
-                    <div class="mobile-container-dadarrast" style="display: none;">
-                        <!-- Los elementos móviles se generarán dinámicamente con JavaScript -->
+                    <div class="d-flex justify-center">
+                        <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="1">
+                            <i class="fas fa-check-circle"></i> Validar
+                        </button>
                     </div>
-
-                    <div class="validation-message-dadarrast" style="display: none;"></div>
-
-                    <div class="button-container-dadarrast">
-                        <button id="validate-btn" class="sf-btn sf-btn-purple btn-validate" disabled>
-                            <i class="fa-solid fa-check"></i> Validar
-                        </button>
-                        <button id="reset-btn" class="sf-btn sf-btn-purple btn-reset" disabled>
-                            <i class="fa-solid fa-repeat"></i> Reiniciar
-                        </button>
+                    <div class="d-flex justify-center d-none btn-siguiente-container">
+                        <button class="sf-btn sf-btn-purple d-none" data-siguiente="2"><i
+                                class="fa-solid fa-circle-arrow-right"></i> Continuar</button>
                     </div>
                 </div>
-
+                <div class="d-flex justify-content-center">
+                    <div id="mensaje_error_1" class="mt-3 d-none"></div>
+                    <div id="resultado_alertas_1" class="mt-3 d-none"></div>
+                </div>
             </div>
+
+            <div class="preguntas_01 d-none" data-pregunta="2">
+                <div class="ctItem fixed-size-question-box">
+                    <p class="text-paragraph-light-color text-p-size text-left"
+                        style="font-family: Montserrat, sans-serif;">
+                        <strong>Pregunta 2: </strong>¿He recibido de manera recurrente gritos, burlas o he sido
+                        excluido/a de conversaciones y actividades importantes por parte de compañeros o superiores?
+                    </p>
+                    <div class="opciones-pregunta">
+                        <p class="opcion-respuesta" data-valor="true">A. Sí</p>
+                        <p class="opcion-respuesta" data-valor="false">B. No</p>
+                    </div>
+                    <div class="d-flex justify-center">
+                        <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="2">
+                            <i class="fas fa-check-circle"></i> Validar
+                        </button>
+                    </div>
+                    <div class="d-flex justify-center d-none btn-siguiente-container">
+                        <button class="sf-btn sf-btn-purple d-none" data-siguiente="3"><i
+                                class="fa-solid fa-circle-arrow-right"></i> Continuar</button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div id="mensaje_error_2" class="mt-3 d-none"></div>
+                    <div id="resultado_alertas_2" class="mt-3 d-none"></div>
+                </div>
+            </div>
+
+            <div class="preguntas_01 d-none" data-pregunta="3">
+                <div class="ctItem fixed-size-question-box">
+                    <p class="text-paragraph-light-color text-p-size text-left"
+                        style="font-family: Montserrat, sans-serif;">
+                        <strong>Pregunta 3: </strong>¿He sido objeto de comentarios sexuales, miradas lascivas o he
+                        recibido contenido sexual (imágenes, mensajes) no deseado en mi lugar de trabajo?
+                    </p>
+                    <div class="opciones-pregunta">
+                        <p class="opcion-respuesta" data-valor="true">A. Sí</p>
+                        <p class="opcion-respuesta" data-valor="false">B. No</p>
+                    </div>
+                    <div class="d-flex justify-center">
+                        <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="3">
+                            <i class="fas fa-check-circle"></i> Validar
+                        </button>
+                    </div>
+                    <div class="d-flex justify-center d-none btn-siguiente-container">
+                        <button class="sf-btn sf-btn-purple d-none" data-siguiente="4"><i
+                                class="fa-solid fa-circle-arrow-right"></i> Continuar</button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div id="mensaje_error_3" class="mt-3 d-none"></div>
+                    <div id="resultado_alertas_3" class="mt-3 d-none"></div>
+                </div>
+            </div>
+
+            <div class="preguntas_01 d-none" data-pregunta="4">
+                <div class="ctItem fixed-size-question-box">
+                    <p class="text-paragraph-light-color text-p-size text-left"
+                        style="font-family: Montserrat, sans-serif;">
+                        <strong>Pregunta 4: </strong>¿Algún compañero o superior me ha intentado realizar contacto
+                        físico no apropiado o me ha ofrecido beneficios a cambio de favores sexuales?
+                    </p>
+                    <div class="opciones-pregunta">
+                        <p class="opcion-respuesta" data-valor="true">A. Sí</p>
+                        <p class="opcion-respuesta" data-valor="false">B. No</p>
+                    </div>
+                    <div class="d-flex justify-center">
+                        <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="4">
+                            <i class="fas fa-check-circle"></i> Validar
+                        </button>
+                    </div>
+                    <div class="d-flex justify-center d-none btn-siguiente-container">
+                        <button class="sf-btn sf-btn-purple d-none" data-siguiente="5"><i
+                                class="fa-solid fa-circle-arrow-right"></i> Continuar</button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div id="mensaje_error_4" class="mt-3 d-none"></div>
+                    <div id="resultado_alertas_4" class="mt-3 d-none"></div>
+                </div>
+            </div>
+
+            <div class="preguntas_01 d-none" data-pregunta="5">
+                <div class="ctItem fixed-size-question-box">
+                    <p class="text-paragraph-light-color text-p-size text-left"
+                        style="font-family: Montserrat, sans-serif;">
+                        <strong>Pregunta 5: </strong>¿He sufrido agresión verbal o física por parte de personas que no
+                        son de la empresa (como clientes, usuarios o proveedores) mientras realizaba mis funciones?
+                    </p>
+                    <div class="opciones-pregunta">
+                        <p class="opcion-respuesta" data-valor="true">A. Sí</p>
+                        <p class="opcion-respuesta" data-valor="false">B. No</p>
+                    </div>
+                    <div class="d-flex justify-center">
+                        <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="5">
+                            <i class="fas fa-check-circle"></i> Validar
+                        </button>
+                    </div>
+                    <div class="d-flex justify-center d-none btn-siguiente-container">
+                        <button class="sf-btn sf-btn-purple d-none" data-siguiente="6"><i
+                                class="fa-solid fa-circle-arrow-right"></i> Continuar</button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div id="mensaje_error_5" class="mt-3 d-none"></div>
+                    <div id="resultado_alertas_5" class="mt-3 d-none"></div>
+                </div>
+            </div>
+
+            <div class="preguntas_01 d-none" data-pregunta="6">
+                <div class="ctItem fixed-size-question-box">
+                    <p class="text-paragraph-light-color text-p-size text-left"
+                        style="font-family: Montserrat, sans-serif;">
+                        <strong>Pregunta 6: </strong>¿La situación descrita (ya sea por parte del equipo o de terceros)
+                        me ha causado menoscabo, maltrato o humillación, o ha perjudicado mi salud o trabajo?
+                    </p>
+                    <div class="opciones-pregunta">
+                        <p class="opcion-respuesta" data-valor="true">A. Sí</p>
+                        <p class="opcion-respuesta" data-valor="false">B. No</p>
+                    </div>
+                    <div class="d-flex justify-center">
+                        <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="6">
+                            <i class="fas fa-check-circle"></i> Validar
+                        </button>
+                    </div>
+                    <div class="d-flex justify-center d-none btn-siguiente-container">
+
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div id="mensaje_error_6" class="mt-3 d-none"></div>
+                    <div id="resultado_alertas_6" class="mt-3 d-none"></div>
+                </div>
+            </div>
+
+            <div id="navegacion-resumen" class="d-none">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <button id="btnAnteriorNav" class="sf-btn sf-btn-outline-purple">
+                        <i class="fa-solid fa-chevron-left"></i> Anterior
+                    </button>
+                    <span class="quiz-counter">
+                        <span id="preguntaActualNav">1</span> de <span id="totalPreguntasNav">6</span>
+                    </span>
+                    <button id="btnSiguienteNav" class="sf-btn sf-btn-outline-purple">
+                        Siguiente <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="text-center">
+                    <button class="btn sf-btn sf-btn-purple btn-reiniciar">
+                        <i class="fas fa-redo me-2"></i>Reiniciar
+                    </button>
+                </div>
+            </div>
+
+            <div id="feedback-final-externo" class="d-none"></div>
+            <div id="resultado_final" class="d-none"></div>
         </div>
     </div>
 </section>

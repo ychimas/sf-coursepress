@@ -1,0 +1,68 @@
+/*--------------*/
+/*Accordion*/
+.accordion-button {
+    color: #ffffff;
+    background-color: #0F172A;
+    border: none;
+    position: relative;
+    padding: 1rem 0.45rem;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #fff;
+    background: #6e3cd2;
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.accordion-button::after {
+    background-image: url("img/flecha-blanca.svg");
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url("img/flecha-blanca.svg");
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: rotate(180deg);
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.accordion-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.accordion-collapse.collapse.show {
+    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+}
+
+.accordion-body {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.accordion-item:last-child {
+    margin-bottom: 20px;
+}
+
+.accordion-button.collapsed {
+    background-color: #0F172A;
+    color: #ffffff;
+}

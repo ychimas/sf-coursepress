@@ -11,15 +11,15 @@
 }
 
 #darkStyleImgSeccion:has(.dividerImgSeccion1) {
-    background: url(../../assets/img/fondos/momento1.webp);
+    background: url(../../assets/img/fondos/momento_1.webp);
 }
 
 #darkStyleImgSeccion:has(.dividerImgSeccion2) {
-    background: url(../../assets/img/fondos/momento2.webp);
+    background: url(../../assets/img/fondos/momento_2.webp);
 }
 
 #darkStyleImgSeccion:has(.dividerImgSeccion3) {
-    background: url(../../assets/img/fondos/momento3.webp);
+    background: url(../../assets/img/fondos/momento_3.webp);
 }
 
 #darkStyleImgSeccion:has(.dividerImg)::after {

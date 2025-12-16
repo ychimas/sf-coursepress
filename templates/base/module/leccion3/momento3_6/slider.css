@@ -1,208 +1,154 @@
-/* CSS para la nueva estructura */
-.image-container-mom3-11 {
-    position: relative;
+/*SLIDER 4 LECCION 3*/
+/*ventanas contenidos CON AUDIOS*/
+.container_sl19_conocer_epp {
+    display: flex;
+    justify-content: space-between;
+}
+
+.botones_sl19_conocer_epp {
     display: flex;
     flex-direction: column;
-    max-width: 700px;
-    margin: 0 auto;
 }
 
-.img-mom3-11 {
-    width: 85%;
-    margin: auto;
-    margin-top: 10px;
-    border-radius: 45px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-}
-
-/* Botones circulares posicionados sobre la imagen */
-.circle-button-mom3-11 {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: #6e3cd2;
-    color: #FFF;
-    font-size: 16px;
-    font-weight: bold;
-    border: 3px solid #FFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.boton_sl19_conocer_epp {
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+    background-color: #04395e;
+    color: white;
+    border: none;
     cursor: pointer;
-    outline: none;
-    position: absolute;
-    transition: all 0.3s;
-    z-index: 2;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.circle-button-mom3-11:hover {
-    transform: scale(1.3);
-    background-color: #513094;
+.boton_sl19_conocer_epp:hover {
+    background-color: #6e3cd2;
 }
 
-.circle-button-mom3-11.active {
-    background-color: #FFF;
-    color: #6e3cd2;
-    transform: scale(1.3);
+.contenedor_sl19_conocer_epp {
+    flex: 1;
+    margin-left: 1rem;
 }
 
-.info-container-mom3-11 {
-    background-color: #fffffff0;
-    border: 2px solid #6e3cd2;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    margin: 20px auto;
-    text-align: left;
-    line-height: 1.4em;
-    min-height: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.contenedor_sl19_conocer_epp h3 {
+    font-size: 18px;
 }
 
-.info-container-mom3-11 p {
-    font-size: 16px;
-    margin-bottom: 0;
+.contenido_sl19_conocer_epp {
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-height: 52vh;
+}
+
+.contenido_sl19_conocer_epp img {
+    border-radius: 5%;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+    float: left;
+    margin-right: 5%;
+}
+
+.contenido_sl19_conocer_epp audio {
+    float: right;
     width: 100%;
 }
 
-.audio-container {
-    width: 100%;
-    margin-top: 15px;
-}
-
-.audio-container audio {
-    width: 100%;
-    height: 40px;
-}
-
-/* Estilos para el candado del audio */
-.audio-locked::before {
-    content: "\f023";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    position: absolute;
-    top: 35%;
-    left: 44%;
-    transform: translate(-50%, -50%);
-    font-size: 80px;
-    color: #847c7c;
-    padding: 10px;
-    border-radius: 50%;
-    z-index: 10;
-    pointer-events: none;
-}
-
-
-
-#button1-mom3-11 {
-    top: 12%;
-    left: 60%;
-}
-
-#button2-mom3-11 {
-    top: 15%;
-    left: 29%;
-}
-
-#button3-mom3-11 {
-    top: 35%;
-    left: 46%;
-}
-
-#button4-mom3-11 {
-    top: 5%;
-    left: 47%;
-}
-
-#button5-mom3-11 {
-    top: 45%;
-    left: 33%;
-}
-
-#button6-mom3-11 {
-    top: 18%;
-    left: 44%;
-}
-
-#button7-mom3-11 {
-    top: 45%;
-    left: 59%;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.contenido_sl19_conocer_epp .audio-center {
+    clear: both;
 }
 
 @media (max-width: 768px) {
-    .img-mom3-11 {
-        width: 90%;
+    .container_sl19_conocer_epp {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
     }
 
-    .circle-button-mom3-11 {
-        width: 25px;
-        height: 25px;
-        font-size: 14px;
-        border-width: 2px;
+    .contenido_sl19_conocer_epp img {
+        float: none;
+        width: 80%;
+        margin: auto;
     }
 
-    .info-container-mom3-11 {
-        width: 95%;
-        padding: 10px;
+    .contenido_sl19_conocer_epp p {
+        margin-top: 5%;
     }
 
-    .info-container-mom3-11 p {
-        font-size: 14px;
+    .contenido_sl19_conocer_epp {
+        min-height: 75vh;
     }
+}
 
-    .audio-container audio {
-        height: 30px;
+
+.container_elegir_guantes {
+    position: relative;
+    width: 600px;
+    max-width: 100%;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .container_elegir_guantes {
+        width: 100%;
+        /* Ajusta el ancho al 90% de la pantalla */
+        overflow-x: hidden;
     }
+}
 
-    /* Ajustar posiciones para móvil */
-    #button1-mom3-11 {
-        top: 12%;
-        left: 60%;
-    }
+.container_elegir_guantes img {
+    width: 100%;
+    height: auto;
+}
 
-    #button2-mom3-11 {
-        top: 15%;
-        left: 29%;
-    }
+.button_elegir_guantes {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #6e3cd2;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
 
-    #button3-mom3-11 {
-        top: 35%;
-        left: 46%;
-    }
+.tooltip_elegir_guantes {
+    position: absolute;
+    background-color: #ffffff;
+    border: 2px solid #6e3cd2;
+    color: #474747;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: "Montserrat", sans-serif;
+    white-space: normal;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 10;
+}
 
-    #button4-mom3-11 {
-        top: 5%;
-        left: 47%;
-    }
+.button_elegir_guantes:hover+.tooltip_elegir_guantes {
+    visibility: visible;
+    opacity: 1;
+}
 
-    #button5-mom3-11 {
-        top: 45%;
-        left: 33%;
-    }
+#button1-guantes {
+    top: 20%;
+    left: 20%;
+}
 
-    #button6-mom3-11 {
-        top: 18%;
-        left: 44%;
-    }
+#tooltip1-guantes {
+    top: 15%;
+    left: 25%;
+}
 
-    #button7-mom3-11 {
-        top: 45%;
-        left: 59%;
+@media (max-width: 768px) {
+    .container_elegir_guantes {
+        position: relative;
+        width: 300px;
+        max-width: 100%;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
     }
 }

@@ -1,157 +1,176 @@
 export function init() {
-  // Configuración de URLs de videos
-  const videoUrls = {
-    modal: 'https://iframe.mediadelivery.net/embed/386695/f1d9bf8d-9755-4764-8d6f-08c3764a3db2?autoplay=false&loop=false&muted=false&preload=true&responsive=true'
-  };
+    // Datos de la actividad
+    const itemsData = [
+        {
+            image: "momento2_2/img/conflicto_ppt15.webp",
+            description: `Diferencia legítima de opinión, se puede resolver con diálogo.`,
+            correctAnswer: "1",
+            selectedAnswer: "",
+            isCorrect: false,
+        },
+        {
+            image: "momento2_2/img/acoso_ppt15.webp",
+            description: "Conducta repetitiva o única que daña, humilla o perjudica.",
+            correctAnswer: "2",
+            selectedAnswer: "",
+            isCorrect: false,
+        },
+        {
+            image: "momento2_2/img/violencia_ppt15.webp",
+            description: "Agresión directa, física o verbal, especialmente de terceros.",
+            correctAnswer: "3",
+            selectedAnswer: "",
+            isCorrect: false,
+        },
+    ];
 
-  // Elementos de la caja de cambios
-  const gears = document.querySelectorAll(".gear");
-  const boxes = document.querySelectorAll(".box-cambio");
-  const audios = document.querySelectorAll(".audio-con-transcripcion");
+    const availableOptions = [
+        { value: "3", label: "Violencia​" },
+        { value: "1", label: "Conflicto" },
+        { value: "2", label: "Acoso" },
+    ];
 
-  // Elementos del modal de video
-  const videoModal = document.getElementById("sld22-video-vial");
-  const videoContainers = {
-    web: document.getElementById("Slide23Web"),
-    mobile: document.getElementById("Slide23Mobile")
-  };
-  let currentAudio = null;
+    let isVerified = false;
+    let correctCount = 0;
+    let percentage = 0;
 
-  // Función para destruir y recrear iframes de forma agresiva
-  function hardRefreshIframe(container, url, className) {
-    if (!container) return;
+    // Elementos DOM
+    const itemsGrid = document.getElementById("items-grid");
+    const errorMessage = document.getElementById("error-message");
+    const scoreText = document.getElementById("score-text");
+    const validateBtn = document.getElementById("validate-btn");
+    const resetBtn = document.getElementById("reset-btn");
 
-    // 1. Detener completamente el iframe existente
-    const iframe = container.querySelector('iframe');
-    if (iframe) {
-      iframe.src = '';
-      iframe.remove();
-      container.innerHTML = '';
+    // Inicializar la actividad
+    function initializeActivity() {
+        renderItems();
+        setupEventListeners();
     }
 
-    // 2. Recrear el iframe después de un breve retraso
-    setTimeout(() => {
-      container.innerHTML = `
-        <iframe class="${className}" 
-                src="${url}" 
-                loading="lazy"
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture" 
-                allowfullscreen></iframe>`;
-    }, 50);
-  }
+    // Renderizar los elementos de la actividad
+    function renderItems() {
+        itemsGrid.innerHTML = "";
 
-  // Función para activar el botón correspondiente al audio
-  function activateGearForAudio(audioId) {
-    // Extraer el número del ID del audio (ej: "audio1_factor" -> "1")
-    const gearNumber = audioId.replace('audio', '').replace('_factor', '');
+        itemsData.forEach((item, index) => {
+            const itemElement = document.createElement("div");
+            itemElement.className = `item-box ${item.selectedAnswer !== "" && !isVerified ? "selected" : ""} ${isVerified ? (item.isCorrect ? "correct" : "incorrect") : ""}`;
 
-    // Buscar el botón correspondiente
-    const correspondingGear = document.querySelector(`.gear[data-gear="${gearNumber}"]`);
+            // Filtrar opciones disponibles (excluyendo las ya seleccionadas en otros items)
+            const filteredOptions = availableOptions.filter(option => {
+                return !itemsData.some((itemData, i) => i !== index && itemData.selectedAnswer === option.value);
+            });
 
-    if (correspondingGear) {
-      // Desactivar todos los botones
-      gears.forEach(g => g.classList.remove("active"));
+            // Opciones para el select
+            const optionsHTML = filteredOptions.map(option =>
+                `<option value="${option.value}" ${item.selectedAnswer === option.value ? "selected" : ""}>${option.label}</option>`
+            ).join("");
 
-      // Activar el botón correspondiente
-      correspondingGear.classList.add("active");
+            itemElement.innerHTML = `
+        <div class="image-container">
+          <img src="${item.image}" alt="Método ${index + 1}" class="item-image" />
+          ${isVerified ? `<img src="${item.isCorrect ? '../../assets/img/botones/checkAct.png' : '../../assets/img/botones/xmarkAct.png'}" class="feedback-icon" />` : ''}
+        </div>
+        <p class="item-description ${isVerified ? 'text-white' : ''}">${item.description}</p>
+        <select class="item-select ${item.selectedAnswer !== "" && !isVerified ? "selected" : ""}" 
+                data-index="${index}" ${isVerified ? "disabled" : ""}>
+          <option value="" disabled ${!item.selectedAnswer ? "selected" : ""}>Seleccione...</option>
+          ${optionsHTML}
+        </select>
+        ${isVerified ? `<p class="feedback-text">${item.isCorrect ? "¡Correcto!" : "¡Incorrecto!"}</p>` : ''}
+      `;
 
-      // Resaltar el box correspondiente
-      boxes.forEach((box) => {
-        box.classList.remove("active");
-        const p = box.querySelector("p");
-        if (p) p.style.color = "";
-      });
+            // Crear contenedor para card y botón
+            const cardContainer = document.createElement("div");
+            cardContainer.className = "card-container-mom2_2";
+            
+            const buttonContainer = document.createElement("div");
+            buttonContainer.className = "left-dir mt-3";
+            buttonContainer.innerHTML = `
+                <button class="sf-btn sf-btn-purple" data-bs-toggle="modal" data-bs-target="#sld2_2_caso${index + 1}">
+                  <i class="fa fa-question-circle"></i> Caso ${index + 1}
+                </button>
+            `;
 
-      const boxToHighlight = document.getElementById(`box${gearNumber}`);
-      if (boxToHighlight) {
-        boxToHighlight.classList.add("active");
-        const p = boxToHighlight.querySelector("p");
-        if (p) p.style.color = "#000";
-      }
+            cardContainer.appendChild(itemElement);
+            cardContainer.appendChild(buttonContainer);
+            itemsGrid.appendChild(cardContainer);
+        });
+
+        updateResetButton();
     }
-  }
 
-  // Control de la caja de cambios
-  gears.forEach((gear) => {
-    gear.addEventListener("click", function () {
-      const gearNumber = this.getAttribute("data-gear");
-      const audioId = `audio${gearNumber}_factor`;
-      const boxToHighlight = document.getElementById(`box${gearNumber}`);
+    // Configurar event listeners
+    function setupEventListeners() {
+        // Event delegation para los selects
+        itemsGrid.addEventListener("change", function (e) {
+            if (e.target.classList.contains("item-select")) {
+                const index = parseInt(e.target.dataset.index);
+                const value = e.target.value;
+                handleSelect(index, value);
+            }
+        });
 
-      // Detener audio actual
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      }
+        validateBtn.addEventListener("click", handleValidate);
+        resetBtn.addEventListener("click", handleReset);
+    }
 
-      // Reproducir nuevo audio
-      currentAudio = document.getElementById(audioId);
-      if (currentAudio) {
-        currentAudio.currentTime = 0;
-        currentAudio.play().catch(e => console.log("Error al reproducir audio:", e));
-      }
+    // Manejar selección de opción
+    function handleSelect(index, value) {
+        itemsData[index].selectedAnswer = value;
+        renderItems();
+    }
 
-      // Resaltar box
-      boxes.forEach((box) => {
-        box.classList.remove("active");
-        const p = box.querySelector("p");
-        if (p) p.style.color = "";
-      });
+    // Validar respuestas
+    function handleValidate() {
+        // Verificar que todas las opciones estén seleccionadas
+        if (itemsData.some(item => item.selectedAnswer === "")) {
+            errorMessage.textContent = "Debe seleccionar todas las opciones antes de validar.";
+            errorMessage.style.display = "block";
+            return;
+        }
 
-      if (boxToHighlight) {
-        boxToHighlight.classList.add("active");
-        const p = boxToHighlight.querySelector("p");
-        if (p) p.style.color = "#000";
-      }
+        errorMessage.style.display = "none";
 
-      // Actualizar engranaje activo
-      gears.forEach(g => g.classList.remove("active"));
-      this.classList.add("active");
-    });
-  });
+        // Calcular respuestas correctas
+        correctCount = 0;
+        itemsData.forEach(item => {
+            item.isCorrect = item.selectedAnswer === item.correctAnswer;
+            if (item.isCorrect) correctCount++;
+        });
 
-  // Control para cuando se hace clic en un audio
-  audios.forEach(audio => {
-    audio.addEventListener('play', function () {
-      // Detener cualquier audio que se esté reproduciendo
-      if (currentAudio && currentAudio !== this) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      }
+        percentage = Math.round((correctCount / itemsData.length) * 100);
+        isVerified = true;
 
-      // Establecer este audio como el actual
-      currentAudio = this;
+        // Mostrar resultados
+        scoreText.textContent = `${correctCount} de ${itemsData.length} respuestas correctas (${percentage}%)`;
+        scoreText.style.display = "block";
 
-      // Activar el botón correspondiente
-      activateGearForAudio(this.id);
-    });
-  });
+        renderItems();
+    }
 
-  // Eventos del modal
-  if (videoModal) {
-    videoModal.addEventListener("show.bs.modal", function () {
-      // Pausar todos los audios
-      audios.forEach(audio => {
-        audio.pause();
-        audio.currentTime = 0;
-      });
-      currentAudio = null;
+    // Reiniciar actividad
+    function handleReset() {
+        itemsData.forEach(item => {
+            item.selectedAnswer = "";
+            item.isCorrect = false;
+        });
 
-      // Preparar los iframes del modal (web y mobile)
-      hardRefreshIframe(videoContainers.web, videoUrls.modal, 'iframe-video-horizontal-web');
-      hardRefreshIframe(videoContainers.mobile, videoUrls.modal, 'iframe-video-horizontal-mobile');
-    });
+        isVerified = false;
+        correctCount = 0;
+        percentage = 0;
 
-    videoModal.addEventListener("hidden.bs.modal", function () {
-      // Reiniciar completamente los iframes al cerrar el modal
-      hardRefreshIframe(videoContainers.web, videoUrls.modal, 'iframe-video-horizontal-web');
-      hardRefreshIframe(videoContainers.mobile, videoUrls.modal, 'iframe-video-horizontal-mobile');
-    });
+        errorMessage.style.display = "none";
+        scoreText.style.display = "none";
 
-    // Precargar los iframes después de un retraso
-    setTimeout(() => {
-      hardRefreshIframe(videoContainers.web, videoUrls.modal, 'iframe-video-horizontal-web');
-      hardRefreshIframe(videoContainers.mobile, videoUrls.modal, 'iframe-video-horizontal-mobile');
-    }, 500);
-  }
+        renderItems();
+    }
+
+    // Actualizar estado del botón de reinicio
+    function updateResetButton() {
+        const anySelected = itemsData.some(item => item.selectedAnswer !== "");
+        resetBtn.disabled = !anySelected;
+    }
+
+    // Inicializar la actividad
+    initializeActivity();
 }

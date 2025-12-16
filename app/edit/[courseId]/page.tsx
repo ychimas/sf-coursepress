@@ -20,6 +20,7 @@ export default function EditCoursePage() {
   const [isSaving, setIsSaving] = useState(false)
   const [successModal, setSuccessModal] = useState(false)
   const [errorModal, setErrorModal] = useState<{ show: boolean; message: string }>({ show: false, message: '' })
+  const [customVideoFile, setCustomVideoFile] = useState<File | null>(null)
 
   useEffect(() => {
     loadCourse()
@@ -47,10 +48,15 @@ export default function EditCoursePage() {
     
     setIsSaving(true)
     try {
+      const formData = new FormData()
+      formData.append('courseId', courseId)
+      formData.append('metadata', JSON.stringify(courseData))
+      if (customVideoFile) {
+        formData.append('customVideo', customVideoFile, customVideoFile.name)
+      }
       const response = await fetch('/api/cursos/update', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, courseData })
+        body: formData
       })
 
       if (!response.ok) throw new Error('Error al guardar')
@@ -127,7 +133,7 @@ export default function EditCoursePage() {
           
           <TabsContent value="info" className="mt-6">
             <div className="bg-white border border-slate-200 rounded-xl p-8 shadow-lg">
-              <StepOne courseData={courseData} setCourseData={setCourseData} />
+              <StepOne courseData={courseData} setCourseData={setCourseData} setCustomVideoFile={setCustomVideoFile} />
             </div>
           </TabsContent>
           

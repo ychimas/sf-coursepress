@@ -1,4 +1,25 @@
-.borde-img {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+/* Ajuste de imágenes de vía interna */
+.seccion-denuncia .d-flex img {
+    width: 48% !important;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Hacer que las imágenes de vía interna sean más pequeñas para igualar el tamaño de las grandes */
+.seccion-denuncia:first-child .col-md-4 {
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.seccion-denuncia:first-child .col-md-8 {
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+@media (max-width: 768px) {
+    .seccion-denuncia:first-child .col-md-4,
+    .seccion-denuncia:first-child .col-md-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }

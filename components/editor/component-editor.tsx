@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -27,8 +28,39 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
     activityType: component.activityType || '',
     activityData: component.activityData || { text: '', selects: [], globalOptions: [] }
   })
-  
+
   const [newOption, setNewOption] = useState('')
+  const [avatarImages, setAvatarImages] = useState<Array<{ name: string }>>([])
+  const [loadingAvatars, setLoadingAvatars] = useState(false)
+  const [avatarError, setAvatarError] = useState<string | null>(null)
+  const [imagePickerTab, setImagePickerTab] = useState<string>('local')
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null)
+  const [selectedItemAvatars, setSelectedItemAvatars] = useState<Record<number, string>>({})
+
+  const loadAvatars = async () => {
+    if (!projectId) return
+    setLoadingAvatars(true)
+    setAvatarError(null)
+    try {
+      const res = await fetch('/api/avatars/list', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectId })
+      })
+      if (!res.ok) throw new Error('No se pudo cargar Mis imágenes')
+      const data = await res.json()
+      setAvatarImages(data.images || [])
+    } catch (e) {
+      setAvatarError('Error cargando Mis imágenes')
+    } finally {
+      setLoadingAvatars(false)
+    }
+  }
+
+  useEffect(() => {
+    loadAvatars()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSave = () => {
     if (component.type === 'image' && formData.imageFile) {
@@ -50,7 +82,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
               <Label>Título Principal</Label>
               <Input
                 value={formData.text}
-                onChange={(e) => setFormData({...formData, text: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, text: e.target.value })}
                 placeholder="Bienvenidos al módulo"
               />
             </div>
@@ -58,7 +90,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
               <Label>Subtítulo (morado)</Label>
               <Input
                 value={formData.subtitle}
-                onChange={(e) => setFormData({...formData, subtitle: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
                 placeholder="Trabajo Seguro en Alturas"
               />
             </div>
@@ -71,7 +103,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
               <Label>Tema de Color</Label>
               <select
                 value={formData.theme}
-                onChange={(e) => setFormData({...formData, theme: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, theme: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="dark">Dark (Texto Blanco)</option>
@@ -82,7 +114,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
               <Label>Texto Resaltado (negrita)</Label>
               <Input
                 value={formData.highlight}
-                onChange={(e) => setFormData({...formData, highlight: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, highlight: e.target.value })}
                 placeholder="¡Bienvenidas y bienvenidos!"
               />
             </div>
@@ -90,7 +122,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
               <Label>Texto Principal</Label>
               <Textarea
                 value={formData.text}
-                onChange={(e) => setFormData({...formData, text: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, text: e.target.value })}
                 placeholder="Este curso está diseñado para..."
                 rows={4}
               />
@@ -103,7 +135,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             <Label>Texto de Instrucción</Label>
             <Input
               value={formData.text}
-              onChange={(e) => setFormData({...formData, text: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, text: e.target.value })}
               placeholder="Haz clic para escuchar el audio"
             />
           </div>
@@ -111,21 +143,60 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
       case 'image':
         return (
           <div>
-            <Label>Importar Imagen</Label>
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0]
-                if (file) {
-                  setFormData({...formData, imageFile: file, src: file.name})
-                }
-              }}
-              className="cursor-pointer"
-            />
-            {formData.src && (
-              <p className="text-xs text-gray-500 mt-2">Archivo: {formData.src}</p>
-            )}
+            <Tabs value={imagePickerTab} onValueChange={setImagePickerTab} className="mt-3">
+              <TabsList className="w-full grid grid-cols-2 gap-2 bg-white border border-slate-200 rounded-full mb-4">
+                <TabsTrigger value="local" className="px-3 py-1 rounded-full text-slate-700 transition hover:bg-slate-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-md">Imagen local</TabsTrigger>
+                <TabsTrigger value="mis" className="px-3 py-1 rounded-full text-slate-700 transition hover:bg-slate-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-md">Mis imágenes</TabsTrigger>
+              </TabsList>
+              <TabsContent value="local" className="mt-3">
+                <Label>Importar Imagen</Label>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      setFormData({ ...formData, imageFile: file, src: file.name })
+                    }
+                  }}
+                  className="cursor-pointer"
+                />
+                {formData.src && (
+                  <p className="text-xs text-gray-500 mt-2">Archivo: {formData.src}</p>
+                )}
+              </TabsContent>
+              <TabsContent value="mis" className="mt-3">
+                {avatarError && <p className="text-xs text-red-600">{avatarError}</p>}
+                <div className="grid grid-cols-3 gap-4 max-h-80 min-h-48 overflow-y-auto border p-3 rounded bg-slate-50">
+                  {loadingAvatars ? (
+                    <p className="text-xs text-gray-500">Cargando...</p>
+                  ) : (
+                    avatarImages.map((img) => (
+                      <button
+                        key={img.name}
+                        type="button"
+                        onClick={() => setSelectedAvatar(img.name)}
+                        className={`border rounded p-2 flex flex-col items-center gap-2 ${selectedAvatar === img.name ? 'ring-2 ring-blue-600' : ''}`}
+                      >
+                        <img src={`/api/avatars/get?projectId=${projectId}&name=${encodeURIComponent(img.name)}`} alt={img.name} className="w-24 h-24 object-cover rounded" />
+                        <div className="text-[10px] text-gray-600">{img.name}</div>
+                      </button>
+                    ))
+                  )}
+                </div>
+                <div className="mt-3">
+                  <Button
+                    type="button"
+                    disabled={!selectedAvatar}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={() => {
+                      if (!selectedAvatar) return
+                      setFormData({ ...formData, src: `../../assets/img/avatars/${selectedAvatar}`, imageFile: null })
+                    }}
+                  >Aceptar</Button>
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         )
       case 'audio':
@@ -139,7 +210,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
                 onChange={(e) => {
                   const file = e.target.files?.[0]
                   if (file) {
-                    setFormData({...formData, audioFile: file, src: file.name})
+                    setFormData({ ...formData, audioFile: file, src: file.name })
                   }
                 }}
                 className="cursor-pointer"
@@ -152,7 +223,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
               <Label>Transcripción (JSON)</Label>
               <Textarea
                 value={formData.transcription}
-                onChange={(e) => setFormData({...formData, transcription: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, transcription: e.target.value })}
                 placeholder='[{"end":2.16,"start":0,"text":"Texto aquí"}]'
                 rows={6}
                 className="font-mono text-xs"
@@ -167,7 +238,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             <Label>Texto del Botón</Label>
             <Input
               value={formData.text}
-              onChange={(e) => setFormData({...formData, text: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, text: e.target.value })}
               placeholder="Actividad"
             />
           </div>
@@ -191,12 +262,12 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
                   <button
                     key={activity.id}
                     onClick={() => {
-                      const initialData = activity.id === 'drag-clasificar' 
+                      const initialData = activity.id === 'drag-clasificar'
                         ? { categorias: ['Categoría 1', 'Categoría 2'], items: [] }
                         : activity.id === 'select-imagen'
-                        ? { opciones: ['Opción 1', 'Opción 2', 'Opción 3'], items: [] }
-                        : { text: '', selects: [] }
-                      setFormData({...formData, activityType: activity.id, activityData: initialData})
+                          ? { opciones: ['Opción 1', 'Opción 2', 'Opción 3'], items: [] }
+                          : { text: '', selects: [] }
+                      setFormData({ ...formData, activityType: activity.id, activityData: initialData })
                     }}
                     className="p-4 border-2 rounded-lg transition-all hover:border-blue-500 hover:bg-blue-50 border-gray-200"
                   >
@@ -208,32 +279,32 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             </div>
           )
         }
-        
+
         if (formData.activityType === 'select-text') {
           return (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-lg">Configurar Select Texto</h3>
                 <button
-                  onClick={() => setFormData({...formData, activityType: '', activityData: { text: '', selects: [] }})}
+                  onClick={() => setFormData({ ...formData, activityType: '', activityData: { text: '', selects: [] } })}
                   className="text-sm text-blue-600 hover:text-blue-700"
                 >
                   ← Cambiar actividad
                 </button>
               </div>
-              
+
               <div>
                 <Label>Tema de Color del Texto</Label>
                 <select
                   value={formData.activityData?.theme || 'light'}
-                  onChange={(e) => setFormData({...formData, activityData: { ...formData.activityData, theme: e.target.value }})}
+                  onChange={(e) => setFormData({ ...formData, activityData: { ...formData.activityData, theme: e.target.value } })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="dark">Dark (Texto Blanco)</option>
                   <option value="light">Light (Texto Negro)</option>
                 </select>
               </div>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
                 <p className="font-semibold mb-2">💡 Cómo usar:</p>
                 <ol className="list-decimal list-inside space-y-1 text-gray-700">
@@ -311,7 +382,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
                     const text = e.target.value
                     const selectCount = (text.match(/\{\{\}\}/g) || []).length
                     const currentSelects = formData.activityData?.selects || []
-                    const newSelects = Array(selectCount).fill(null).map((_, i) => 
+                    const newSelects = Array(selectCount).fill(null).map((_, i) =>
                       currentSelects[i] || { correct: 0 }
                     )
                     setFormData({
@@ -334,7 +405,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
                   const selectedInOthers = formData.activityData.selects
                     .map((s: any, i: number) => i !== index ? s.correct : null)
                     .filter((v: any) => v !== null)
-                  
+
                   return (
                     <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
                       <h4 className="font-semibold mb-3">SELECT #{index + 1}</h4>
@@ -370,20 +441,20 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             </div>
           )
         }
-        
+
         if (formData.activityType === 'select-imagen') {
           return (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-lg">Configurar Selección con Imágenes</h3>
                 <button
-                  onClick={() => setFormData({...formData, activityType: '', activityData: { items: [], opciones: [] }})}
+                  onClick={() => setFormData({ ...formData, activityType: '', activityData: { items: [], opciones: [] } })}
                   className="text-sm text-blue-600 hover:text-blue-700"
                 >
                   ← Cambiar actividad
                 </button>
               </div>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
                 <p className="font-semibold mb-2">💡 Cómo usar:</p>
                 <ol className="list-decimal list-inside space-y-1 text-gray-700">
@@ -465,25 +536,67 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
                       </div>
                       <div className="mb-2">
                         <Label className="text-xs">Imagen</Label>
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0]
-                            if (file) {
-                              const newItems = [...(formData.activityData?.items || [])]
-                              newItems[index] = { ...newItems[index], imageFile: file, imagen: file.name }
-                              setFormData({
-                                ...formData,
-                                activityData: { ...formData.activityData, items: newItems }
-                              })
-                            }
-                          }}
-                          className="cursor-pointer"
-                        />
-                        {item.imagen && (
-                          <p className="text-xs text-gray-500 mt-1">Archivo: {item.imagen}</p>
-                        )}
+                        <Tabs className="mt-1">
+                          <TabsList className="w-full grid grid-cols-2 gap-2 bg-white border border-slate-200 rounded-full mb-3">
+                            <TabsTrigger value="local" className="px-3 py-1 rounded-full text-slate-700 transition hover:bg-slate-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-md">Imagen local</TabsTrigger>
+                            <TabsTrigger value="mis" className="px-3 py-1 rounded-full text-slate-700 transition hover:bg-slate-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-md">Mis imágenes</TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="local" className="mt-2">
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0]
+                                if (file) {
+                                  const newItems = [...(formData.activityData?.items || [])]
+                                  newItems[index] = { ...newItems[index], imageFile: file, imagen: file.name }
+                                  setFormData({
+                                    ...formData,
+                                    activityData: { ...formData.activityData, items: newItems }
+                                  })
+                                }
+                              }}
+                              className="cursor-pointer"
+                            />
+                            {item.imagen && (
+                              <p className="text-xs text-gray-500 mt-1">Archivo: {item.imagen}</p>
+                            )}
+                          </TabsContent>
+                          <TabsContent value="mis" className="mt-2">
+                            <div className="grid grid-cols-3 gap-3 max-h-64 min-h-40 overflow-y-auto border p-2 rounded bg-slate-50">
+                              {avatarImages.map((img) => (
+                                <button
+                                  key={img.name}
+                                  className={`border rounded p-2 ${selectedItemAvatars[index] === img.name ? 'ring-2 ring-blue-600' : ''}`}
+                                  onClick={() => {
+                                    setSelectedItemAvatars({ ...selectedItemAvatars, [index]: img.name })
+                                  }}
+                                >
+                                  <img src={`/api/avatars/get?projectId=${projectId}&name=${encodeURIComponent(img.name)}`} alt={img.name} className="w-20 h-20 object-cover rounded" />
+                                  <div className="text-[10px] text-gray-600">{img.name}</div>
+                                </button>
+                              ))}
+                            </div>
+                            <div className="mt-2">
+                              <Button
+                                type="button"
+                                size="sm"
+                                disabled={!selectedItemAvatars[index]}
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-4"
+                                onClick={() => {
+                                  const name = selectedItemAvatars[index]
+                                  if (!name) return
+                                  const newItems = [...(formData.activityData?.items || [])]
+                                  newItems[index] = { ...newItems[index], imagen: `../../assets/img/avatars/${name}`, imageFile: null }
+                                  setFormData({
+                                    ...formData,
+                                    activityData: { ...formData.activityData, items: newItems }
+                                  })
+                                }}
+                              >Aceptar</Button>
+                            </div>
+                          </TabsContent>
+                        </Tabs>
                       </div>
                       <Textarea
                         value={item.descripcion || ''}
@@ -539,20 +652,20 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             </div>
           )
         }
-        
+
         if (formData.activityType === 'drag-clasificar') {
           return (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-lg">Configurar Arrastrar y Clasificar</h3>
                 <button
-                  onClick={() => setFormData({...formData, activityType: '', activityData: { categorias: [], items: [] }})}
+                  onClick={() => setFormData({ ...formData, activityType: '', activityData: { categorias: [], items: [] } })}
                   className="text-sm text-blue-600 hover:text-blue-700"
                 >
                   ← Cambiar actividad
                 </button>
               </div>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
                 <p className="font-semibold mb-2">💡 Cómo usar:</p>
                 <ol className="list-decimal list-inside space-y-1 text-gray-700">
@@ -686,20 +799,20 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             </div>
           )
         }
-        
+
         if (formData.activityType === 'verdadero-falso') {
           return (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-lg">Configurar Verdadero o Falso</h3>
                 <button
-                  onClick={() => setFormData({...formData, activityType: '', activityData: { preguntas: [] }})}
+                  onClick={() => setFormData({ ...formData, activityType: '', activityData: { preguntas: [] } })}
                   className="text-sm text-blue-600 hover:text-blue-700"
                 >
                   ← Cambiar actividad
                 </button>
               </div>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
                 <p className="font-semibold mb-2">💡 Cómo usar:</p>
                 <ol className="list-decimal list-inside space-y-1 text-gray-700">
@@ -800,20 +913,20 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             </div>
           )
         }
-        
+
         if (formData.activityType === 'quiz') {
           return (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-lg">Configurar Quiz</h3>
                 <button
-                  onClick={() => setFormData({...formData, activityType: '', activityData: { preguntas: [] }})}
+                  onClick={() => setFormData({ ...formData, activityType: '', activityData: { preguntas: [] } })}
                   className="text-sm text-blue-600 hover:text-blue-700"
                 >
                   ← Cambiar actividad
                 </button>
               </div>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
                 <p className="font-semibold mb-2">💡 Cómo usar:</p>
                 <ol className="list-decimal list-inside space-y-1 text-gray-700">
@@ -952,20 +1065,20 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             </div>
           )
         }
-        
+
         if (formData.activityType === 'ordenar-pasos') {
           return (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-lg">Configurar Ordenar Pasos</h3>
                 <button
-                  onClick={() => setFormData({...formData, activityType: '', activityData: { pasos: [] }})}
+                  onClick={() => setFormData({ ...formData, activityType: '', activityData: { pasos: [] } })}
                   className="text-sm text-blue-600 hover:text-blue-700"
                 >
                   ← Cambiar actividad
                 </button>
               </div>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
                 <p className="font-semibold mb-2">💡 Cómo usar:</p>
                 <ol className="list-decimal list-inside space-y-1 text-gray-700">
@@ -1026,7 +1139,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             </div>
           )
         }
-        
+
         return <div>Configuración para {formData.activityType} próximamente...</div>
       default:
         return (
@@ -1034,7 +1147,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             <Label>Contenido</Label>
             <Textarea
               value={formData.text}
-              onChange={(e) => setFormData({...formData, text: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, text: e.target.value })}
               placeholder="Contenido del componente"
             />
           </div>
@@ -1047,7 +1160,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200">
         <div className="p-6">
           <h3 className="text-xl font-bold text-slate-900 mb-4">Editar {component.name}</h3>
-          
+
           <div className="space-y-4">
             {renderFields()}
           </div>

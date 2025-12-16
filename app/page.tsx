@@ -1,10 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Index() {
   const [activeFeature, setActiveFeature] = useState(0);
+  const heroVideoRef = useRef<HTMLVideoElement | null>(null);
+  useEffect(() => {
+    if (heroVideoRef.current) {
+      heroVideoRef.current.playbackRate = 2;
+    }
+  }, []);
 
   const features = [
     {
@@ -92,9 +98,13 @@ export default function Index() {
 
             <div className="relative">
               <div className="bg-white rounded-2xl shadow-2xl p-6 transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                <img
-                  src="/hero-main.png"
-                  alt="SF CoursePress Dashboard"
+                <video
+                  ref={heroVideoRef}
+                  src="/code_inicial.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   className="w-full h-64 object-cover rounded-lg"
                 />
                 <div className="mt-4 space-y-2">
@@ -139,11 +149,14 @@ export default function Index() {
               {/* Aquí va tu imagen */}
               <div className="bg-gray-800 rounded-xl border-2 border-gray-700 overflow-hidden">
                 <video
-                  src="/video_code2.mp4"
+                  src="/code_inicial.mp4?v=dev"
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  preload="none"
                   className="w-full h-auto"
+                  onLoadedMetadata={(e) => { try { (e.currentTarget as HTMLVideoElement).playbackRate = 2 } catch { } }}
                 />
               </div>
             </div>

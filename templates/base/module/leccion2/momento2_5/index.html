@@ -1,263 +1,191 @@
 <section class="row h-100">
-  <!-- Columna izquierda -->
-  <div class="animate__animated animate__fadeInLeftBig col-lg-6 col-md-12 sf-bg-dark sf-cl-row text-white">
-    <h1 class="fw-bold text-center">Repasemos<br />
+  <div class="animate__animated animate__fadeInLeftBig  col-lg-6 sf-bg-dark sf-cl-row">
+    <h1 class="sf-text-white text-center">Tipo especial de acoso: <br>
+      <span class="sf-text-purple">Acoso sexual</span>
     </h1>
-    <img src="../../assets/img/avatars/avatar_hombre_telefono_circulo.webp" alt="avatar"
-      class="sf-img-80 sf-img-sm-60 sf-img-md-40 sf-img-lg-30 sf-img-xl-40 mx-auto" />
-    <p class="text-justify px-3 text-white">
-      Aplicar el buen <span class="sf-txt-800">MANEJO DEFENSIVO,</span> implica que debo atender unas responsabilidades
-      básicas con mi trabajo, y con mi
-      vehículo.
+    <img src="../../assets/img/avatars/avatar_femenina_brazos_cruzados.webp" alt="avatar"
+      class="sf-img-80 sf-img-sm-60 sf-img-md-50 sf-img-lg-80 sf-img-xl-50 mx-auto mb-2">
+    <p class="sf-text-white text-justify">
+      Se entiende por acoso sexual la conducta
+      en que una persona realiza, en forma
+      indebida, por cualquier medio,
+      requerimientos de carácter sexual, no
+      consentidos por quien los recibe y que
+      amenacen o perjudiquen su situación
+      laboral o sus oportunidades en el empleo.
     </p>
-  </div>
-
-  <!-- Columna derecha con actividad -->
-  <div class="animate__animated animate__fadeInRightBig col-lg-6 col-md-12 sf-cr-row">
-    <i class="hipt hipt-light mb-3">
-      Selecciona Verdadero o Falso segun corresponda el caso
-      <i class="icon-inline icon-inline--start fa-solid fa-arrow-turn-down ms-2"></i>
+    <i class="hipt hipt-light my-2">
+      Haz clic para escuchar este audio complementario
+      <i class="icon-inline icon-inline--start fa-solid fa-arrow-turn-down"></i>
     </i>
-    <div class="animate__animated animate__zoomIn animate__delay-1s mx-lg-0 me-lg-5" id="preguntas-container">
-      <div>
-        <div id="contador-preguntas" class="mb-2 text-center">
-          <p id="progress-text">0 de 6 preguntas validadas</p>
-        </div>
-        <div class="progress-bar-container">
-          <div class="progress-bar-fill" id="progress-bar-fill"></div>
-        </div>
-      </div>
-
-      <!-- Contenedor de preguntas -->
-      <!-- Pregunta 1 -->
-      <div class="preguntas_01" data-pregunta="1">
-        <div class="ctItem fixed-size-question-box">
-          <p class="text-paragraph-light-color text-p-size text-left" style="font-family: Montserrat, sans-serif;">
-            <strong>Pregunta 1: </strong>Es deber del conductor reportar los accidentes de tránsito en los que este
-            involucrado?
-          </p>
-          <div class="opciones-pregunta">
-            <p class="opcion-respuesta" data-valor="true">A. Verdadero</p>
-            <p class="opcion-respuesta" data-valor="false">B. Falso</p>
-          </div>
-
-          <!-- Botón Validar -->
-          <div class="d-flex justify-center mt-3">
-            <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="1">
-              <i class="fas fa-check-circle"></i> Validar
-            </button>
-          </div>
-
-          <!-- Botón Continuar -->
-          <div class="d-flex justify-center mt-3 d-none btn-siguiente-container">
-            <button class="sf-btn sf-btn-purple d-none" data-siguiente="2">
-              <i class="fa-solid fa-circle-arrow-right"></i> Continuar
-            </button>
-          </div>
-        </div>
-
-        <!-- Feedback para pregunta 1 -->
-        <div class="d-flex justify-content-center">
-          <div id="mensaje_error_1" class="mt-3 d-none"></div>
-          <div id="resultado_alertas_1" class="mt-3 d-none"></div>
-        </div>
-      </div>
-
-      <!-- Pregunta 2 -->
-      <div class="preguntas_01 d-none" data-pregunta="2">
-        <div class="ctItem fixed-size-question-box">
-          <p class="text-paragraph-light-color text-p-size text-left" style="font-family: Montserrat, sans-serif;">
-            <strong>Pregunta 2: </strong>Respetar los límites de velocidad es opcional?
-          </p>
-          <div class="opciones-pregunta">
-            <p class="opcion-respuesta" data-valor="true">A. Verdadero</p>
-            <p class="opcion-respuesta" data-valor="false">B. Falso</p>
-          </div>
-
-          <!-- Botón Validar -->
-          <div class="d-flex justify-center mt-3">
-            <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="2">
-              <i class="fas fa-check-circle"></i> Validar
-            </button>
-          </div>
-
-          <!-- Botón Continuar -->
-          <div class="d-flex justify-center mt-3 d-none btn-siguiente-container">
-            <button class="sf-btn sf-btn-purple d-none" data-siguiente="3">
-              Continuar
-            </button>
-          </div>
-        </div>
-
-        <!-- Feedback para pregunta 2 -->
-        <div class="d-flex justify-content-center">
-          <div id="mensaje_error_2" class="mt-3 d-none"></div>
-          <div id="resultado_alertas_2" class="mt-3 d-none"></div>
-        </div>
-      </div>
-
-      <!-- Pregunta 3 -->
-      <div class="preguntas_01 d-none" data-pregunta="3">
-        <div class="ctItem fixed-size-question-box">
-          <p class="text-paragraph-light-color text-p-size text-left" style="font-family: Montserrat, sans-serif;">
-            <strong>Pregunta 3: </strong>¿Si se siente cansado o enfermo es mejor no conducir?
-          </p>
-          <div class="opciones-pregunta">
-            <p class="opcion-respuesta" data-valor="true">A. Verdadero</p>
-            <p class="opcion-respuesta" data-valor="false">B. Falso</p>
-          </div>
-
-          <!-- Botón Validar -->
-          <div class="d-flex justify-center mt-3">
-            <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="3">
-              <i class="fas fa-check-circle"></i> Validar
-            </button>
-          </div>
-
-          <!-- Botón Continuar -->
-          <div class="d-flex justify-center mt-3 d-none btn-siguiente-container">
-            <button class="sf-btn sf-btn-purple d-none" data-siguiente="4">
-              Continuar
-            </button>
-          </div>
-        </div>
-
-        <!-- Feedback para pregunta 3 -->
-        <div class="d-flex justify-content-center">
-          <div id="mensaje_error_3" class="mt-3 d-none"></div>
-          <div id="resultado_alertas_3" class="mt-3 d-none"></div>
-        </div>
-      </div>
-
-      <!-- Pregunta 4 -->
-      <div class="preguntas_01 d-none" data-pregunta="4">
-        <div class="ctItem fixed-size-question-box">
-          <p class="text-paragraph-light-color text-p-size text-left" style="font-family: Montserrat, sans-serif;">
-            <strong>Pregunta 4: </strong>¿Acosar a otros conductores, o no respetar las distancia mínimas, son formas de
-            conducción temeraria?
-          </p>
-          <div class="opciones-pregunta">
-            <p class="opcion-respuesta" data-valor="true">A. Verdadero</p>
-            <p class="opcion-respuesta" data-valor="false">B. Falso</p>
-          </div>
-
-          <!-- Botón Validar -->
-          <div class="d-flex justify-center mt-3">
-            <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="4">
-              <i class="fas fa-check-circle"></i> Validar
-            </button>
-          </div>
-
-          <!-- Botón Continuar -->
-          <div class="d-flex justify-center mt-3 d-none btn-siguiente-container">
-            <button class="sf-btn sf-btn-purple d-none" data-siguiente="5">
-              Continuar
-            </button>
-          </div>
-        </div>
-
-        <!-- Feedback para pregunta 4 -->
-        <div class="d-flex justify-content-center">
-          <div id="mensaje_error_4" class="mt-3 d-none"></div>
-          <div id="resultado_alertas_4" class="mt-3 d-none"></div>
-        </div>
-      </div>
-
-      <!-- Pregunta 5 -->
-      <div class="preguntas_01 d-none" data-pregunta="5">
-        <div class="ctItem fixed-size-question-box">
-          <p class="text-paragraph-light-color text-p-size text-left" style="font-family: Montserrat, sans-serif;">
-            <strong>Pregunta 5: </strong>Se recomienda usar el cinturón de seguridad sólo cuando la autoridad está
-            cerca?
-          </p>
-          <div class="opciones-pregunta">
-            <p class="opcion-respuesta" data-valor="true">A. Verdadero</p>
-            <p class="opcion-respuesta" data-valor="false">B. Falso</p>
-          </div>
-
-          <!-- Botón Validar -->
-          <div class="d-flex justify-center mt-3">
-            <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="5">
-              <i class="fas fa-check-circle"></i> Validar
-            </button>
-          </div>
-
-          <!-- Botón Continuar -->
-          <div class="d-flex justify-center mt-3 d-none btn-siguiente-container">
-            <button class="sf-btn sf-btn-purple d-none" data-siguiente="6">
-              Continuar
-            </button>
-          </div>
-        </div>
-
-        <!-- Feedback para pregunta 5 -->
-        <div class="d-flex justify-content-center">
-          <div id="mensaje_error_5" class="mt-3 d-none"></div>
-          <div id="resultado_alertas_5" class="mt-3 d-none"></div>
-        </div>
-      </div>
-
-      <!-- Pregunta 6 -->
-      <div class="preguntas_01 d-none" data-pregunta="6">
-        <div class="ctItem fixed-size-question-box">
-          <p class="text-paragraph-light-color text-p-size text-left" style="font-family: Montserrat, sans-serif;">
-            <strong>Pregunta 6: </strong>¿Verificar el vehículo y sus equipos de emergencia, es responsabilidad solo de
-            la empresa?
-          </p>
-          <div class="opciones-pregunta">
-            <p class="opcion-respuesta" data-valor="true">A. Verdadero</p>
-            <p class="opcion-respuesta" data-valor="false">B. Falso</p>
-          </div>
-
-          <!-- Botón Validar -->
-          <div class="d-flex justify-center mt-3">
-            <button class="sf-btn sf-btn-purple btn-validar" data-pregunta="6">
-              <i class="fas fa-check-circle"></i> Validar
-            </button>
-          </div>
-
-          <!-- Botón Finalizar -->
-          <div class="d-flex justify-center mt-3 d-none btn-siguiente-container">
-            <button class="sf-btn sf-btn-purple d-none sf-btn-success btn-finalizar">
-              <i class="fas fa-check-double"></i> Finalizar
-            </button>
-          </div>
-        </div>
-
-        <!-- Feedback para pregunta 6 -->
-        <div class="d-flex justify-content-center">
-          <div id="mensaje_error_6" class="mt-3 d-none"></div>
-          <div id="resultado_alertas_6" class="mt-3 d-none"></div>
-        </div>
-      </div>
-
-      <!-- Navegación externa para cuando el quiz esté completado -->
-      <div id="navegacion-resumen" class="d-none mt-4">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-          <button id="btnAnteriorNav" class="sf-btn sf-btn-outline-purple">
-            <i class="fa-solid fa-chevron-left"></i> Anterior
-          </button>
-          <span class="quiz-counter">
-            <span id="preguntaActualNav">1</span> de <span id="totalPreguntasNav">6</span>
-          </span>
-          <button id="btnSiguienteNav" class="sf-btn sf-btn-outline-purple">
-            Siguiente <i class="fa-solid fa-chevron-right"></i>
-          </button>
-        </div>
-
-        <div class="text-center mt-3">
-          <button class="btn sf-btn sf-btn-purple btn-reiniciar">
-            <i class="fas fa-redo me-2"></i>Reiniciar
-          </button>
-        </div>
-      </div>
-
-      <!-- Feedback final externo -->
-      <div id="feedback-final-externo" class="d-none mt-4">
-      </div>
-
-      <!-- Div para resultado final -->
-      <div id="resultado_final" class="d-none"></div>
+    <div class="audio-center py-2">
+      <audio class="audio-con-transcripcion" controls data-transcripcion='[
+        {"end":3.98,"start":0,"text":"Se entiende por acoso sexual la conducta en que una persona realiza,"},
+        {"end":8.54,"start":4.3,"text":"en forma indebida, por cualquier medio, requerimientos de carácter sexual"},
+        {"end":13.7,"start":8.54,"text":"no consentidos por quien nos recibe y que amenacen o perjudiquen su situación laboral"},
+        {"end":15.78,"start":13.7,"text":"o sus oportunidades en el empleo."}
+        ]'>
+        <source src="./momento2_5/audio/Tipo_sexual_personaje_ppt18.mp3" type="audio/mp3">
+      </audio>
+      <i class="transcription-toggle fas fa-closed-captioning audio-estilos"></i>
     </div>
+  </div>
+  <div class="animate__animated animate__fadeInRightBig  col-lg-6 col-md-12 sf-cr-row">
+    <!-- contenido -->
+    <i class="hipt hipt-light my-2">
+      Presiona cada boton para descubrir su contenido
+      <i class="icon-inline icon-inline--start fa-solid fa-arrow-turn-down"></i>
+    </i>
+    <div class="tipos-acoso">
+      <div class="buttons_tipos_acoso">
+        <button id="boton1_tipos_acoso" onclick="showContentEquiposEpp(1)" class="active_tipos_acoso">
+          Verbal
+        </button>
+        <button id="boton2_tipos_acoso" onclick="showContentEquiposEpp(2)">
+          No Verbal / Gestual
+        </button>
+        <button id="boton3_tipos_acoso" onclick="showContentEquiposEpp(3)">
+          Físico
+        </button>
+        <button id="boton4_tipos_acoso" onclick="showContentEquiposEpp(4)">
+          Digital
+        </button>
+        <button id="boton5_tipos_acoso" onclick="showContentEquiposEpp(5)">
+          Chantaje o Amenaza
+        </button>
+        <button id="boton6_tipos_acoso" onclick="showContentEquiposEpp(6)">
+          Ambiental
+        </button>
+      </div>
+
+      <!-- Contenido para Verbal -->
+      <div id="contenido1_tipos_acoso" class="content_tipos_acoso active_tipos_acoso">
+        <div class="preview-container-tipos_acoso">
+          <img id="img1" src="./momento2_5/img/verbal_ppt18.webp" alt="Acoso Verbal">
+          <p id="texto1">
+            Chistes o comentarios sexistas reiterados sobre el cuerpo, la vestimenta o la vida sexual de un colega.
+            Comentarios incómodos o insinuaciones sobre una potencial relación romántica o sexual.
+          </p>
+          <div class="audio-center py-2">
+            <audio class="audio-con-transcripcion" controls data-transcripcion='[
+              {"end":0.5,"start":0,"text":"Verbal."},
+              {"end":6.36,"start":1.28,"text":"Chistes o comentario sexistas reiterados sobre el cuerpo, la vestimenta o la vida sexual"},
+              {"end":7.24,"start":6.36,"text":"de un colega."},
+              {"end":13.3,"start":8.76,"text":"Comentarios incómodos o insinuaciones sobre una potencial relación romántica o sexual."}
+              ]'>
+              <source src="./momento2_5/audio/Tipo_sexual_1_ppt18.mp3" type="audio/mp3">
+            </audio>
+            <i class="transcription-toggle fas fa-closed-captioning audio-estilos"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido para No Verbal / Gestual -->
+      <div id="contenido2_tipos_acoso" class="content_tipos_acoso">
+        <div class="preview-container-tipos_acoso">
+          <img id="img2" src="./momento2_5/img/no_verbal_gestual_ppt18.webp" alt="Acoso No Verbal">
+          <p id="texto2">
+            Miradas lascivas o insistentes al cuerpo de la persona. Gestos obscenos dirigidos a la víctima. Mostrar o
+            exhibir material pornográfico o sexual en el lugar de trabajo.
+          </p>
+          <div class="audio-center py-2">
+            <audio class="audio-con-transcripcion" controls data-transcripcion='[
+              {"end":5.36,"start":0,"text":"No verbal / gestual. Miradas lascivas o insistentes al cuerpo de la persona."},
+              {"end":8.64,"start":6.26,"text":"Gestos obscenos dirigidos a la víctima."},
+              {"end":13.82,"start":9.68,"text":"Mostrar o exhibir material pornográfico o sexual en el lugar de trabajo."}
+              ]'>
+              <source src="./momento2_5/audio/Tipo_sexual_2_ppt18.mp3" type="audio/mp3">
+            </audio>
+            <i class="transcription-toggle fas fa-closed-captioning audio-estilos"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido para Físico -->
+      <div id="contenido3_tipos_acoso" class="content_tipos_acoso">
+        <div class="preview-container-tipos_acoso">
+          <img id="img3" src="./momento2_5/img/fisico_ppt18.webp" alt="Acoso Físico">
+          <p id="texto3">
+            Contacto físico innecesario y no deseado, como roces intencionales, "palmaditas" o masajes en los hombros.
+            Intentos de besos o abrazos forzados.
+          </p>
+          <div class="audio-center py-2">
+            <audio class="audio-con-transcripcion" controls data-transcripcion='[
+              {"end":0.58,"start":0,"text":"Físico."},
+              {"end":7.58,"start":1.28,"text":"Contacto físico innecesario y no deseado como roses intencionales, palmaditas o masajes"},
+              {"end":8.38,"start":7.58,"text":"en los hombros."},
+              {"end":11.68,"start":9.4,"text":"Intentos de besos o abrazos forzados."}
+              ]'>
+              <source src="./momento2_5/audio/Tipo_sexual_3_ppt18.mp3" type="audio/mp3">
+            </audio>
+            <i class="transcription-toggle fas fa-closed-captioning audio-estilos"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido para Digital -->
+      <div id="contenido4_tipos_acoso" class="content_tipos_acoso">
+        <div class="preview-container-tipos_acoso">
+          <img id="img4" src="./momento2_5/img/digital_ppt18.webp" alt="Acoso Digital">
+          <p id="texto4">
+            Envío de mensajes, correos, fotos o videos de contenido sexual explícito no solicitados a través de
+            plataformas de comunicación laboral (WhatsApp, Teams, correo electrónico, etc.).
+          </p>
+          <div class="audio-center py-2">
+            <audio class="audio-con-transcripcion" controls data-transcripcion='[
+              {"end":8.04,"start":0,"text":"Digital. Envió de mensajes, correos, fotos, o videos de contenidos sexual explícitos no solicitados,"},
+              {"end":14.7,"start":8.46,"text":"a través de plataformas de comunicación laboral, WhatsApp, Teams, correo electrónico, etcétera."}
+              ]'>
+              <source src="./momento2_5/audio/Tipo_sexual_4_ppt18.mp3" type="audio/mp3">
+            </audio>
+            <i class="transcription-toggle fas fa-closed-captioning audio-estilos"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido para Chantaje o Amenaza -->
+      <div id="contenido5_tipos_acoso" class="content_tipos_acoso">
+        <div class="preview-container-tipos_acoso">
+          <img id="img5" src="./momento2_5/img/chantage_amenaza_ppt18.webp" alt="Chantaje o Amenaza">
+          <p id="texto5">
+            Acoso de tipo quid pro quo (dar algo a cambio de algo): Un jefe promete un aumento, un ascenso o un mejor
+            horario a cambio de favores sexuales. Un jefe amenaza con despedir o rebajar la calificación si la víctima
+            se niega a tener una cita o acceder a requerimientos sexuales.
+          </p>
+          <div class="audio-center py-2">
+            <audio class="audio-con-transcripcion" controls data-transcripcion='[
+              {"end":7.14,"start":0,"text":"Chantaje o amenaza. Acoso de tipo quid pro quo o dar algo a cambio de algo. Un jefe"},
+              {"end":14.2,"start":7.14,"text":"promete un aumento, un ascenso o un mejor horario a cambio de favores sexuales. Un jefe amenaza"},
+              {"end":20.1,"start":14.2,"text":"con despedir o rebajar la calificación si la víctima se niega a tener una cita o acceder a"},
+              {"end":21.66,"start":20.1,"text":"requerimiento sexuales."}
+              ]'>
+              <source src="./momento2_5/audio/Tipo_sexual_5_ppt18.mp3" type="audio/mp3">
+            </audio>
+            <i class="transcription-toggle fas fa-closed-captioning audio-estilos"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido para Ambiental -->
+      <div id="contenido6_tipos_acoso" class="content_tipos_acoso">
+        <div class="preview-container-tipos_acoso">
+          <img id="img6" src="./momento2_5/img/ambiental_ppt18.webp" alt="Acoso Ambiental">
+          <p id="texto6">
+            Crear un ambiente de trabajo hostil mediante la exposición constante a temas o lenguaje sexualmente ofensivo
+            a pesar de la molestia expresada por la víctima.
+          </p>
+          <div class="audio-center py-2">
+            <audio class="audio-con-transcripcion" controls data-transcripcion='[
+              {"end":6.44,"start":0,"text":"Ambiental. Crear un ambiente de trabajo hostil, mediante la exposición constante a temas o lenguajes"},
+              {"end":10.44,"start":6.44,"text":"sexualmente ofensivo, a pesar de la molestia expresada por la víctima."}
+              ]'>
+              <source src="./momento2_5/audio/Tipo_sexual_6_ppt18.mp3" type="audio/mp3">
+            </audio>
+            <i class="transcription-toggle fas fa-closed-captioning audio-estilos"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>

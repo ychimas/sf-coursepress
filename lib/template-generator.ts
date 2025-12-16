@@ -26,6 +26,13 @@ export class TemplateGenerator {
     this.courseData = courseData
   }
 
+  private sanitizeFileName(name: string): string {
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9._-]/g, "")
+  }
+
   // Generate course using template base
   generateCourseFromTemplate(): TemplateFile[] {
     const files: TemplateFile[] = []
@@ -35,10 +42,10 @@ export class TemplateGenerator {
     files.push(this.generateDynamicCourseConfig())
     files.push(...this.generateLessonStructure())
 
-    // Add custom video if provided
-    if ((this.courseData as any).customVideo) {
+    // Add custom video only if data is provided (ZIP client-side)
+    if ((this.courseData as any).customVideo?.data) {
       files.push({
-        path: 'assets/video/custom_video.mp4',
+        path: `assets/video/${this.sanitizeFileName((this.courseData as any).customVideo.name)}`,
         content: (this.courseData as any).customVideo.data,
         type: "copy"
       })
@@ -105,8 +112,8 @@ export class TemplateGenerator {
   }
 
   private generateMainIndex(): string {
-    const videoSource = (this.courseData as any).customVideo 
-      ? `./assets/video/custom_video.mp4` 
+    const videoSource = (this.courseData as any).customVideo
+      ? `./assets/video/${this.sanitizeFileName((this.courseData as any).customVideo.name)}`
       : `./assets/video/background_index.mp4`
 
     return `<!DOCTYPE html>
@@ -277,19 +284,19 @@ window.setProgress = setProgress;`
   }
 
   private generateInicioPage(): string {
-    const glossaryItems = (this.courseData as any).glossary 
+    const glossaryItems = (this.courseData as any).glossary
       ? (this.courseData as any).glossary.split('\n').filter((line: string) => line.trim()).map((line: string) => {
-          const parts = line.split(':')
-          const term = parts[0]?.trim() || ''
-          const definition = parts.slice(1).join(':').trim() || ''
-          return `<div class="card_item"><p><span class="sf-text-purple fw-bold">${term}:</span> ${definition}</p><hr></div>`
-        }).join('')
+        const parts = line.split(':')
+        const term = parts[0]?.trim() || ''
+        const definition = parts.slice(1).join(':').trim() || ''
+        return `<div class="card_item"><p><span class="sf-text-purple fw-bold">${term}:</span> ${definition}</p><hr></div>`
+      }).join('')
       : '<div class="card_item"><p><span class="sf-text-purple fw-bold">Sin contenido:</span> No se ha agregado contenido al glosario.</p><hr></div>'
 
     const objectiveItems = (this.courseData as any).objectives
       ? (this.courseData as any).objectives.split('\n').filter((line: string) => line.trim()).map((line: string, index: number) => {
-          return `<div class="bullet ms-3"><i class="icon icon-purple fas fa-arrow-right"></i><p><strong>Unidad ${index + 1}. </strong>${line.trim()}</p></div>`
-        }).join('')
+        return `<div class="bullet ms-3"><i class="icon icon-purple fas fa-arrow-right"></i><p><strong>Unidad ${index + 1}. </strong>${line.trim()}</p></div>`
+      }).join('')
       : '<div class="bullet ms-3"><i class="icon icon-purple fas fa-arrow-right"></i><p>No se han agregado objetivos.</p></div>'
 
     return `<!DOCTYPE html>
@@ -589,7 +596,7 @@ window.setProgress = setProgress;`
 
     this.courseData.lessons.forEach((lesson, lessonIndex) => {
       const leccionKey = `leccion${lessonIndex + 1}`
-      
+
       lecciones[leccionKey] = {
         nombre: lesson.name || `${lessonIndex + 1}° Lección sin nombre`,
         sliders: lesson.moments.map((moment, momentIndex) => ({
@@ -682,7 +689,7 @@ const CURSO_CONFIG = {
     // Detectar automáticamente basado en la URL
     const currentPath = window.location.pathname;
 
-    ${this.courseData.lessons.map((_, index) => 
+    ${this.courseData.lessons.map((_, index) =>
       `if (currentPath.includes('leccion${index + 1}')) return 'leccion${index + 1}';`
     ).join('\n    ')}
 
@@ -711,7 +718,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
     this.courseData.lessons.forEach((lesson, lessonIndex) => {
       const leccionFolder = `leccion${lessonIndex + 1}`
-      
+
       // Generate main lesson index
       files.push({
         path: `module/${leccionFolder}/index.html`,
@@ -722,7 +729,7 @@ if (typeof module !== 'undefined' && module.exports) {
       // Generate moments for this lesson
       lesson.moments.forEach((moment, momentIndex) => {
         const momentFolder = `momento${lessonIndex + 1}_${momentIndex + 1}`
-        
+
         files.push({
           path: `module/${leccionFolder}/${momentFolder}/index.html`,
           content: this.generateMomentHTML(lesson, moment, lessonIndex, momentIndex),

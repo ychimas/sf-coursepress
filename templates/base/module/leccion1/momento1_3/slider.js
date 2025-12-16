@@ -1,29 +1,26 @@
 export function init() {
-  //----------------------------------------------//
-  //LECCION 1 SLIDER 3
-  let currentIndex_sld3_lec1 = 0;
-  const slides_sld3_lec1 = document.querySelectorAll('.slide-sld3_lec1');
+    // Configurar actividades Lumi
+    const activities = {
+        'modalquiz1': {
+            title: 'Estrategias de implementación de entornos saludables',
+            src: 'https://app.lumi.education/api/v1/run/oUOFfC/embed',
+            mobileHeight: '75vh',
+            desktopHeight: '70vh'
+        },
+        'modalquiz2': {
+            title: 'Prevención del acoso laboral',
+            src: 'https://app.lumi.education/api/v1/run/sANjpR/embed',
+            mobileHeight: '75vh',
+            desktopHeight: '70vh'
+        }
+    };
 
-  // Verificar que tenemos slides
-  if (slides_sld3_lec1.length === 0) {
-    console.error('No se encontraron slides con la clase .slide-sld3_lec1');
-    return;
-  }
-
-  // Asegurarse de que solo el slide activo tenga la clase active
-  function showNextSlide_sld3_lec1() {
-    // Remover la clase active de todos los slides
-    slides_sld3_lec1.forEach(slide => {
-      slide.classList.remove('active-sld3_lec1');
+    // Inicializar actividades cuando se abran los modales
+    document.getElementById('modalquiz1')?.addEventListener('shown.bs.modal', function () {
+        LumiActivities.init('modalquiz1', activities.modalquiz1);
     });
 
-    // Avanzar al siguiente slide
-    currentIndex_sld3_lec1 = (currentIndex_sld3_lec1 + 1) % slides_sld3_lec1.length;
-
-    // Agregar la clase active al slide actual
-    slides_sld3_lec1[currentIndex_sld3_lec1].classList.add('active-sld3_lec1');
-  }
-
-  // Iniciar el intervalo para cambiar slides
-  setInterval(showNextSlide_sld3_lec1, 3000); // cambia cada 3 segundos
+    document.getElementById('modalquiz2')?.addEventListener('shown.bs.modal', function () {
+        LumiActivities.init('modalquiz2', activities.modalquiz2);
+    });
 }

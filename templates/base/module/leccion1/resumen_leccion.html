@@ -6,7 +6,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- library bootstrap v.5.0.2 -->
+    <script src="../../plugins/libs/jquery-3.3.1.js"></script>
     <link rel="stylesheet" type="text/css" href="../../plugins/libs/bootstrap/css/bootstrap.css">
+    <script src="../../plugins/libs/bootstrap/js/bootstrap.bundle.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../../plugins/css/sofactia.css">
 
@@ -17,6 +19,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Estilos del widget -->
     <link rel="stylesheet" href="../../plugins/libs/assetsWidget/css/widget.css">
+    <!-- Estilos de transcripción -->
+    <link rel="stylesheet" href="../../plugins/libs/component/transcripcion/transcripcion.css">
 </head>
 
 <body class="sf-scroll-y-hidden sf-bg-dark">
@@ -27,7 +31,59 @@
                 <h1 class="sf-txt-1xl-700 sf-text-white">Resumen <span class="sf-text-purple">Lección 1</span></h1>
                 <img class="mx-auto sf-img-40 sf-img-md-100 sf-img-sm-30"
                     src="../leccion1/gif/avatar_hombre_leer_cuaderno.gif" alt="avatar">
-                <audio src="../leccion1/resumen-leccion-1.mp3" controls class="mt-3"></audio>
+                <!-- <audio src="../leccion1/resumen-leccion-1.mp3" controls class="mt-3"></audio> -->
+                <div class="audio-center py-4">
+                    <audio class="audio-con-transcripcion" controls data-transcripcion='[
+                        {"end":4.14,"start":0,"text":"La ley número 21.643, conocida como Ley KARIN,"},
+                        {"end":8.38,"start":4.58,"text":"surgió como respuesta directa a la necesidad de establecer reglas claras"},
+                        {"end":11.18,"start":8.38,"text":"para prevenir, investigar y sancionar la violencia,"},
+                        {"end":13.4,"start":11.56,"text":"el acoso laboral y sexual en Chile."},
+                        {"end":17.32,"start":14.38,"text":"Esta legislación fue impulsada por el contexto social"},
+                        {"end":19.42,"start":17.32,"text":"de diversos casos de violencia laboral,"},
+                        {"end":22.64,"start":19.74,"text":"como el de Karin, una funcionaria pública que falleció"},
+                        {"end":23.72,"start":22.64,"text":"tras años de acoso."},
+                        {"end":28.32,"start":24.58,"text":"Su base fundamental proviene del convenio 190 de la OIT,"},
+                        {"end":30.8,"start":28.32,"text":"ratificado por Chile en 2022,"},
+                        {"end":33.96,"start":31.32,"text":"el cual establece el derecho de todos los trabajadores"},
+                        {"end":36.76,"start":33.96,"text":"a un entorno laboral libre de violencia y acoso,"},
+                        {"end":39.2,"start":37.14,"text":"reconociendo estos actos como violaciones"},
+                        {"end":42.56,"start":39.2,"text":"a los derechos humanos e incompatibles con el trabajo decente."},
+                        {"end":46.26,"start":43.3,"text":"La ley KARIN aplica a todas las relaciones laborales"},
+                        {"end":48.18,"start":46.26,"text":"regidas por el código del trabajo."},
+                        {"end":51.72,"start":49.02,"text":"Esto incluye a todos los trabajadores dependientes,"},
+                        {"end":54.58,"start":52,"text":"indefinidos, aplazo fijo, o por obra,"},
+                        {"end":56.96,"start":54.92,"text":"y a los empleadores y sus representantes."},
+                        {"end":61.02,"start":57.98,"text":"Crucialmente, la ley aplica a la violencia ejercida"},
+                        {"end":62.82,"start":61.02,"text":"por terceros ajenos a la empresa,"},
+                        {"end":67.26,"start":63.2,"text":"como clientes, usuarios, proveedores, pacientes o estudiantes,"},
+                        {"end":70.3,"start":67.68,"text":"obligando a los empleadores a proteger a sus trabajadores"},
+                        {"end":72.34,"start":70.3,"text":"ante estas agresiones externas."},
+                        {"end":75.8,"start":73.3,"text":"Finalmente, establece deberes y derechos"},
+                        {"end":78,"start":75.8,"text":"para testigos o compañeros de trabajo"},
+                        {"end":81.1,"start":78,"text":"esperando que actúen responsablemente y denuncien."},
+                        {"end":84.92,"start":81.7,"text":"Uno de los objetivos principales de la ley KARIN es prevenir"},
+                        {"end":87.42,"start":84.92,"text":"la ocurrencia de situaciones de acoso y violencia"},
+                        {"end":90.22,"start":87.42,"text":"con una mirada proactiva y un enfoque de género."},
+                        {"end":94.1,"start":91.02,"text":"Por ello, introdujo modificaciones significativas"},
+                        {"end":98.06,"start":94.1,"text":"al código del trabajo ya no se requiere que el acoso sea reiterado,"},
+                        {"end":101.34,"start":98.34,"text":"ya que una sola conducta grave puede constituir acoso."},
+                        {"end":105.12,"start":102.22,"text":"Además, se incorporó la perspectiva de género"},
+                        {"end":108.04,"start":105.12,"text":"para promover la igualdad, prevenir la discriminación"},
+                        {"end":111.46,"start":108.04,"text":"y reconocer que las relaciones laborales deben ser compatibles"},
+                        {"end":114.2,"start":111.46,"text":"con la dignidad de la persona y libres de violencia."},
+                        {"end":118.4,"start":114.68,"text":"Las implicancias prácticas para las organizaciones son claras."},
+                        {"end":121.74,"start":118.74,"text":"Toda empresa está obligada a incluir un protocolo de prevención"},
+                        {"end":124.3,"start":121.74,"text":"de la acoso y violencia en su reglamento interno."},
+                        {"end":127.7,"start":125.14,"text":"También se exige formación regular y efectiva"},
+                        {"end":129.68,"start":127.7,"text":"en prevención y mecanismos de denuncia."},
+                        {"end":133.96,"start":130.56,"text":"El trabajador, por su parte, adquiere un rol activo"},
+                        {"end":137.88,"start":133.96,"text":"ya que se espera que todos, incluso si no son afectados directos,"},
+                        {"end":141.64,"start":137.88,"text":"actúen y no sean cómplices pasivos ante una situación de acoso."}
+                        ]'>
+                        <source src="../leccion1/resumen-leccion-1.mp3" type="audio/mp3">
+                    </audio>
+                    <i class="transcription-toggle fas fa-closed-captioning audio-estilos"></i>
+                </div>
             </div>
             <div class="col-lg-8 col-md-9 mt-4 my-md-0">
                 <div class="mx-md-5 mx-4 sf-lh-xs">
@@ -51,11 +107,14 @@
             <span>Siguiente</span> <i class="fas fa-angle-right"></i>
         </button>
     </div>
+    <!-- Contenedor global para transcripciones -->
+    <div id="transcripcion-global"></div>
 
     <!--library javascript-->
-    <script src="../../plugins/libs/jquery-3.3.1.js"></script>
     <!-- Script del Widget -->
     <script src="../../plugins/libs/assetsWidget/js/widget.js"></script>
+    <!-- Script de transcripción -->
+    <script src="../../plugins/libs/component/transcripcion/transcripcion.js"></script>
 
     <script>
         function btnPrev() {
@@ -73,6 +132,13 @@
             window.location.href = "./evaluacion_leccion.html";
             // window.location.href = path.replace("evaluacion", "compromiso") + "/compromiso.html";
         };
+
+        // Inicializar transcripciones cuando el DOM esté listo
+        $(document).ready(function () {
+            if (typeof initTranscripciones === 'function') {
+                initTranscripciones();
+            }
+        });
     </script>
 </body>
 

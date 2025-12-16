@@ -1,0 +1,88 @@
+<section class="row  h-100">
+    <div class="animate__animated animate__fadeInLeftBig col-12 sf-bg-dark sf-ct-col">
+        <img src="../../assets/img/avatars/avatar_equipares8.webp" alt="avatar"
+            class="sf-img-xl-10 mx-auto d-none d-xl-block">
+        <div class="ms-xl-4 mx-xl-0">
+            <h1 class="sf-text-white text-center">Juguemos!! <span class="sf-text-purple"></span>
+            </h1>
+            <img src="../../assets/img/avatars/avatar_equipares8.webp" alt="avatar"
+                class="sf-img-80 sf-img-sm-60 sf-img-md-40 sf-img-lg-30 mx-auto d-xl-none mb-2">
+            <p class="sf-text-white text-justify">
+                El acoso laboral comprende conductas repetitivas que buscan humillar, aislar o perjudicar al trabajador,
+                afectando su
+                dignidad y entorno laboral. En cambio, las acciones que no constituyen acoso son aquellas propias de la
+                gestión o
+                autoridad del empleador, como supervisar, corregir o evaluar el desempeño, siempre que se realicen con
+                respeto y
+                justificación.
+            </p>
+        </div>
+    </div>
+
+    <div
+        class="animate__animated animate__fadeInRightBig col-md-12 px-5 pt-4 px-0 pb-1 pb-mt-0 d-flex justify-content-center align-items-center">
+
+        <div class="w-80 mx-auto">
+            <div class="text-center mb-3">
+                <i class="hipt hipt-light">
+                    Clasifica cada situación: arrastra a 'SÍ' si es acoso laboral o a 'NO' si es una práctica laboral
+                    legítima.
+                    <i class="fas fa-arrow-down"></i>
+                </i>
+            </div>
+            <div class="text-center mb-3">
+                <div class="progress-info p-2 bg-light rounded">
+                    <span class="fw-bold">Pregunta <span id="progress">1/12</span></span>
+                </div>
+            </div>
+
+            <div class="text-center mb-3">
+                <div id="draggableText" class="draggable-item p-3 bg-light border rounded shadow-sm" draggable="true">
+                </div>
+            </div>
+
+            <div class="text-center mb-4 d-md-none">
+                <div class="button-group">
+                    <button class="btn btn-outline-primary category-btn" data-category="SI">SI</button>
+                    <button class="btn btn-outline-primary category-btn" data-category="NO">NO</button>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <div class="drop-zone" data-category="SI">
+                        <div class="drop-area p-4 border-2 border-primary rounded text-center">
+                            <div class="drop-header bg-primary text-white p-2 rounded mb-2">
+                                <i class="fas fa-folder me-2"></i>SI
+                            </div>
+                            <p class="text-muted mb-0 d-none d-md-block">Suelta aquí</p>
+                        </div>
+                        <div id="SI-items" class="dropped-items mt-2"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="drop-zone" data-category="NO">
+                        <div class="drop-area p-4 border-2 border-primary rounded text-center">
+                            <div class="drop-header bg-primary text-white p-2 rounded mb-2">
+                                <i class="fas fa-folder me-2"></i>NO
+                            </div>
+                            <p class="text-muted mb-0 d-none d-md-block">Suelta aquí</p>
+                        </div>
+                        <div id="NO-items" class="dropped-items mt-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <div id="feedback" class="mb-3 d-none"></div>
+                <div class="mb-3">
+                    <span class="badge bg-success fs-6">Correctas: <span id="correctCount">0</span></span>
+                </div>
+                <button id="resetBtn" class="sf-btn sf-btn-blue"><i class="fas fa-repeat"></i> Reiniciar</button>
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+</section>

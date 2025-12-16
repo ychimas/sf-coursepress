@@ -1,4 +1,5 @@
 import type React from "react"
+import ChunkReloader from "@/components/system/chunk-reloader"
 import { Inter } from "next/font/google"
 import { Pacifico } from "next/font/google"
 import { JetBrains_Mono } from "next/font/google"
@@ -32,7 +33,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${inter.variable} ${pacifico.variable} ${jetbrainsMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <ChunkReloader />
+        {children}
+      </body>
     </html>
   )
 }

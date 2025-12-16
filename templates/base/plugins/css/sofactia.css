@@ -1407,6 +1407,299 @@ ol {
   align-items: center;
 }
 
+/*  */
+/* ===== ESTILOS GENERALES PARA TELÉFONOS ===== */
+.phone-frame {
+  position: relative;
+  margin: 0 auto;
+  background: #000;
+  box-shadow: 0 0.625rem 1.5625rem rgba(0, 0, 0, 0.3),
+    inset 0 0 0 0.125rem rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Parte superior del teléfono (notch) */
+.phone-frame::before {
+  content: '';
+  position: absolute;
+  background: #1a1a1a;
+  z-index: 10;
+}
+
+/* Botón lateral del teléfono */
+.phone-frame::after {
+  content: '';
+  position: absolute;
+  background: #333;
+}
+
+/* Ajustes para el iframe dentro del teléfono */
+.phone-frame .iframe-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone-frame .iframe-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Asegurar que el loader se centre correctamente */
+.phone-frame .loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Clases de visualización para web y móvil */
+.mostrar-web {
+  display: block;
+}
+
+.mostrar-mobile {
+  display: none;
+}
+
+/* ===== TELÉFONO VERTICAL (Para videos verticales) ===== */
+.phone-frame.vertical {
+  width: 20rem;
+  height: 35rem;
+  border: 0.75rem solid #1a1a1a;
+  border-radius: 2.25rem;
+}
+
+.phone-frame.vertical::before {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 1.25rem;
+  border-bottom-left-radius: 0.625rem;
+  border-bottom-right-radius: 0.625rem;
+}
+
+.phone-frame.vertical::after {
+  top: 25%;
+  right: -0.3125rem;
+  width: 0.1875rem;
+  height: 2.5rem;
+  border-radius: 0.125rem;
+}
+
+.phone-frame.vertical .iframe-container {
+  border-radius: 1.5rem;
+}
+
+/* ===== TELÉFONO HORIZONTAL (Para videos horizontales) ===== */
+.phone-frame.horizontal {
+  width: 35rem;
+  /* Más ancho para formato horizontal */
+  height: 22.5rem;
+  /* Proporción 16:9 aproximada */
+  border: 0.75rem solid #1a1a1a;
+  border-radius: 2.25rem;
+  transform: rotate(0deg);
+  /* Se mantiene horizontal */
+}
+
+.phone-frame.horizontal::before {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 25%;
+  border-top-right-radius: 0.625rem;
+  border-bottom-right-radius: 0.625rem;
+}
+
+.phone-frame.horizontal::after {
+  top: -0.3125rem;
+  left: 25%;
+  width: 2.5rem;
+  height: 0.1875rem;
+  border-radius: 0.125rem;
+}
+
+.phone-frame.horizontal .iframe-container {
+  border-radius: 1.5rem;
+}
+
+/* ===== RESPONSIVE - Tabletas y dispositivos más pequeños ===== */
+@media (max-width: 64rem) {
+
+  /* Vertical */
+  .phone-frame.vertical {
+    width: 18rem;
+    height: 36rem;
+    border-width: 0.625rem;
+    border-radius: 1.875rem;
+  }
+
+  .phone-frame.vertical::before {
+    height: 1rem;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
+
+  .phone-frame.vertical::after {
+    height: 2rem;
+  }
+
+  .phone-frame.vertical .iframe-container {
+    border-radius: 1.25rem;
+  }
+
+  /* Horizontal */
+  .phone-frame.horizontal {
+    width: 36rem;
+    height: 20.25rem;
+    border-width: 0.625rem;
+    border-radius: 1.875rem;
+  }
+
+  .phone-frame.horizontal::before {
+    width: 1rem;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
+
+  .phone-frame.horizontal::after {
+    width: 2rem;
+  }
+
+  .phone-frame.horizontal .iframe-container {
+    border-radius: 1.25rem;
+  }
+}
+
+/* ===== RESPONSIVE - Dispositivos móviles ===== */
+@media (max-width: 48rem) {
+  .mostrar-web {
+    display: none;
+  }
+
+  .mostrar-mobile {
+    display: block;
+  }
+
+  /* Vertical - móvil */
+  .phone-frame.vertical {
+    width: 85vw;
+    height: calc(85vw * 2);
+    max-width: 22rem;
+    max-height: 44rem;
+    border-width: 0.75rem;
+    border-radius: 2.25rem;
+  }
+
+  .phone-frame.vertical::before {
+    height: 1.25rem;
+    border-bottom-left-radius: 0.625rem;
+    border-bottom-right-radius: 0.625rem;
+  }
+
+  .phone-frame.vertical::after {
+    height: 2.5rem;
+  }
+
+  .phone-frame.vertical .iframe-container {
+    border-radius: 1.5rem;
+  }
+
+  /* Horizontal - móvil */
+  .phone-frame.horizontal {
+    width: 85vw;
+    height: calc(85vw * 0.5625);
+    /* 16:9 ratio */
+    max-width: 36rem;
+    max-height: 20.25rem;
+    border-width: 0.75rem;
+    border-radius: 2.25rem;
+  }
+
+  .phone-frame.horizontal::before {
+    width: 1.25rem;
+    border-top-right-radius: 0.625rem;
+    border-bottom-right-radius: 0.625rem;
+  }
+
+  .phone-frame.horizontal::after {
+    width: 2.5rem;
+  }
+
+  .phone-frame.horizontal .iframe-container {
+    border-radius: 1.5rem;
+  }
+}
+
+/* ===== RESPONSIVE - Móviles muy pequeños ===== */
+@media (max-width: 30rem) {
+
+  /* Vertical */
+  .phone-frame.vertical {
+    width: 90vw;
+    height: calc(90vw * 2);
+    border-width: 0.5rem;
+    border-radius: 1.5rem;
+  }
+
+  .phone-frame.vertical::before {
+    height: 0.875rem;
+    border-bottom-left-radius: 0.4375rem;
+    border-bottom-right-radius: 0.4375rem;
+  }
+
+  .phone-frame.vertical::after {
+    height: 1.75rem;
+    right: -0.25rem;
+    width: 0.125rem;
+  }
+
+  .phone-frame.vertical .iframe-container {
+    border-radius: 1rem;
+  }
+
+  /* Horizontal */
+  .phone-frame.horizontal {
+    width: 90vw;
+    height: calc(90vw * 0.5625);
+    border-width: 0.5rem;
+    border-radius: 1.5rem;
+  }
+
+  .phone-frame.horizontal::before {
+    width: 0.875rem;
+    border-top-right-radius: 0.4375rem;
+    border-bottom-right-radius: 0.4375rem;
+  }
+
+  .phone-frame.horizontal::after {
+    width: 1.75rem;
+    top: -0.25rem;
+    height: 0.125rem;
+  }
+
+  .phone-frame.horizontal .iframe-container {
+    border-radius: 1rem;
+  }
+}
+
+/* Posicionamiento del botón left-dir */
+.left-dir {
+  /* position: absolute;
+  left: 5%;
+  bottom: 5%; */
+}
+
 /*--------------*/
 /* Preview Container Components */
 /*--------------*/

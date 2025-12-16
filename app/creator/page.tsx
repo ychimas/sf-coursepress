@@ -20,6 +20,7 @@ export default function CreatorPage() {
     category: "",
     lessons: [],
   })
+  const [customVideoFile, setCustomVideoFile] = useState<File | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedFiles, setGeneratedFiles] = useState<any[]>([])
   const [modal, setModal] = useState<{ isOpen: boolean; title: string; message: string; type: 'alert' | 'confirm' }>({ isOpen: false, title: '', message: '', type: 'alert' })
@@ -46,12 +47,14 @@ export default function CreatorPage() {
     setIsGenerating(true)
 
     try {
+      const formData = new FormData()
+      formData.append('metadata', JSON.stringify(courseData))
+      if (customVideoFile) {
+        formData.append('customVideo', customVideoFile, customVideoFile.name)
+      }
       const response = await fetch('/api/cursos/save', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(courseData),
+        body: formData,
       })
 
       if (!response.ok) {
@@ -97,29 +100,26 @@ export default function CreatorPage() {
               <div key={step.number} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-1">
                   <div
-                    className={`w-12 h-12 rounded-full flex items-center justify-center font-bold mb-2 transition-colors shadow-lg text-xl ${
-                      currentStep > step.number
+                    className={`w-12 h-12 rounded-full flex items-center justify-center font-bold mb-2 transition-colors shadow-lg text-xl ${currentStep > step.number
+                      ? "bg-blue-600 text-white"
+                      : currentStep === step.number
                         ? "bg-blue-600 text-white"
-                        : currentStep === step.number
-                          ? "bg-blue-600 text-white"
-                          : "bg-slate-200 text-slate-400"
-                    }`}
+                        : "bg-slate-200 text-slate-400"
+                      }`}
                   >
                     {currentStep > step.number ? <Check className="w-6 h-6" /> : <span>{step.number}</span>}
                   </div>
                   <span
-                    className={`text-sm font-medium text-center ${
-                      currentStep >= step.number ? "text-slate-900" : "text-slate-400"
-                    }`}
+                    className={`text-sm font-medium text-center ${currentStep >= step.number ? "text-slate-900" : "text-slate-400"
+                      }`}
                   >
                     {step.title}
                   </span>
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`h-1 flex-1 mx-4 rounded transition-colors ${
-                      currentStep > step.number ? "bg-blue-600" : "bg-slate-200"
-                    }`}
+                    className={`h-1 flex-1 mx-4 rounded transition-colors ${currentStep > step.number ? "bg-blue-600" : "bg-slate-200"
+                      }`}
                   />
                 )}
               </div>
@@ -129,7 +129,7 @@ export default function CreatorPage() {
 
         {/* Step Content */}
         <div className="bg-white border border-slate-200 rounded-xl p-8 mb-8 shadow-lg">
-          {currentStep === 1 && <StepOne courseData={courseData} setCourseData={setCourseData} />}
+          {currentStep === 1 && <StepOne courseData={courseData} setCourseData={setCourseData} setCustomVideoFile={setCustomVideoFile} />}
           {currentStep === 2 && <StepTwo courseData={courseData} setCourseData={setCourseData} />}
           {currentStep === 3 && <StepThree courseData={courseData} />}
         </div>
@@ -166,6 +166,6 @@ export default function CreatorPage() {
         message={modal.message}
         type={modal.type}
       />
-    </div>
+    </div >
   )
 }
