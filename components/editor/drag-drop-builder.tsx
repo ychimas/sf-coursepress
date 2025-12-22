@@ -17,6 +17,239 @@ interface DragDropBuilderProps {
   projectId?: string
 }
 
+const generateGalleryCSS = () => {
+  return `/*galeria*/
+.gallery {
+  --size: min(75vmin, 500px);
+  position: static;
+  box-shadow:
+    0 0 10px #0002,
+    0 20px 40px -20px #0004;
+  width: var(--size);
+  height: var(--size);
+  background: #fff;
+  border: 6px solid #fff;
+  display: grid;
+  grid-template-rows: 50% 50%;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  gap: 6px;
+}
+
+.gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes moveHorizontal {
+  to {
+    object-position: 100% 0;
+  }
+}
+
+@keyframes moveVertical {
+  to {
+    object-position: 0 100%;
+  }
+}
+
+@keyframes shrinkVertical {
+  to {
+    height: 0;
+  }
+}
+
+@keyframes shrinkHorizontal {
+  to {
+    width: 0;
+  }
+}
+
+@keyframes growHorizontal {
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes growHorizontal2 {
+  to {
+    width: 70%;
+  }
+}
+
+@keyframes growVertical {
+  to {
+    height: 100%;
+  }
+}
+
+@keyframes growAll {
+  to {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.gallery img:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  animation:
+    moveHorizontal 8.5s 0.5s 1,
+    shrinkHorizontal 2s 9s ease-in 1;
+  animation-fill-mode: forwards;
+}
+
+.gallery img:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  animation:
+    shrinkHorizontal 2s 11s 1;
+  animation-fill-mode: forwards;
+}
+
+.gallery img:nth-child(3) {
+  grid-row: 2;
+  grid-column: 1 / 3;
+  align-self: end;
+  object-position: 0 0;
+  animation:
+    moveVertical 5s 1s 1,
+    shrinkVertical 3s 5s 1;
+  animation-fill-mode: forwards;
+}
+
+.gallery img:nth-child(4) {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  width: 0;
+  justify-self: center;
+  align-self: start;
+  animation:
+    growHorizontal 2.25s 11s 1,
+    moveHorizontal 4s 14s 1,
+    shrinkVertical 2s 18s 1;
+  animation-fill-mode: forwards;
+}
+
+.gallery img:nth-child(5) {
+  grid-column: 1;
+  grid-row: 2;
+  width: 0;
+  justify-self: start;
+  align-self: end;
+  animation:
+    growHorizontal 2.5s 7.5s 1,
+    moveVertical 4s 12.5s 1,
+    shrinkHorizontal 2s 17s 1;
+  animation-fill-mode: forwards;
+}
+
+.gallery img:nth-child(6) {
+  grid-column: 2;
+  grid-row: 2;
+  width: 0;
+  justify-self: end;
+  align-self: end;
+  animation:
+    growHorizontal 2s 8s 1,
+    shrinkHorizontal 2s 17s 1;
+  animation-fill-mode: forwards;
+}
+
+.gallery img:nth-child(7) {
+  grid-column: 1/3;
+  grid-row: 1/3;
+  width: 0;
+  justify-self: end;
+  align-self: end;
+  object-position: 0 0;
+  animation:
+    growHorizontal 2s 20s 1,
+    moveHorizontal 16s 21.5s 1;
+  animation-fill-mode: forwards;
+}
+
+@media (max-width: 768px) {
+  .gallery {
+    top: 600%;
+  }
+}`
+}
+
+const generateAccordionCSS = () => {
+  return `/*--------------*/
+/*Accordion*/
+.accordion-button {
+  color: #ffffff;
+  background-color: #0F172A;
+  border: none;
+  position: relative;
+  padding: 1rem 0.45rem;
+}
+
+.accordion-button:not(.collapsed) {
+  color: #fff;
+  background: #6e3cd2;
+  box-shadow: none;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.accordion-button::after {
+  background-image: url("../momento1_10/img/flecha-blanca.svg");
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("img/flecha-blanca.svg");
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: rotate(180deg);
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.accordion-item {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.accordion-collapse.collapse.show {
+  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+}
+
+.accordion-body {
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.accordion-item:last-child {
+  margin-bottom: 20px;
+}
+
+.accordion-button.collapsed {
+  background-color: #0F172A;
+  color: #ffffff;
+}`
+}
+
 const generateSelectActivityCSS = () => {
   return `/* Estilos para la actividad de selección */
 .select-container {
@@ -1707,10 +1940,23 @@ export function DragDropBuilder({
       })
     }
     
+    const galleryComponents = [...leftContent, ...rightContent].filter(c => c.type === 'gallery')
+    galleryComponents.forEach((gallery: any) => {
+      if (gallery.galleryImages) {
+        gallery.galleryImages.forEach((img: any) => {
+          if (img.imageFile) {
+            images.push({ imageFile: img.imageFile, src: img.src })
+          }
+        })
+      }
+    })
+    
     // Generar CSS y JS para actividades
     let cssContent = ''
     let jsContent = ''
     
+    const allGalleryComponents = [...leftContent, ...rightContent].filter(c => c.type === 'gallery')
+    const accordionComponents = [...leftContent, ...rightContent].filter(c => c.type === 'accordion')
     const selectActivities = [...leftContent, ...rightContent].filter(c => c.type === 'activity' && c.activityType === 'select-text' && c.activityData?.text)
     const ordenarPasosActivities = [...leftContent, ...rightContent].filter(c => c.type === 'activity' && c.activityType === 'ordenar-pasos' && c.activityData?.pasos?.length > 0)
     const selectImagenActivities = [...leftContent, ...rightContent].filter(c => c.type === 'activity' && c.activityType === 'select-imagen' && c.activityData?.items?.length > 0)
@@ -1718,7 +1964,11 @@ export function DragDropBuilder({
     const verdaderoFalsoActivities = [...leftContent, ...rightContent].filter(c => c.type === 'activity' && c.activityType === 'verdadero-falso' && c.activityData?.preguntas?.length > 0)
     const quizActivities = [...leftContent, ...rightContent].filter(c => c.type === 'activity' && c.activityType === 'quiz' && c.activityData?.preguntas?.length > 0)
     
-    if (selectActivities.length > 0) {
+    if (allGalleryComponents.length > 0) {
+      cssContent = generateGalleryCSS()
+    } else if (accordionComponents.length > 0) {
+      cssContent = generateAccordionCSS()
+    } else if (selectActivities.length > 0) {
       cssContent = generateSelectActivityCSS()
       jsContent = generateSelectActivityJS(selectActivities[0].activityData)
     } else if (ordenarPasosActivities.length > 0) {
@@ -1737,7 +1987,6 @@ export function DragDropBuilder({
       cssContent = generateQuizCSS()
       jsContent = generateQuizJS(quizActivities[0].activityData)
     }
-    // Si no hay actividades, enviar strings vacíos para limpiar
     
     onContentChange(leftContent, rightContent, htmlContent, videos, images, audios, cssContent, jsContent)
   }, [leftContent, rightContent])
@@ -1751,6 +2000,8 @@ export function DragDropBuilder({
     { id: "button", name: "Botón", icon: <MousePointer className="w-4 h-4" />, type: "button" },
     { id: "table", name: "Tabla", icon: <Table className="w-4 h-4" />, type: "table" },
     { id: "video", name: "Video", icon: <Video className="w-4 h-4" />, type: "video" },
+    { id: "gallery", name: "Galería", icon: <Image className="w-4 h-4" />, type: "gallery" },
+    { id: "accordion", name: "Acordeón", icon: <Type className="w-4 h-4" />, type: "accordion" },
     { id: "activity", name: "Actividad", icon: <Puzzle className="w-4 h-4" />, type: "activity" }
   ]
 
@@ -1833,6 +2084,68 @@ export function DragDropBuilder({
         return `<!-- Aquí va el video -->
 <div class="iframe-container mostrar-web d-flex justify-content-center align-items-center" id="${videoId}Web">
   <div class="loader spinner-pulse"></div>
+</div>`
+      case "gallery":
+        if (forPreview) {
+          return `<div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px; border: 2px dashed #6c757d;">
+  <svg style="width: 64px; height: 64px; color: #6c757d; margin-bottom: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+  </svg>
+  <div style="color: #495057; font-weight: 600; font-size: 16px; text-align: center; margin-bottom: 0.5rem;">🖼️ Galería de Imágenes</div>
+  <div style="color: #6c757d; font-size: 13px; text-align: center;">${(comp.galleryImages || []).length} imágenes configuradas</div>
+</div>`
+        }
+        const galleryImages = comp.galleryImages || []
+        if (galleryImages.length === 0) {
+          return `<div class="gallery">
+  <!-- Galería vacía - agrega imágenes en el editor -->
+</div>`
+        }
+        
+        const imagesHTML = galleryImages.map((img: any, index: number) => {
+          const imgSrc = img.imageFile ? `./${momentId}/img/${img.src}` : (img.src || '/placeholder.svg')
+          return `<img src="${imgSrc}" alt="Imagen ${index + 1}" />`
+        }).join('\n      ')
+        
+        return `<div class="gallery">
+      ${imagesHTML}
+    </div>`
+      case "accordion":
+        if (forPreview) {
+          return `<div style="background: #f8f9fa; border-radius: 12px; padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 120px; border: 2px dashed #6c757d;">
+  <svg style="width: 48px; height: 48px; color: #6c757d; margin-bottom: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+  </svg>
+  <div style="color: #495057; font-weight: 600; font-size: 13px;">📋 Acordeón</div>
+</div>`
+        }
+        const accordionItems = comp.accordionItems || [{ title: 'Título', content: 'Contenido' }]
+        const accordionId = `accordion${comp.id || Date.now()}`
+        
+        const itemsHTML = accordionItems.map((item: any, index: number) => {
+          const itemId = `${accordionId}_item${index}`
+          const headingId = `heading${itemId}`
+          const collapseId = `collapse${itemId}`
+          const isFirst = index === 0
+          
+          return `<div class="accordion-item">
+    <h2 class="accordion-header" id="${headingId}">
+      <button class="accordion-button${isFirst ? '' : ' collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="${isFirst}" aria-controls="${collapseId}">
+        ${item.title || 'Título del acordeón'}
+      </button>
+    </h2>
+    <div id="${collapseId}" class="accordion-collapse collapse${isFirst ? ' show' : ''}" aria-labelledby="${headingId}" data-bs-parent="#${accordionId}">
+      <div class="accordion-body">
+        <p class="text-justify">
+          ${item.content || 'Contenido del acordeón'}
+        </p>
+      </div>
+    </div>
+  </div>`
+        }).join('\n\n  ')
+        
+        return `<div class="accordion" id="${accordionId}">
+  ${itemsHTML}
 </div>`
       case "activity":
         if (forPreview) {

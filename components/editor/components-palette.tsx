@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Type, Image, MousePointer, Table, Video, Puzzle, Music, ChevronDown, ChevronRight } from "lucide-react"
+import { Type, Image, MousePointer, Table, Video, Puzzle, Music, ChevronDown, ChevronRight, List, Images } from "lucide-react"
 
 interface Category {
   id: string
@@ -36,6 +36,7 @@ export function ComponentsPalette() {
         { id: "image", name: "Imagen", icon: <Image className="w-5 h-5" />, type: "image" },
         { id: "video", name: "Video", icon: <Video className="w-5 h-5" />, type: "video" },
         { id: "audio", name: "Audio", icon: <Music className="w-5 h-5" />, type: "audio" },
+        { id: "gallery", name: "Galería", icon: <Images className="w-5 h-5" />, type: "gallery" },
       ]
     },
     {
@@ -45,6 +46,7 @@ export function ComponentsPalette() {
         { id: "button", name: "Botón", icon: <MousePointer className="w-5 h-5" />, type: "button" },
         { id: "table", name: "Tabla", icon: <Table className="w-5 h-5" />, type: "table" },
         { id: "activity", name: "Actividad", icon: <Puzzle className="w-5 h-5" />, type: "activity" },
+        { id: "accordion", name: "Acordeón", icon: <List className="w-5 h-5" />, type: "accordion" },
       ]
     }
   ]

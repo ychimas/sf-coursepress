@@ -26,7 +26,9 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
     transcription: component.transcription || '[]',
     theme: component.theme || 'dark',
     activityType: component.activityType || '',
-    activityData: component.activityData || { text: '', selects: [], globalOptions: [] }
+    activityData: component.activityData || { text: '', selects: [], globalOptions: [] },
+    accordionItems: component.accordionItems || [{ title: '', content: '' }],
+    galleryImages: component.galleryImages || []
   })
 
   const [newOption, setNewOption] = useState('')
@@ -231,6 +233,171 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
               <p className="text-xs text-gray-500 mt-1">Pega el array JSON con la transcripción</p>
             </div>
           </>
+        )
+      case 'accordion':
+        return (
+          <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
+              <p className="font-semibold mb-2">💡 Acordeón Interactivo</p>
+              <p className="text-gray-700">Crea secciones expandibles con títulos y contenido. Perfecto para mostrar información organizada.</p>
+            </div>
+            
+            <div>
+              <Label>Items del Acordeón</Label>
+              <div className="space-y-3">
+                {formData.accordionItems.map((item: any, index: number) => (
+                  <div key={index} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="font-semibold text-sm">Item {index + 1}</h4>
+                      {formData.accordionItems.length > 1 && (
+                        <button
+                          onClick={() => {
+                            const newItems = formData.accordionItems.filter((_: any, i: number) => i !== index)
+                            setFormData({ ...formData, accordionItems: newItems })
+                          }}
+                          className="text-red-600 hover:text-red-800 font-bold px-2"
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Input
+                        value={item.title || ''}
+                        onChange={(e) => {
+                          const newItems = [...formData.accordionItems]
+                          newItems[index] = { ...newItems[index], title: e.target.value }
+                          setFormData({ ...formData, accordionItems: newItems })
+                        }}
+                        placeholder="Título del acordeón"
+                        className="font-medium"
+                      />
+                      <Textarea
+                        value={item.content || ''}
+                        onChange={(e) => {
+                          const newItems = [...formData.accordionItems]
+                          newItems[index] = { ...newItems[index], content: e.target.value }
+                          setFormData({ ...formData, accordionItems: newItems })
+                        }}
+                        placeholder="Contenido del acordeón"
+                        rows={3}
+                      />
+                    </div>
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  onClick={() => {
+                    const newItems = [...formData.accordionItems, { title: '', content: '' }]
+                    setFormData({ ...formData, accordionItems: newItems })
+                  }}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                >
+                  + Agregar Item
+                </Button>
+              </div>
+            </div>
+          </div>
+        )
+      case 'gallery':
+        return (
+          <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
+              <p className="font-semibold mb-2">🖼️ Galería de Imágenes</p>
+              <p className="text-gray-700">Crea una galería animada con hasta 7 imágenes. Las imágenes se mostrarán con animaciones automáticas.</p>
+            </div>
+            
+            <div>
+              <Label>Imágenes de la Galería (máximo 7)</Label>
+              <div className="space-y-3">
+                {formData.galleryImages.map((img: any, index: number) => (
+                  <div key={index} className="border border-gray-300 rounded-lg p-3 bg-gray-50">
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="font-semibold text-sm">Imagen {index + 1}</h4>
+                      {formData.galleryImages.length > 1 && (
+                        <button
+                          onClick={() => {
+                            const newImages = formData.galleryImages.filter((_: any, i: number) => i !== index)
+                            setFormData({ ...formData, galleryImages: newImages })
+                          }}
+                          className="text-red-600 hover:text-red-800 font-bold px-2"
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                    <Tabs className="mt-1">
+                      <TabsList className="w-full grid grid-cols-2 gap-2 bg-white border border-slate-200 rounded-full mb-3">
+                        <TabsTrigger value="local" className="px-3 py-1 rounded-full text-slate-700 transition hover:bg-slate-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-md">Imagen local</TabsTrigger>
+                        <TabsTrigger value="mis" className="px-3 py-1 rounded-full text-slate-700 transition hover:bg-slate-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-md">Mis imágenes</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="local" className="mt-2">
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0]
+                            if (file) {
+                              const newImages = [...formData.galleryImages]
+                              newImages[index] = { imageFile: file, src: file.name }
+                              setFormData({ ...formData, galleryImages: newImages })
+                            }
+                          }}
+                          className="cursor-pointer"
+                        />
+                        {img.src && (
+                          <p className="text-xs text-gray-500 mt-1">Archivo: {img.src}</p>
+                        )}
+                      </TabsContent>
+                      <TabsContent value="mis" className="mt-2">
+                        <div className="grid grid-cols-3 gap-3 max-h-64 min-h-40 overflow-y-auto border p-2 rounded bg-slate-50">
+                          {avatarImages.map((avatarImg) => (
+                            <button
+                              key={avatarImg.name}
+                              className={`border rounded p-2 ${selectedItemAvatars[index] === avatarImg.name ? 'ring-2 ring-blue-600' : ''}` }
+                              onClick={() => {
+                                setSelectedItemAvatars({ ...selectedItemAvatars, [index]: avatarImg.name })
+                              }}
+                            >
+                              <img src={`/api/avatars/get?projectId=${projectId}&name=${encodeURIComponent(avatarImg.name)}`} alt={avatarImg.name} className="w-20 h-20 object-cover rounded" />
+                              <div className="text-[10px] text-gray-600">{avatarImg.name}</div>
+                            </button>
+                          ))}
+                        </div>
+                        <div className="mt-2">
+                          <Button
+                            type="button"
+                            size="sm"
+                            disabled={!selectedItemAvatars[index]}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4"
+                            onClick={() => {
+                              const name = selectedItemAvatars[index]
+                              if (!name) return
+                              const newImages = [...formData.galleryImages]
+                              newImages[index] = { src: `../../assets/img/avatars/${name}`, imageFile: null }
+                              setFormData({ ...formData, galleryImages: newImages })
+                            }}
+                          >Aceptar</Button>
+                        </div>
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+                ))}
+                {formData.galleryImages.length < 7 && (
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      const newImages = [...formData.galleryImages, { src: '', imageFile: null }]
+                      setFormData({ ...formData, galleryImages: newImages })
+                    }}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    + Agregar Imagen
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
         )
       case 'button':
         return (

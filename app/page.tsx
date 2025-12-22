@@ -149,7 +149,7 @@ export default function Index() {
               {/* Aquí va tu imagen */}
               <div className="bg-gray-800 rounded-xl border-2 border-gray-700 overflow-hidden">
                 <video
-                  src="/code_inicial.mp4?v=dev"
+                  src="/video_code2.mp4?v=dev"
                   autoPlay
                   loop
                   muted

@@ -158,6 +158,27 @@ const parseColumn = (column: Element, content: any[]) => {
       content.push({ id, type: 'video', videoId })
     } else if (child.querySelector('.table-container')) {
       content.push({ id, type: 'table' })
+    } else if (child.classList.contains('accordion') || child.querySelector('.accordion')) {
+      // Detectar acordeón
+      const accordionItems: any[] = []
+      const items = child.querySelectorAll('.accordion-item')
+      items.forEach((item) => {
+        const titleElem = item.querySelector('.accordion-button')
+        const contentElem = item.querySelector('.accordion-body p')
+        const title = titleElem?.textContent?.trim() || ''
+        const itemContent = contentElem?.textContent?.trim() || ''
+        accordionItems.push({ title, content: itemContent })
+      })
+      content.push({ id, type: 'accordion', accordionItems })
+    } else if (child.classList.contains('gallery') || child.querySelector('.gallery')) {
+      // Detectar galería
+      const galleryImages: any[] = []
+      const images = child.querySelectorAll('.gallery img')
+      images.forEach((img) => {
+        const src = img.getAttribute('src') || ''
+        galleryImages.push({ src, imageFile: null })
+      })
+      content.push({ id, type: 'gallery', galleryImages })
     }
   })
 }
