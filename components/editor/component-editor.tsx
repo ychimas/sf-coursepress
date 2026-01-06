@@ -21,6 +21,8 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
     subtitle: component.subtitle || '',
     highlight: component.highlight || '',
     src: component.src || '',
+    videoId: component.videoId || '',
+    iframeSrc: component.iframeSrc || '',
     imageFile: null as File | null,
     audioFile: null as File | null,
     transcription: component.transcription || '[]',
@@ -241,7 +243,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
               <p className="font-semibold mb-2">💡 Acordeón Interactivo</p>
               <p className="text-gray-700">Crea secciones expandibles con títulos y contenido. Perfecto para mostrar información organizada.</p>
             </div>
-            
+
             <div>
               <Label>Items del Acordeón</Label>
               <div className="space-y-3">
@@ -306,7 +308,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
               <p className="font-semibold mb-2">🖼️ Galería de Imágenes</p>
               <p className="text-gray-700">Crea una galería animada con hasta 7 imágenes. Las imágenes se mostrarán con animaciones automáticas.</p>
             </div>
-            
+
             <div>
               <Label>Imágenes de la Galería (máximo 7)</Label>
               <div className="space-y-3">
@@ -354,7 +356,7 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
                           {avatarImages.map((avatarImg) => (
                             <button
                               key={avatarImg.name}
-                              className={`border rounded p-2 ${selectedItemAvatars[index] === avatarImg.name ? 'ring-2 ring-blue-600' : ''}` }
+                              className={`border rounded p-2 ${selectedItemAvatars[index] === avatarImg.name ? 'ring-2 ring-blue-600' : ''}`}
                               onClick={() => {
                                 setSelectedItemAvatars({ ...selectedItemAvatars, [index]: avatarImg.name })
                               }}
@@ -399,6 +401,35 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
             </div>
           </div>
         )
+      case 'video':
+        return (
+          <>
+            <div>
+              <Label>ID del Video</Label>
+              <Input
+                value={formData.videoId || ''}
+                onChange={(e) => setFormData({ ...formData, videoId: e.target.value })}
+                placeholder="Slide1_2 (se generará automáticamente si está vacío)"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Este ID se usará para generar los contenedores Web y Mobile
+              </p>
+            </div>
+            <div>
+              <Label>URL del Iframe</Label>
+              <Textarea
+                value={formData.iframeSrc || ''}
+                onChange={(e) => setFormData({ ...formData, iframeSrc: e.target.value })}
+                placeholder="https://iframe.mediadelivery.net/embed/516177/b6f1d43d-0a0d-430f-b733-cdbe61b2d4fc?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
+                rows={3}
+                className="font-mono text-sm"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Pega aquí la URL completa del iframe del video
+              </p>
+            </div>
+          </>
+        )
       case 'button':
         return (
           <div>
@@ -417,14 +448,15 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
               <Label className="mb-3">Selecciona el tipo de actividad</Label>
               <div className="grid grid-cols-3 gap-3 max-h-96 overflow-y-auto">
                 {[
-                  { id: 'select-text', name: 'Select Texto', icon: '📝' },
-                  { id: 'ordenar-pasos', name: 'Ordenar Pasos', icon: '🔢' },
-                  { id: 'verdadero-falso', name: 'Verdadero o Falso', icon: '✓✗' },
-                  { id: 'quiz', name: 'Quiz Interactivo', icon: '❓' },
-                  { id: 'drag-clasificar', name: 'Arrastrar y Clasificar', icon: '🎯' },
-                  { id: 'select-imagen', name: 'Selección con Imágenes', icon: '🖼️' },
-                  { id: 'hotspot', name: 'Puntos Calientes', icon: '📍' },
-                  { id: 'memory', name: 'Memoria', icon: '🧠' },
+                  { id: 'select-text', name: 'Select Texto', video: 'selecttext.mp4' },
+                  { id: 'ordenar-pasos', name: 'Ordenar Pasos', video: 'ordenarpasos.mp4' },
+                  { id: 'verdadero-falso', name: 'Verdadero o Falso', video: 'verdaderofalso.mp4' },
+                  { id: 'quiz', name: 'Quiz Interactivo', video: 'quiz.mp4' },
+                  { id: 'drag-clasificar', name: 'Arrastrar y Clasificar', video: 'dragclasificar.mp4' },
+                  { id: 'select-imagen', name: 'Selección con Imágenes', video: 'selectimagen.mp4' },
+                  { id: 'seleccion-multiple', name: 'Selección Múltiple', video: 'selectmultiple.mp4' },
+                  { id: 'hotspot', name: 'Puntos Calientes', video: 'hotspot.mp4' },
+                  { id: 'memory', name: 'Memoria', video: 'memory.mp4' },
                 ].map((activity) => (
                   <button
                     key={activity.id}
@@ -433,13 +465,21 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
                         ? { categorias: ['Categoría 1', 'Categoría 2'], items: [] }
                         : activity.id === 'select-imagen'
                           ? { opciones: ['Opción 1', 'Opción 2', 'Opción 3'], items: [] }
-                          : { text: '', selects: [] }
+                          : activity.id === 'seleccion-multiple'
+                            ? { opciones: [], correctas: [], totalCorrectas: 3 }
+                            : { text: '', selects: [] }
                       setFormData({ ...formData, activityType: activity.id, activityData: initialData })
                     }}
-                    className="p-4 border-2 rounded-lg transition-all hover:border-blue-500 hover:bg-blue-50 border-gray-200"
+                    className="p-4 border-2 rounded-lg transition-all hover:border-blue-500 hover:bg-blue-50 border-gray-200 flex flex-col items-center"
                   >
-                    <div className="text-3xl mb-2">{activity.icon}</div>
-                    <div className="text-sm font-medium text-gray-700">{activity.name}</div>
+                    <video
+                      className="w-full h-24 object-cover rounded mb-2"
+                      autoPlay
+                      loop
+                      muted
+                      src={`/${activity.video}`}
+                    />
+                    <div className="text-sm font-medium text-gray-700 text-center">{activity.name}</div>
                   </button>
                 ))}
               </div>
@@ -1226,6 +1266,121 @@ export function ComponentEditor({ component, onUpdate, onClose, projectId, momen
                     className="w-full bg-green-600 hover:bg-green-700 text-white"
                   >
                     + Agregar Pregunta
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )
+        }
+
+        if (formData.activityType === 'seleccion-multiple') {
+          return (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-lg">Configurar Selección Múltiple</h3>
+                <button
+                  onClick={() => setFormData({ ...formData, activityType: '', activityData: { opciones: [], correctas: [], totalCorrectas: 3 } })}
+                  className="text-sm text-blue-600 hover:text-blue-700"
+                >
+                  ← Cambiar actividad
+                </button>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
+                <p className="font-semibold mb-2">💡 Cómo usar:</p>
+                <ol className="list-decimal list-inside space-y-1 text-gray-700">
+                  <li>Agrega las opciones de texto</li>
+                  <li>Marca cuáles son las respuestas correctas</li>
+                  <li>El usuario debe seleccionar exactamente las opciones correctas</li>
+                </ol>
+              </div>
+
+              <div>
+                <Label>Número de respuestas correctas que debe seleccionar el usuario</Label>
+                <Input
+                  type="number"
+                  min="1"
+                  value={formData.activityData?.totalCorrectas || 3}
+                  onChange={(e) => {
+                    const totalCorrectas = parseInt(e.target.value) || 3
+                    setFormData({
+                      ...formData,
+                      activityData: { ...formData.activityData, totalCorrectas }
+                    })
+                  }}
+                  className="w-32"
+                />
+              </div>
+
+              <div>
+                <Label>Opciones de Selección</Label>
+                <div className="space-y-3">
+                  {(formData.activityData?.opciones || []).map((opcion: any, index: number) => (
+                    <div key={index} className="border border-gray-300 rounded-lg p-3 bg-gray-50">
+                      <div className="flex justify-between items-center mb-2">
+                        <h4 className="font-semibold text-sm">Opción {index + 1}</h4>
+                        <button
+                          onClick={() => {
+                            const newOpciones = formData.activityData.opciones.filter((_: any, i: number) => i !== index)
+                            const newCorrectas = formData.activityData.correctas.filter((c: number) => c !== index).map((c: number) => c > index ? c - 1 : c)
+                            setFormData({
+                              ...formData,
+                              activityData: { ...formData.activityData, opciones: newOpciones, correctas: newCorrectas }
+                            })
+                          }}
+                          className="text-red-600 hover:text-red-800 font-bold px-2"
+                        >
+                          ×
+                        </button>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <input
+                          type="checkbox"
+                          checked={(formData.activityData?.correctas || []).includes(index)}
+                          onChange={(e) => {
+                            const correctas = [...(formData.activityData?.correctas || [])]
+                            if (e.target.checked) {
+                              correctas.push(index)
+                            } else {
+                              const idx = correctas.indexOf(index)
+                              if (idx > -1) correctas.splice(idx, 1)
+                            }
+                            setFormData({
+                              ...formData,
+                              activityData: { ...formData.activityData, correctas }
+                            })
+                          }}
+                          className="mr-2"
+                        />
+                        <span className="text-xs text-green-600 font-semibold mr-2">Correcta</span>
+                        <Input
+                          value={opcion.texto || ''}
+                          onChange={(e) => {
+                            const newOpciones = [...(formData.activityData?.opciones || [])]
+                            newOpciones[index] = { ...newOpciones[index], texto: e.target.value }
+                            setFormData({
+                              ...formData,
+                              activityData: { ...formData.activityData, opciones: newOpciones }
+                            })
+                          }}
+                          placeholder="Texto de la opción"
+                          className="flex-1"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      const newOpciones = [...(formData.activityData?.opciones || []), { texto: '' }]
+                      setFormData({
+                        ...formData,
+                        activityData: { ...formData.activityData, opciones: newOpciones }
+                      })
+                    }}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    + Agregar Opción
                   </Button>
                 </div>
               </div>

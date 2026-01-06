@@ -1699,6 +1699,240 @@ const generateOrdenarPasosJS = (activityData: any) => {
   }`
 }
 
+const generateSeleccionMultipleCSS = () => {
+  return `/* Estilos para actividad de selección múltiple */
+.ctItem {
+  background: #fcfcfc;
+  padding: 0.9375rem;
+  border-radius: 0.625rem;
+  margin-top: .5rem;
+  max-width: 100%;
+  box-shadow: 0 0 0.625rem #0000004d;
+  text-align: left;
+}
+
+.opciones-multiple .opcion-multiple {
+  background: #ebebeb;
+  color: #8f8f8f;
+  padding: 0.625rem 0.625rem 0.625rem 0.9375rem;
+  border-radius: 0.3125rem;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.opciones-multiple .opcion-multiple:hover {
+  background: #d0d0d0;
+}
+
+.opciones-multiple .opcion-multiple.seleccionada {
+  background: #08244c;
+  color: #fff;
+  transform: scale(1.01);
+  border: 0.125rem solid #08244c;
+}
+
+.opciones-multiple .opcion-multiple.correcta {
+  background: #4caf50;
+  color: #fff;
+}
+
+.opciones-multiple .opcion-multiple.incorrecta {
+  background: #f44336;
+  color: #fff;
+}
+
+.multi-select-feedback-success {
+  background: #32a852;
+  color: #fff;
+  border-radius: 0.7rem;
+  padding: 1rem 1.5rem;
+  font-weight: normal;
+  font-size: 1.05rem;
+  display: inline-block;
+}
+
+.multi-select-feedback-error {
+  background: #e63946;
+  color: #fff;
+  border-radius: 0.7rem;
+  padding: 1rem 1.5rem;
+  font-weight: normal;
+  font-size: 1.05rem;
+  display: inline-block;
+}
+
+.btn-validar-multiple:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}`
+}
+
+const generateSeleccionMultipleJS = (activityData: any) => {
+  const opciones = activityData.opciones || []
+  const correctas = activityData.correctas || []
+  const totalCorrectas = activityData.totalCorrectas || correctas.length
+  
+  return `  // Actividad de selección múltiple
+  let opcionesSeleccionadas = [];
+  const opcionesCorrectas = ${JSON.stringify(correctas.map((c: number) => String.fromCharCode(97 + c)))};
+  const totalOpciones = ${totalCorrectas};
+  let actividadCompletada = false;
+
+  function actualizarContador() {
+      const contador = document.getElementById('contador-selecciones');
+      const faltanSpan = document.getElementById('faltan-opciones');
+      const btnValidarContainer = document.querySelector('.btn-validar-container');
+      const btnValidar = document.querySelector('.btn-validar-multiple');
+
+      if (opcionesSeleccionadas.length > 0) {
+          contador.classList.remove('d-none');
+          const faltan = totalOpciones - opcionesSeleccionadas.length;
+          faltanSpan.textContent = faltan;
+
+          if (opcionesSeleccionadas.length === totalOpciones) {
+              contador.classList.add('d-none');
+              btnValidarContainer.classList.remove('d-none');
+              btnValidarContainer.classList.add('d-flex');
+              btnValidar.disabled = false;
+          } else {
+              btnValidarContainer.classList.add('d-none');
+              btnValidarContainer.classList.remove('d-flex');
+              btnValidar.disabled = true;
+          }
+      } else {
+          contador.classList.add('d-none');
+          btnValidarContainer.classList.add('d-none');
+          btnValidarContainer.classList.remove('d-flex');
+          btnValidar.disabled = true;
+      }
+  }
+
+  function validarRespuestas() {
+      if (actividadCompletada || opcionesSeleccionadas.length !== totalOpciones) return;
+
+      const opciones = document.querySelectorAll('.opcion-multiple');
+      let correctas = 0;
+
+      opciones.forEach(opcion => {
+          const valor = opcion.getAttribute('data-valor');
+          const esCorrecta = opcionesCorrectas.includes(valor);
+          const estaSeleccionada = opcionesSeleccionadas.includes(valor);
+
+          opcion.style.pointerEvents = 'none';
+          opcion.classList.remove('seleccionada');
+
+          // Solo colorear las opciones que fueron seleccionadas
+          if (estaSeleccionada) {
+              if (esCorrecta) {
+                  opcion.classList.add('correcta');
+                  correctas++;
+              } else {
+                  opcion.classList.add('incorrecta');
+              }
+          }
+      });
+
+      const resultado = document.getElementById('resultado-multiple');
+      const porcentaje = Math.round((correctas / totalOpciones) * 100);
+
+      if (correctas === totalOpciones) {
+          resultado.innerHTML = \`
+      <div class="alert multi-select-feedback-success">
+        <i class="fas fa-check-circle me-2"></i>
+        Respuesta(s) correcta(s): ¡Muy bien! Sigue atento a ubicar los espacios confinados en nuestra organización.<br>
+        <strong>Tus respuestas correctas son: \${correctas} de \${totalOpciones} (\${porcentaje}%)</strong>
+      </div>
+    \`;
+      } else {
+          resultado.innerHTML = \`
+      <div class="alert multi-select-feedback-error">
+        <i class="fas fa-times-circle me-2"></i>
+        Respuesta(s) Incorrecta(s): ¡Piénsalo bien! Trata de pensar en espacios pequeños o confinados.<br>
+        <strong>Tus respuestas correctas son: \${correctas} de \${totalOpciones} (\${porcentaje}%)</strong>
+      </div>
+    \`;
+      }
+
+      resultado.classList.remove('d-none');
+
+      // Mostrar botón reiniciar
+      const btnReiniciarContainer = document.querySelector('.btn-reiniciar-container');
+      const btnValidarContainer = document.querySelector('.btn-validar-container');
+      const btnValidar = document.querySelector('.btn-validar-multiple');
+      btnValidarContainer.classList.add('d-none');
+      btnValidarContainer.classList.remove('d-flex');
+      btnValidar.disabled = true;
+      btnReiniciarContainer.classList.add('d-flex');
+      btnReiniciarContainer.classList.remove('d-none');
+
+      actividadCompletada = true;
+  }
+
+  function reiniciarActividad() {
+      opcionesSeleccionadas = [];
+      actividadCompletada = false;
+
+      document.querySelectorAll('.opcion-multiple').forEach(opcion => {
+          opcion.classList.remove('seleccionada', 'correcta', 'incorrecta');
+          opcion.style.pointerEvents = 'auto';
+      });
+
+      document.getElementById('contador-selecciones').classList.add('d-none');
+      document.getElementById('resultado-multiple').classList.add('d-none');
+
+      // Ocultar ambos botones al reiniciar
+      const btnValidarContainer = document.querySelector('.btn-validar-container');
+      const btnReiniciarContainer = document.querySelector('.btn-reiniciar-container');
+      const btnValidar = document.querySelector('.btn-validar-multiple');
+
+      btnValidarContainer.classList.add('d-none');
+      btnValidarContainer.classList.remove('d-flex');
+      btnReiniciarContainer.classList.add('d-none');
+      btnReiniciarContainer.classList.remove('d-flex');
+      btnValidar.disabled = true;
+  }
+
+  // Event listeners
+  document.getElementById('actividad-container').addEventListener('click', function (event) {
+      if (event.target.classList.contains('opcion-multiple') && !actividadCompletada) {
+          const valor = event.target.getAttribute('data-valor');
+
+          if (opcionesSeleccionadas.includes(valor)) {
+              // Deseleccionar
+              opcionesSeleccionadas = opcionesSeleccionadas.filter(v => v !== valor);
+              event.target.classList.remove('seleccionada');
+          } else if (opcionesSeleccionadas.length < totalOpciones) {
+              // Seleccionar
+              opcionesSeleccionadas.push(valor);
+              event.target.classList.add('seleccionada');
+          }
+
+          actualizarContador();
+      }
+
+      if ((event.target.classList.contains('btn-validar-multiple') || event.target.closest('.btn-validar-multiple')) && opcionesSeleccionadas.length === totalOpciones) {
+          // Ocultar inmediatamente el botón validar
+          const btnValidarContainer = document.querySelector('.btn-validar-container');
+          btnValidarContainer.classList.add('d-none');
+          btnValidarContainer.classList.remove('d-flex');
+
+          // Ejecutar validación después de un pequeño delay
+          setTimeout(() => {
+              validarRespuestas();
+          }, 10);
+      }
+
+      if (event.target.classList.contains('btn-reiniciar-multiple') || event.target.closest('.btn-reiniciar-multiple')) {
+          reiniciarActividad();
+      }
+  });
+
+  actualizarContador();`
+}
+
 const generateSelectActivityJS = (activityData: any) => {
   const correctAnswers = activityData.selects.map((s: any) => String(s.correct + 1))
   
@@ -1955,9 +2189,35 @@ export function DragDropBuilder({
     let cssContent = ''
     let jsContent = ''
     
+    // Generar JS para videos con iframe
+    const videoComponents = [...leftContent, ...rightContent].filter(c => c.type === 'video' && c.iframeSrc)
+    if (videoComponents.length > 0) {
+      const videoJSContent = videoComponents.map(video => {
+        const videoId = video.videoId || 'Slide-Video'
+        return `    loadIframe({
+        id: '${videoId}Web',
+        src: '${video.iframeSrc}',
+        className: 'iframe-video-horizontal-web',
+        style: 'width: 37vw; height: 52vh; min-height: 300px;',
+    });
+
+    loadIframe({
+        id: '${videoId}Mobile',
+        src: '${video.iframeSrc}',
+        className: 'iframe-video-horizontal-mobile',
+        style: 'width: 37vw; height: 52vh; min-height: 300px;',
+    });`
+      }).join('\n\n')
+      
+      jsContent = `export function init() {
+${videoJSContent}
+}`
+    }
+    
     const allGalleryComponents = [...leftContent, ...rightContent].filter(c => c.type === 'gallery')
     const accordionComponents = [...leftContent, ...rightContent].filter(c => c.type === 'accordion')
     const selectActivities = [...leftContent, ...rightContent].filter(c => c.type === 'activity' && c.activityType === 'select-text' && c.activityData?.text)
+    const seleccionMultipleActivities = [...leftContent, ...rightContent].filter(c => c.type === 'activity' && c.activityType === 'seleccion-multiple' && c.activityData?.opciones?.length > 0)
     const ordenarPasosActivities = [...leftContent, ...rightContent].filter(c => c.type === 'activity' && c.activityType === 'ordenar-pasos' && c.activityData?.pasos?.length > 0)
     const selectImagenActivities = [...leftContent, ...rightContent].filter(c => c.type === 'activity' && c.activityType === 'select-imagen' && c.activityData?.items?.length > 0)
     const dragClasificarActivities = [...leftContent, ...rightContent].filter(c => c.type === 'activity' && c.activityType === 'drag-clasificar' && c.activityData?.items?.length > 0)
@@ -1971,6 +2231,9 @@ export function DragDropBuilder({
     } else if (selectActivities.length > 0) {
       cssContent = generateSelectActivityCSS()
       jsContent = generateSelectActivityJS(selectActivities[0].activityData)
+    } else if (seleccionMultipleActivities.length > 0) {
+      cssContent = generateSeleccionMultipleCSS()
+      jsContent = generateSeleccionMultipleJS(seleccionMultipleActivities[0].activityData)
     } else if (ordenarPasosActivities.length > 0) {
       cssContent = generateOrdenarPasosCSS()
       jsContent = generateOrdenarPasosJS(ordenarPasosActivities[0].activityData)
@@ -2079,12 +2342,21 @@ export function DragDropBuilder({
     <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
   </svg>
   <div style="color: #cbd5e1; font-weight: 600; font-size: 14px; text-align: center;">📹 Video: ${videoId}</div>
+  ${comp.iframeSrc ? `<div style="color: #94a3b8; font-size: 12px; margin-top: 0.5rem; text-align: center;">Iframe configurado</div>` : ''}
 </div>`
         }
         return `<!-- Aquí va el video -->
-<div class="iframe-container mostrar-web d-flex justify-content-center align-items-center" id="${videoId}Web">
-  <div class="loader spinner-pulse"></div>
-</div>`
+    <div class="phone-frame horizontal mostrar-web">
+      <div class="iframe-container d-flex justify-content-center align-items-center" id="${videoId}Web">
+        <div class="loader spinner-pulse"></div>
+      </div>
+    </div>
+
+    <div class="phone-frame vertical mostrar-mobile">
+      <div class="iframe-container d-flex justify-content-center align-items-center" id="${videoId}Mobile">
+        <div class="loader spinner-pulse"></div>
+      </div>
+    </div>`
       case "gallery":
         if (forPreview) {
           return `<div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px; border: 2px dashed #6c757d;">
@@ -2152,6 +2424,7 @@ export function DragDropBuilder({
           const activityTypeNames = {
             'select-text': 'Selección de Texto',
             'select-imagen': 'Selección de Imágenes',
+            'seleccion-multiple': 'Selección Múltiple',
             'ordenar-pasos': 'Ordenar Pasos',
             'drag-clasificar': 'Arrastrar y Clasificar',
             'verdadero-falso': 'Verdadero/Falso',
@@ -2165,6 +2438,41 @@ export function DragDropBuilder({
   <div style="color: #f3e8ff; font-weight: 600; font-size: 16px; text-align: center; margin-bottom: 0.5rem;">🎯 ${activityName}</div>
   <div style="color: #e9d5ff; font-size: 13px; text-align: center;">Actividad configurada</div>
 </div>`
+        }
+        if (comp.activityType === 'seleccion-multiple' && comp.activityData?.opciones?.length > 0) {
+          const { opciones, correctas, totalCorrectas } = comp.activityData
+          const opcionesHTML = opciones.map((opcion: any, index: number) => {
+            const letra = String.fromCharCode(97 + index) // a, b, c, d...
+            return `<p class="opcion-multiple" data-valor="${letra}">${letra}. ${opcion.texto}</p>`
+          }).join('\n                    ')
+          
+          return `<div class="mx-lg-0" id="actividad-container">
+        <div class="ctItem fixed-size-question-box">
+            <div class="opciones-multiple">
+                ${opcionesHTML}
+            </div>
+
+            <div id="contador-selecciones" class="text-center mt-3 d-none">
+                <p class="text-muted">Te faltan <span id="faltan-opciones">${totalCorrectas || correctas.length}</span> opciones por seleccionar.</p>
+            </div>
+
+            <div class="justify-center mt-3 d-none btn-validar-container">
+                <button class="sf-btn sf-btn-purple btn-validar-multiple" disabled>
+                    <i class="fas fa-check-circle"></i> Validar
+                </button>
+            </div>
+
+            <div class="justify-center mt-3 d-none btn-reiniciar-container">
+                <button class="sf-btn sf-btn-purple btn-reiniciar-multiple">
+                    <i class="fas fa-redo me-2"></i>Reiniciar
+                </button>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div id="resultado-multiple" class="mt-3 d-none"></div>
+        </div>
+    </div>`
         }
         if (comp.activityType === 'select-imagen' && comp.activityData?.items?.length > 0) {
           return `<div class="quiz-container">

@@ -704,6 +704,22 @@ window.addEventListener('beforeunload', () => {
   }
 
   private generateResumenHTML(lesson: Lesson, lessonIndex: number): GeneratedFile {
+    // Para lecciones 2 y 3, usar las plantillas base específicas
+    if (lessonIndex === 1) { // Lección 2
+      return {
+        path: `lecciones/resumen_leccion_${lessonIndex + 1}.html`,
+        content: this.getResumenLeccion2Template(),
+        type: "html",
+      }
+    } else if (lessonIndex === 2) { // Lección 3
+      return {
+        path: `lecciones/resumen_leccion_${lessonIndex + 1}.html`,
+        content: this.getResumenLeccion3Template(),
+        type: "html",
+      }
+    }
+    
+    // Para otras lecciones, usar plantilla genérica
     return {
       path: `lecciones/resumen_leccion_${lessonIndex + 1}.html`,
       content: `<!DOCTYPE html>
@@ -1030,7 +1046,248 @@ window.addEventListener('beforeunload', () => {
 </html>`
   }
 
-  // Generate index.html
+  private getResumenLeccion2Template(): string {
+    return `<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- library bootstrap v.5.0.2 -->
+    <script src="../../plugins/libs/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../plugins/libs/bootstrap/css/bootstrap.css">
+    <script src="../../plugins/libs/bootstrap/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../plugins/css/sofactia.css">
+
+    <!--Montserrat-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!--Libreria iconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Estilos del widget -->
+    <link rel="stylesheet" href="../../plugins/libs/assetsWidget/css/widget.css">
+    <!-- Estilos de transcripción -->
+    <link rel="stylesheet" href="../../plugins/libs/component/transcripcion/transcripcion.css">
+</head>
+
+<body class="sf-scroll-y-hidden sf-bg-dark">
+    <!-- content fluid -->
+    <div class="container-fluid pb-5 pb-md-0 px-0 px-md-5 py-0 text-center">
+        <div class="row d-flex justify-content-center align-items-center sf-min-h-vh100 mx-5">
+            <div class="col-lg-4 col-md-3 mt-5 my-md-0 px-0">
+                <h1 class="sf-txt-1xl-700 sf-text-white">Resumen <span class="sf-text-purple">Lección 2</span></h1>
+                <img class="mx-auto sf-img-40 sf-img-md-100 sf-img-sm-30" src="../leccion2/gif/avatar_compromiso.gif"
+                    alt="avatar">
+                <div class="audio-center py-4">
+                    <audio class="audio-con-transcripcion" controls data-transcripcion='[
+                        {"end":4.66,"start":0,"text":"La lección 2 se centra en la prevención, comenzando por diferenciar un conflicto de una"},
+                        {"end":9.74,"start":4.66,"text":"agresión. Un conflicto es una diferencia legítima de opinión que se puede resolver"},
+                        {"end":13.2,"start":9.74,"text":"con diálogo, como una discusión por el reparto de tareas."},
+                        {"end":20.26,"start":14.08,"text":"El acoso, en cambio, es una conducta repetitiva o única que daña, humilla o perjudica, como"},
+                        {"end":22.78,"start":20.26,"text":"las burlas constantes sobre la orientación sexual."},
+                        {"end":29.44,"start":23.94,"text":"Finalmente, la violencia es una agresión directa, física o verbal, especialmente cuando"},
+                        {"end":33.9,"start":29.44,"text":"proviene de terceros, como un cliente que insulta y amenaza a un trabajador."},
+                        {"end":39.5,"start":34.72,"text":"Para prevenir estas conductas, es esencial reconocer los entornos que las facilitan."},
+                        {"end":45.88,"start":40.44,"text":"Los ambientes con comunicación deficiente, liderazgo autoritario, alta rotación o presión"},
+                        {"end":47.7,"start":45.88,"text":"excesiva son focos de riesgo."},
+                        {"end":53.66,"start":48.58,"text":"Las señales de alerta incluyen la normalización del maltrato, las bromas sexistas, las"},
+                        {"end":58.46,"start":53.66,"text":"sobrecarga injustificada o el aislamiento, bajo excusas como así se trabaja aquí."},
+                        {"end":64.42,"start":59.2,"text":"Las señales comunes de acoso laboral incluyen la asignación de tareas degradantes, gritos,"},
+                        {"end":68.28,"start":64.86,"text":"burlas, exclusión del equipo y sobrecarga injustificada."},
+                        {"end":72.88,"start":68.96,"text":"La prevención efectiva requiere de prácticas organizacionales robustas."},
+                        {"end":79,"start":73.76,"text":"Esto implica tener reglas claras y conocidas, reglamento interno y protocolo de prevención"},
+                        {"end":84.22,"start":79,"text":"y promover un liderazgo ejemplar con jefaturas formadas en respeto y manejo de conflictos."},
+                        {"end":90.02,"start":84.88,"text":"Otras medidas claves son fomentar la comunicación abierta a través de espacios seguros y realizar"},
+                        {"end":94.16,"start":90.02,"text":"una evaluación periódica del clima laboral mediante encuestas o foques group."},
+                        {"end":100.12,"start":95.08,"text":"Finalmente, el trabajador tiene un rol activo en la prevención, debe conocer sus derechos"},
+                        {"end":101.9,"start":100.12,"text":"y el protocolo institucional."},
+                        {"end":107.58,"start":102.78,"text":"Se espera que esté atento a comportamientos inapropiados en compañeros que intervenga"},
+                        {"end":113.02,"start":107.58,"text":"de forma segura o reporte al canal correspondiente si presencia un hecho inadecuado y que promueva"},
+                        {"end":114.92,"start":113.02,"text":"el respeto mutuo en cada interacción."},
+                        {"end":121.62,"start":115.86,"text":"Si se es víctima, se debe denunciar y documentar, si se es testigo, se debe reportar y no"},
+                        {"end":122.74,"start":121.62,"text":"ser cómplice pasivo."}
+                        ]'>
+                        <source src="../leccion2/resumen_leccion-2.mp3" type="audio/mp3">
+                    </audio>
+                    <i class="transcription-toggle fas fa-closed-captioning audio-estilos"></i>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-9 mt-4 my-md-0">
+                <div class="mx-md-5 mx-4 sf-lh-xs">
+                    <p class="sf-text-white mb-2">¡Bien hecho! Has terminado la Lección 2</p>
+                    <p class="sf-text-white mb-2">¡Revisemos este resumen de lo visto en esta lección!</p>
+                    <embed src="../leccion2/doc/resumen_leccion2.pdf" type="application/pdf" class="pdf-viewer">
+                    <a href="../leccion2/doc/resumen_leccion2.pdf" download="Resumen-Leccion-2.pdf"
+                        class="sf-btn sf-btn-purple">
+                        <i class="fa fa-download"></i> Descargar PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-navigation-container glass-back">
+        <button id="pagIndex" class="btn-navigation btn-navigation--prev" onclick="btnPrev()">
+            <i class="fas fa-angle-left"></i> <span>Anterior</span>
+        </button>
+        <button id="next" class="btn-navigation btn-navigation--next" onclick="btnNext()">
+            <span>Siguiente</span> <i class="fas fa-angle-right"></i>
+        </button>
+    </div>
+
+    <!--library javascript-->
+    <script src="../../plugins/libs/jquery-3.3.1.js"></script>
+    <!-- Script del Widget -->
+    <script src="../../plugins/libs/assetsWidget/js/widget.js"></script>
+    <!-- Script de transcripción -->
+    <script src="../../plugins/libs/component/transcripcion/transcripcion.js"></script>
+
+    <script>
+        function btnPrev() {
+            const path = location.pathname.split("/").slice(0, -1).join("/");
+            window.location.href = "./index.html";
+        };
+
+        function btnNext() {
+            const path = location.pathname.split("/").slice(0, -1).join("/");
+            window.location.href = "./evaluacion_leccion.html";
+        };
+
+        // Inicializar transcripciones cuando el DOM esté listo
+        $(document).ready(function () {
+            if (typeof initTranscripciones === 'function') {
+                initTranscripciones();
+            }
+        });
+    </script>
+    <!-- Contenedor global para transcripciones -->
+    <div id="transcripcion-global"></div>
+</body>
+
+</html>`
+  }
+
+  private getResumenLeccion3Template(): string {
+    return `<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- library bootstrap v.5.0.2 -->
+    <script src="../../plugins/libs/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../plugins/libs/bootstrap/css/bootstrap.css">
+    <script src="../../plugins/libs/bootstrap/js/bootstrap.bundle.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../../plugins/css/sofactia.css">
+
+    <!--Montserrat-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!--Libreria iconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Estilos del widget -->
+    <link rel="stylesheet" href="../../plugins/libs/assetsWidget/css/widget.css">
+    <!-- Estilos de transcripción -->
+    <link rel="stylesheet" href="../../plugins/libs/component/transcripcion/transcripcion.css">
+</head>
+
+<body class="sf-scroll-y-hidden sf-bg-dark">
+    <!-- content fluid -->
+    <div class="container-fluid pb-5 pb-md-0 px-0 px-md-5 py-0 text-center">
+        <div class="row d-flex justify-content-center align-items-center sf-min-h-vh100 mx-5">
+            <div class="col-lg-4 col-md-3 mt-5 my-md-0 px-0">
+                <h1 class="sf-txt-1xl-700 sf-text-white">Resumen <span class="sf-text-purple">Lección 3</span></h1>
+                <img class="mx-auto sf-img-30 sf-img-md-100 sf-img-sm-30"
+                    src="../leccion3/gif/avatar_hombre_brazos_cruzados.gif" alt="avatar">
+                <div class="audio-center py-4">
+                    <audio class="audio-con-transcripcion" controls data-transcripcion='[
+                        {"end":4.62,"start":0,"text":"La tercera lección aborda el proceso de denuncia, investigación y sanción, el cual debe"},
+                        {"end":7.16,"start":4.62,"text":"regirse por los principios rectores de la Ley Karin."},
+                        {"end":13.98,"start":8.2,"text":"Estos son: Confidencialidad, garantizar la reserva de antecedentes e identidades, Imparcialidad,"},
+                        {"end":19.72,"start":14.3,"text":"asegurar la objetividad, Celeridad, el proceso debe ser rápido, con un plazo máximo de"},
+                        {"end":25.12,"start":19.72,"text":"30 días hábiles para la investigación y Perspectiva de género, considerarlas asimetrías"},
+                        {"end":27.64,"start":25.12,"text":"de poder y el impacto diferenciado de la cosa."},
+                        {"end":31.94,"start":28.32,"text":"También se exige la No-revictimización de la persona denunciante."},
+                        {"end":37.44,"start":32.64,"text":"El trabajador tiene la libertad de elegir dónde denunciar, por la vía interna, comité"},
+                        {"end":44.06,"start":37.44,"text":"de ética o RRHH o por la vía externa, inspección del trabajo o contraloría para el sector público."},
+                        {"end":49.78,"start":44.88,"text":"La denuncia debe ser escrita e incluir la identificación de las personas una descripción"},
+                        {"end":55.28,"start":49.78,"text":"detallada de los hechos, cuando, donde, como, y la individualización de posibles testigos"},
+                        {"end":60.36,"start":55.28,"text":"o pruebas, una vez recibida la denuncia, el empleador está obligado a tomar medidas"},
+                        {"end":65.92,"start":60.36,"text":"de resguardo y protección inmediatas, medidas cautelares para proteger la salud y seguridad"},
+                        {"end":66.74,"start":65.92,"text":"del afectado."},
+                        {"end":73.14,"start":67.56,"text":"Estas medidas incluyen la separación de espacios, cambiando al denunciado de sección, la suspensión,"},
+                        {"end":78.06,"start":73.5,"text":"solo para el denunciado, la opción de tele trabajo para el denunciante, si es factible,"},
+                        {"end":82.16,"start":78.32,"text":"y la provisión de asistencia psicológica y médica al trabajador afectado."},
+                        {"end":90.56,"start":82.88,"text":"La etapa de investigación interna (artículo 211-B a 211-E), debe ser realizada por un profesional"},
+                        {"end":95.74,"start":90.56,"text":"imparcial y conformación en género. Se debe investigar todos los hechos denunciados"},
+                        {"end":101.5,"start":95.74,"text":"dentro del plazo máximo de 30 días hábiles. El proceso debe garantizar el derecho de"},
+                        {"end":107,"start":101.5,"text":"ambas partes a ser oídas. La investigación culmina con un informe final que establece las"},
+                        {"end":112.14,"start":107,"text":"conclusiones y las anciones o medidas recomendadas, las cuales deben ser aplicadas por el empleador"},
+                        {"end":118.02,"start":112.14,"text":"en un plazo de 15 días hábiles. Las sanciones van desde amonestaciones hasta el despido del"},
+                        {"end":119.62,"start":118.02,"text":"acosador por causales graves."}
+                        ]'>
+                        <source src="../leccion3/resumen_leccion-3.mp3" type="audio/mp3">
+                    </audio>
+                    <i class="transcription-toggle fas fa-closed-captioning audio-estilos"></i>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-9 mt-4 my-md-0">
+                <div class="mx-md-5 mx-4 sf-lh-xs">
+                    <p class="sf-text-white mb-2">¡Bien hecho! Has terminado la Lección 3</p>
+                    <p class="sf-text-white mb-2">¡Revisemos este resumen de lo visto en esta lección!</p>
+                    <embed src="../leccion3/doc/resumen_leccion3.pdf" type="application/pdf" class="pdf-viewer">
+                    <a href="../leccion3/doc/resumen_leccion3.pdf" download="Resumen-Leccion-3.pdf"
+                        class="sf-btn sf-btn-purple">
+                        <i class="fa fa-download"></i>Descargar PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-navigation-container glass-back">
+        <button id="pagIndex" class="btn-navigation btn-navigation--prev" onclick="btnPrev()">
+            <i class="fas fa-angle-left"></i> <span>Anterior</span>
+        </button>
+        <button id="next" class="btn-navigation btn-navigation--next" onclick="btnNext()">
+            <span>Siguiente</span> <i class="fas fa-angle-right"></i>
+        </button>
+    </div>
+
+    <!--library javascript-->
+    <script src="../../plugins/libs/jquery-3.3.1.js"></script>
+    <!-- Script del Widget -->
+    <script src="../../plugins/libs/assetsWidget/js/widget.js"></script>
+    <!-- Script de transcripción -->
+    <script src="../../plugins/libs/component/transcripcion/transcripcion.js"></script>
+
+    <script>
+        function btnPrev() {
+            const path = location.pathname.split("/").slice(0, -1).join("/");
+            window.location.href = "./index.html";
+        };
+
+        function btnNext() {
+            const path = location.pathname.split("/").slice(0, -1).join("/");
+            window.location.href = "./evaluacion_leccion.html";
+        };
+
+        // Inicializar transcripciones cuando el DOM esté listo
+        $(document).ready(function () {
+            if (typeof initTranscripciones === 'function') {
+                initTranscripciones();
+            }
+        });
+    </script>
+    <!-- Contenedor global para transcripciones -->
+    <div id="transcripcion-global"></div>
+</body>
+
+</html>`
+  }
   private generateIndexHTML(): GeneratedFile {
     const firstLesson = this.courseData.lessons[0]
     const firstMoment = firstLesson?.moments[0]

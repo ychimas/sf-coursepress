@@ -304,7 +304,6 @@ export default function EditorPage() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-3">
-              <img src="/logo-color.svg" alt="SF CoursePress" className="h-10" />
               <span className="text-2xl font-bold text-gray-900">SF CoursePress</span>
             </Link>
             <div className="border-l border-slate-300 pl-4">

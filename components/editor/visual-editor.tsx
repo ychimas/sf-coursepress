@@ -103,9 +103,11 @@ const parseColumn = (column: Element, content: any[]) => {
         child.classList.contains('quiz-container') ||
         child.classList.contains('ordenar-pasos-container') ||
         child.id === 'ordenar-pasos-actividad' ||
+        child.id === 'actividad-container' ||
         child.querySelector('.quiz-container') ||
         child.querySelector('.select-container') ||
         child.querySelector('#ordenar-pasos-actividad') ||
+        child.querySelector('#actividad-container') ||
         child.querySelector('.w-80') ||
         child.querySelector('#preguntas-container')) {
       
@@ -113,6 +115,8 @@ const parseColumn = (column: Element, content: any[]) => {
       
       if (child.classList.contains('select-container') || child.querySelector('.select-container')) {
         content.push({ id, type: 'activity', activityType: 'select-text', activityData: {} })
+      } else if (child.id === 'actividad-container' || child.querySelector('#actividad-container')) {
+        content.push({ id, type: 'activity', activityType: 'seleccion-multiple', activityData: { opciones: [], correctas: [], totalCorrectas: 3 } })
       } else if (child.classList.contains('quiz-container') || child.querySelector('.quiz-container')) {
         content.push({ id, type: 'activity', activityType: 'select-imagen', activityData: { items: [], opciones: [] } })
       } else if (child.classList.contains('ordenar-pasos-container') || child.id === 'ordenar-pasos-actividad' || child.querySelector('#ordenar-pasos-actividad')) {
