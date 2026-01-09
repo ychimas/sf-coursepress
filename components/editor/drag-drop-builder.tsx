@@ -2697,7 +2697,8 @@ ${videoJSContent}
         }
         if (comp.activityType === 'select-text' && comp.activityData?.text) {
           const { text, selects, theme, globalOptions } = comp.activityData
-          const textColorClass = theme === 'light' ? '' : 'sf-text-white'
+          // Eliminamos la clase sf-text-white para esta actividad específicamente
+          const textColorClass = ''
           let selectIndex = 0
           
           // Dividir en párrafos primero
