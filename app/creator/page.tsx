@@ -70,7 +70,7 @@ export default function CreatorPage() {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
 
       // If error is related to filesystem or read-only, OR if it's an unknown error (likely 500 on Vercel), fallback to download
-      if (errorMessage.includes("EROFS") || errorMessage.includes("read-only") || errorMessage.includes("Error al guardar") || errorMessage.includes("Error desconocido")) {
+      if (errorMessage.includes("EROFS") || errorMessage.includes("read-only") || errorMessage.includes("Error al guardar") || errorMessage.includes("Error desconocido") || errorMessage.includes("ENOENT")) {
         setModal({
           isOpen: true,
           title: 'Modo Demo / Read-Only',
