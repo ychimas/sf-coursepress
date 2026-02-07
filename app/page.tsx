@@ -106,6 +106,12 @@ export default function Index() {
                   muted
                   playsInline
                   className="w-full h-64 object-cover rounded-lg"
+                  onError={(e) => {
+                    const target = e.target as HTMLVideoElement;
+                    target.style.display = 'none';
+                    // Optional: show fallback image
+                    // target.parentElement.style.backgroundImage = 'url(/fallback-image.png)';
+                  }}
                 />
                 <div className="mt-4 space-y-2">
                   <div className="h-3 bg-blue-100 rounded-full"></div>
@@ -157,6 +163,10 @@ export default function Index() {
                   preload="none"
                   className="w-full h-auto"
                   onLoadedMetadata={(e) => { try { (e.currentTarget as HTMLVideoElement).playbackRate = 2 } catch { } }}
+                  onError={(e) => {
+                    const target = e.target as HTMLVideoElement;
+                    target.style.display = 'none';
+                  }}
                 />
               </div>
             </div>
