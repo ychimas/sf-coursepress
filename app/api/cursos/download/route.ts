@@ -68,13 +68,6 @@ export async function POST(request: Request) {
       console.log('No hay archivos editados en module')
     }
     
-    const assetsPath = join(coursePath, "assets")
-    try {
-      await walkDirectory(assetsPath, coursePath, zip, 'assets')
-    } catch (error) {
-      console.log('No hay archivos en assets')
-    }
-    
     const zipBlob = await zip.generateAsync({ 
       type: 'blob',
       compression: 'DEFLATE',

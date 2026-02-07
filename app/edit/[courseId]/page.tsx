@@ -16,11 +16,11 @@ export default function EditCoursePage() {
   const courseId = params.courseId as string
   
   const [courseData, setCourseData] = useState<CourseData | null>(null)
+  const [customVideoFile, setCustomVideoFile] = useState<File | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [successModal, setSuccessModal] = useState(false)
   const [errorModal, setErrorModal] = useState<{ show: boolean; message: string }>({ show: false, message: '' })
-  const [customVideoFile, setCustomVideoFile] = useState<File | null>(null)
 
   useEffect(() => {
     loadCourse()
@@ -48,15 +48,10 @@ export default function EditCoursePage() {
     
     setIsSaving(true)
     try {
-      const formData = new FormData()
-      formData.append('courseId', courseId)
-      formData.append('metadata', JSON.stringify(courseData))
-      if (customVideoFile) {
-        formData.append('customVideo', customVideoFile, customVideoFile.name)
-      }
       const response = await fetch('/api/cursos/update', {
         method: 'PUT',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseId, courseData })
       })
 
       if (!response.ok) throw new Error('Error al guardar')

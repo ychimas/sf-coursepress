@@ -68,9 +68,72 @@ export default function CreatorPage() {
     } catch (error) {
       console.error("Error generando curso:", error)
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-      setModal({ isOpen: true, title: 'Error', message: `Error al generar el curso: ${errorMessage}`, type: 'alert' })
+
+      // If error is related to filesystem or read-only, OR if it's an unknown error (likely 500 on Vercel), fallback to download
+      if (errorMessage.includes("EROFS") || errorMessage.includes("read-only") || errorMessage.includes("Error al guardar") || errorMessage.includes("Error desconocido")) {
+        setModal({
+          isOpen: true,
+          title: 'Modo Demo / Read-Only',
+          message: 'No se pudo guardar el curso en el servidor (debido a restricciones del entorno demo). Se descargará el paquete del curso directamente.',
+          type: 'alert'
+        })
+
+        // Trigger client-side generation and download
+        await generateZipLocally()
+      } else {
+        setModal({ isOpen: true, title: 'Error', message: `Error al generar el curso: ${errorMessage}`, type: 'alert' })
+      }
     } finally {
       setIsGenerating(false)
+    }
+  }
+
+  const generateZipLocally = async () => {
+    try {
+      const JSZip = (await import("jszip")).default
+      const zip = new JSZip()
+
+      // Generate structure
+      const { generateCourse } = await import("@/lib/scorm-generator")
+      const files = generateCourse(courseData)
+
+      // Add generated files
+      files.forEach(file => {
+        zip.file(file.path, file.content)
+      })
+
+      // Add custom video if exists
+      if (customVideoFile) {
+        zip.file("assets/video/custom_video.mp4", customVideoFile)
+      }
+
+      // Add images if they exist in courseData
+      courseData.lessons.forEach((lesson, lIndex) => {
+        lesson.moments.forEach((moment: any, mIndex) => {
+          if (moment.image && moment.image.data) {
+            const momentFolder = `momento${lIndex + 1}_${mIndex + 1}`
+            const ext = moment.image.name.split('.').pop() || 'webp'
+            const base64Data = moment.image.data.includes(',') ? moment.image.data.split(',')[1] : moment.image.data
+            zip.file(`module/leccion${lIndex + 1}/${momentFolder}/img/img.${ext}`, base64Data, { base64: true })
+          }
+        })
+      })
+
+      // Generate blob
+      const content = await zip.generateAsync({ type: "blob" })
+
+      // Trigger download
+      const url = URL.createObjectURL(content)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = `${courseData.folderName || "curso"}.zip`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error("Error generating zip locally:", err)
+      alert("Error generando el archivo ZIP localmente.")
     }
   }
 

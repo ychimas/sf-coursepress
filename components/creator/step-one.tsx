@@ -9,7 +9,7 @@ import { useRef, useState } from "react"
 interface StepOneProps {
   courseData: any
   setCourseData: (data: any) => void
-  setCustomVideoFile?: (file: File | null) => void
+  setCustomVideoFile: (file: File | null) => void
 }
 
 export function StepOne({ courseData, setCourseData, setCustomVideoFile }: StepOneProps) {
@@ -29,6 +29,8 @@ export function StepOne({ courseData, setCourseData, setCustomVideoFile }: StepO
     const file = e.target.files?.[0]
     if (file && file.type.startsWith("video/")) {
       setVideoFileName(file.name)
+      setCustomVideoFile(file)
+      
       setCourseData({ 
         ...courseData, 
         customVideo: {
@@ -36,14 +38,13 @@ export function StepOne({ courseData, setCourseData, setCustomVideoFile }: StepO
           mimeType: file.type
         }
       })
-      setCustomVideoFile?.(file)
     }
   }
 
   const removeVideo = () => {
     setVideoFileName("")
+    setCustomVideoFile(null)
     setCourseData({ ...courseData, customVideo: null })
-    setCustomVideoFile?.(null)
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
     }
