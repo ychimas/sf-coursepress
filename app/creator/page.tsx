@@ -52,36 +52,39 @@ export default function CreatorPage() {
       if (customVideoFile) {
         formData.append('customVideo', customVideoFile, customVideoFile.name)
       }
+      
+      // Attempt to save to server
       const response = await fetch('/api/cursos/save', {
         method: 'POST',
         body: formData,
       })
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Error desconocido' }))
-        throw new Error(errorData.details || errorData.error || 'Error al guardar el curso')
+        // If server fails (e.g. Vercel read-only), throw to trigger fallback
+        throw new Error('Server save failed')
       }
 
+      // If successful (local dev), redirect to dashboard
       const result = await response.json()
       setModal({ isOpen: true, title: '¡Éxito!', message: '¡Curso creado exitosamente! Ahora puedes editarlo desde el Dashboard.', type: 'alert' })
       setTimeout(() => window.location.href = '/dashboard', 1500)
+      
     } catch (error) {
-      console.error("Error generando curso:", error)
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-
-      // If error is related to filesystem or read-only, OR if it's an unknown error (likely 500 on Vercel), fallback to download
-      if (errorMessage.includes("EROFS") || errorMessage.includes("read-only") || errorMessage.includes("Error al guardar") || errorMessage.includes("Error desconocido") || errorMessage.includes("ENOENT")) {
-        setModal({
-          isOpen: true,
-          title: 'Modo Demo / Read-Only',
-          message: 'No se pudo guardar el curso en el servidor (debido a restricciones del entorno demo). Se descargará el paquete del curso directamente.',
-          type: 'alert'
-        })
-
-        // Trigger client-side generation and download
+      console.warn("Server save failed, falling back to local generation:", error)
+      
+      // Fallback: Generate ZIP locally in browser
+      try {
         await generateZipLocally()
-      } else {
-        setModal({ isOpen: true, title: 'Error', message: `Error al generar el curso: ${errorMessage}`, type: 'alert' })
+        
+        setModal({ 
+          isOpen: true, 
+          title: 'Curso Generado', 
+          message: 'El curso se ha generado y descargado correctamente como archivo ZIP. (Nota: El guardado en el dashboard no está disponible en este entorno demo).', 
+          type: 'alert' 
+        })
+      } catch (localError) {
+        console.error("Local generation also failed:", localError)
+        setModal({ isOpen: true, title: 'Error', message: 'No se pudo generar el curso. Por favor intente nuevamente.', type: 'alert' })
       }
     } finally {
       setIsGenerating(false)
