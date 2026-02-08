@@ -1,40 +1,28 @@
 import { NextResponse } from "next/server"
-import { readdir, readFile, stat } from "fs/promises"
-import { join } from "path"
+import { prisma } from "@/lib/prisma"
 
 export async function GET() {
   try {
-    const cursosPath = join(process.cwd(), "cursos")
-    
-    const folders = await readdir(cursosPath)
-    
-    const courses = await Promise.all(
-      folders.map(async (folder) => {
-        try {
-          const metadataPath = join(cursosPath, folder, "course-metadata.json")
-          const metadata = await readFile(metadataPath, "utf-8")
-          const courseData = JSON.parse(metadata)
-          
-          const folderStat = await stat(join(cursosPath, folder))
-          
-          return {
-            id: folder,
-            name: courseData.name,
-            description: courseData.description,
-            category: courseData.category,
-            lessons: courseData.lessons.length,
-            createdAt: folderStat.birthtime,
-            path: join(cursosPath, folder)
-          }
-        } catch {
-          return null
-        }
-      })
-    )
+    const courses = await prisma.course.findMany({
+      orderBy: { createdAt: 'desc' }
+    })
 
-    return NextResponse.json(courses.filter(Boolean))
+    const formattedCourses = courses.map(course => {
+      const lessons = course.lessons as any[]
+      return {
+        id: course.folderName, // Use folderName as ID for frontend compatibility
+        name: course.name,
+        description: course.description,
+        category: course.category,
+        lessons: Array.isArray(lessons) ? lessons.length : 0,
+        createdAt: course.createdAt,
+        path: `/cursos/${course.folderName}` // Logical path, though files might not exist on Vercel
+      }
+    })
+
+    return NextResponse.json(formattedCourses)
   } catch (error) {
-    console.error("Error listando cursos:", error)
+    console.error("Error listando cursos (DB):", error)
     return NextResponse.json([], { status: 200 })
   }
 }

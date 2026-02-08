@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
-import { readFile } from "fs/promises"
-import { join } from "path"
+import { prisma } from "@/lib/prisma"
 
 export async function POST(request: Request) {
   try {
@@ -10,13 +9,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "ID de curso requerido" }, { status: 400 })
     }
 
-    const metadataPath = join(process.cwd(), "cursos", courseId, "course-metadata.json")
-    const metadata = await readFile(metadataPath, "utf-8")
-    const courseData = JSON.parse(metadata)
+    const course = await prisma.course.findUnique({
+      where: { folderName: courseId }
+    })
+
+    if (!course) {
+       return NextResponse.json({ error: "Curso no encontrado" }, { status: 404 })
+    }
+
+    // Reconstruct the CourseData structure expected by the frontend
+    const courseData = {
+      name: course.name,
+      folderName: course.folderName,
+      description: course.description,
+      category: course.category,
+      lessons: course.lessons
+    }
 
     return NextResponse.json(courseData)
   } catch (error) {
-    console.error("Error obteniendo curso:", error)
+    console.error("Error obteniendo curso (DB):", error)
     return NextResponse.json({ error: "Error al obtener el curso" }, { status: 500 })
   }
 }
