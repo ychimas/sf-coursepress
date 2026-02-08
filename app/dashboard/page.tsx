@@ -242,7 +242,7 @@ export default function DashboardPage() {
     { label: "Total Cursos", value: savedCourses.length.toString(), icon: BookOpen, color: "text-blue-600" },
     { label: "Activos", value: savedCourses.length.toString(), icon: CheckCircle, color: "text-green-600" },
     { label: "Este Mes", value: savedCourses.filter(c => new Date(c.createdAt).getMonth() === new Date().getMonth()).length.toString(), icon: Clock, color: "text-amber-600" },
-    { label: "Total Lecciones", value: savedCourses.reduce((sum, c) => sum + c.lessons, 0).toString(), icon: FileText, color: "text-blue-600" },
+    { label: "Total Lecciones", value: savedCourses.reduce((sum, c) => sum + (Array.isArray(c.lessons) ? c.lessons.length : (typeof c.lessons === 'number' ? c.lessons : 0)), 0).toString(), icon: FileText, color: "text-blue-600" },
   ]
 
   return (
@@ -364,7 +364,7 @@ export default function DashboardPage() {
                         <CardDescription className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-slate-600">
                           <span className="flex items-center gap-1">
                             <FileText className="w-4 h-4" />
-                            {course.lessons} lecciones
+                            {Array.isArray(course.lessons) ? course.lessons.length : course.lessons} lecciones
                           </span>
                           <span className="flex items-center gap-1">
                             <Clock className="w-4 h-4" />
@@ -535,7 +535,7 @@ export default function DashboardPage() {
                         <FolderOpen className="w-4 h-4 text-blue-600 flex-shrink-0" />
                         <div className="flex-1 min-w-0">
                           <h4 className="text-sm font-medium text-slate-900 truncate">{course.name}</h4>
-                          <p className="text-xs text-slate-500 truncate">{course.lessons} lecciones</p>
+                          <p className="text-xs text-slate-500 truncate">{Array.isArray(course.lessons) ? course.lessons.length : course.lessons} lecciones</p>
                         </div>
                       </div>
                     </div>
