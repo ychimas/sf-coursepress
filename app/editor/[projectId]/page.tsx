@@ -94,8 +94,8 @@ export default function EditorPage() {
                              name: localCourse.name,
                              path: localCourse.path || '',
                              lessons: localCourse.lessons.length,
-                             createdAt: new Date(),
-                             lastModified: new Date()
+                             createdAt: new Date().toISOString(),
+                             lastModified: new Date().toISOString()
                          }
                     }
                 }
