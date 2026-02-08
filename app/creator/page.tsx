@@ -47,45 +47,66 @@ export default function CreatorPage() {
     setIsGenerating(true)
 
     try {
+      // 1. Save to LocalStorage (Client-side persistence for Vercel Demo)
+      try {
+        const savedCoursesStr = localStorage.getItem('sf-coursepress-courses')
+        const savedCourses = savedCoursesStr ? JSON.parse(savedCoursesStr) : []
+        
+        // Generate a unique ID if not present (usually name-based in this app, but let's be safe)
+        const newCourseId = courseData.folderName || courseData.name.toLowerCase().replace(/\s+/g, '-')
+        const newCourse = {
+          ...courseData,
+          id: newCourseId,
+          path: newCourseId, // Simulate path
+          createdAt: new Date().toISOString()
+        }
+        
+        // Remove existing if updating (though creator usually makes new)
+        const filteredCourses = savedCourses.filter((c: any) => c.id !== newCourseId)
+        filteredCourses.push(newCourse)
+        
+        localStorage.setItem('sf-coursepress-courses', JSON.stringify(filteredCourses))
+        console.log("Course saved to localStorage successfully")
+      } catch (e) {
+        console.error("Failed to save to localStorage", e)
+      }
+
+      // 2. Attempt to save to server (Normal flow)
       const formData = new FormData()
       formData.append('metadata', JSON.stringify(courseData))
       if (customVideoFile) {
         formData.append('customVideo', customVideoFile, customVideoFile.name)
       }
       
-      // Attempt to save to server
       const response = await fetch('/api/cursos/save', {
         method: 'POST',
         body: formData,
       })
 
       if (!response.ok) {
-        // If server fails (e.g. Vercel read-only), throw to trigger fallback
-        throw new Error('Server save failed')
+        // On Vercel, this WILL fail. But since we saved to localStorage, 
+        // we can pretend it succeeded for the user's session.
+        console.warn('Server save failed (expected on demo), using client-side data')
+        throw new Error('Server save failed') // Trigger catch block to decide next step
       }
 
-      // If successful (local dev), redirect to dashboard
+      // If server success (local dev), all good
       const result = await response.json()
       setModal({ isOpen: true, title: '¡Éxito!', message: '¡Curso creado exitosamente! Ahora puedes editarlo desde el Dashboard.', type: 'alert' })
       setTimeout(() => window.location.href = '/dashboard', 1500)
       
     } catch (error) {
-      console.warn("Server save failed, falling back to local generation:", error)
+      console.warn("Server save failed, relying on localStorage:", error)
       
-      // Fallback: Generate ZIP locally in browser
-      try {
-        await generateZipLocally()
-        
-        setModal({ 
-          isOpen: true, 
-          title: 'Curso Generado', 
-          message: 'El curso se ha generado y descargado correctamente como archivo ZIP. (Nota: El guardado en el dashboard no está disponible en este entorno demo).', 
-          type: 'alert' 
-        })
-      } catch (localError) {
-        console.error("Local generation also failed:", localError)
-        setModal({ isOpen: true, title: 'Error', message: 'No se pudo generar el curso. Por favor intente nuevamente.', type: 'alert' })
-      }
+      // Since we successfully saved to localStorage (Step 1), we treat this as a success for the user.
+      // We show a slightly different message indicating it's a "local" course.
+      setModal({ 
+        isOpen: true, 
+        title: '¡Curso Creado!', 
+        message: 'El curso se ha guardado en tu navegador (Modo Demo). Puedes verlo y editarlo en el Dashboard.', 
+        type: 'alert' 
+      })
+      setTimeout(() => window.location.href = '/dashboard', 2000)
     } finally {
       setIsGenerating(false)
     }

@@ -80,10 +80,45 @@ export default function DashboardPage() {
 
   const loadSavedCourses = async () => {
     try {
-      const response = await fetch('/api/cursos/list')
-      const courses = await response.json()
-      setSavedCourses(courses)
-      setFilteredCourses(courses)
+      // 1. Load from Server (API)
+      let serverCourses: SavedCourse[] = []
+      try {
+        const response = await fetch('/api/cursos/list')
+        if (response.ok) {
+          serverCourses = await response.json()
+        }
+      } catch (e) {
+        console.warn('Failed to load courses from server (likely offline or demo)', e)
+      }
+
+      // 2. Load from LocalStorage (Client Persistence)
+      let localCourses: SavedCourse[] = []
+      try {
+        const localData = localStorage.getItem('sf-coursepress-courses')
+        if (localData) {
+          localCourses = JSON.parse(localData)
+        }
+      } catch (e) {
+        console.error('Failed to load from localStorage', e)
+      }
+
+      // 3. Merge: Server takes precedence if ID conflicts (or client? Let's say Client for "latest" feel)
+      // Actually, let's just union them by ID.
+      const allCoursesMap = new Map<string, SavedCourse>()
+      
+      // Add server courses first
+      serverCourses.forEach(c => allCoursesMap.set(c.id, c))
+      
+      // Add local courses (overwriting if same ID, which effectively handles updates in demo mode)
+      localCourses.forEach(c => allCoursesMap.set(c.id, c))
+
+      const allCourses = Array.from(allCoursesMap.values())
+      
+      // Sort by date desc
+      allCourses.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+      setSavedCourses(allCourses)
+      setFilteredCourses(allCourses)
     } catch (error) {
       console.error('Error cargando cursos:', error)
     } finally {
