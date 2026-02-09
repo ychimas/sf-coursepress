@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { readdir, readFile, access } from 'fs/promises'
 import { join } from 'path'
+import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,8 +16,34 @@ export async function GET(request: NextRequest) {
     
     try {
       if (projectId.startsWith('curso-')) {
-        // Es un curso guardado localmente - SIEMPRE leer desde metadata
         const courseId = projectId.replace('curso-', '')
+        
+        // 1. Intentar leer desde Base de Datos (Supabase) - PRIORIDAD 1 para Producción
+        try {
+          const dbCourse = await prisma.course.findUnique({
+            where: { id: courseId }
+          })
+          
+          if (dbCourse && dbCourse.lessons) {
+            const lessons = dbCourse.lessons as any[]
+            structure = lessons.map((lesson: any, lessonIndex: number) => ({
+              id: `leccion${lessonIndex + 1}`,
+              name: `leccion${lessonIndex + 1}`,
+              displayName: lesson.name || `Lección ${lessonIndex + 1}`,
+              moments: lesson.moments.map((moment: any, momentIndex: number) => ({
+                id: `momento${lessonIndex + 1}_${momentIndex + 1}`,
+                name: moment.name || `Momento ${momentIndex + 1}`,
+                type: moment.type
+              }))
+            }))
+            
+            return NextResponse.json({ success: true, structure })
+          }
+        } catch (dbError) {
+          console.log("No se pudo cargar desde DB, intentando archivos locales...", dbError)
+        }
+
+        // 2. Fallback a archivos locales (solo funcionará en entorno local)
         const coursePath = join(process.cwd(), 'cursos', courseId)
         
         try {
@@ -36,7 +63,7 @@ export async function GET(request: NextRequest) {
             }))
           }))
         } catch (error) {
-          // Si no existe metadata, crear estructura por defecto
+          // Si no existe metadata ni DB, crear estructura por defecto
           structure = [{
             id: 'leccion1',
             name: 'leccion1',
