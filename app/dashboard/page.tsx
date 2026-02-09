@@ -595,7 +595,7 @@ export default function DashboardPage() {
                 onClick={() => {
                   const id = editModal.courseId
                   setEditModal({ isOpen: false, courseId: '' })
-                  setTimeout(() => router.push(`/editor/curso-${id}`), 0)
+                  setTimeout(() => router.push(`/editor/${id}`), 0)
                 }}
               >
                 <div className="border-2 border-slate-200 rounded-xl p-6 hover:border-green-500 hover:bg-green-50 transition-all cursor-pointer group h-full">
